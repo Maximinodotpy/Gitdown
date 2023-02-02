@@ -64,7 +64,7 @@ function PageSettings()
 
     <h1>Resolve Settings</h1>
 
-    <form action="<?php menu_page_url( 'git-to-wordpress-article-manager' ) ?>" method="post">
+    <form action="<?php menu_page_url('git-to-wordpress-article-manager') ?>" method="post">
 
         <table class="form-table" role="presentation">
             <tbody>
@@ -74,6 +74,7 @@ function PageSettings()
                     </th>
                     <td>
                         <input type="text">
+                        <p class="description">Where is the <code>.git</code> file of your repository located? example: <code>https://github.com/Maximinodotpy/articles.git</code></p>
                     </td>
                 </tr>
                 <tr>
@@ -82,6 +83,35 @@ function PageSettings()
                     </th>
                     <td>
                         <input type="text" value="**/_blog/articles.md">
+                        <p class="description">Where are the markdown files that are your articles located? Use a php <a href="https://www.php.net/manual/de/function.glob.phps">glob pattern</a> to search for files.
+                            <div>
+                                More Examples with descriptions
+
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Pattern</th>
+                                            <th>Explanation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>*.md</code></td>
+                                            <td>Will simply match all files ending with <code>.md</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="">Resolver Function</label>
+                    </th>
+                    <td>
+                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                        <p class="description">fasd</p>
                     </td>
                 </tr>
             </tbody>
@@ -101,18 +131,18 @@ function options_menu()
         'Github to Wordpress',
         'Github to Wordpress',
         'manage_options',
-        'git-to-wordpress-article-manager',
+        GTW_ARTICLES_SLUG,
         'PageArticles',
         plugin_dir_url(__FILE__) . 'images/icon.svg',
         20
     );
 
     add_submenu_page(
-        'git-to-wordpress-article-manager',
+        GTW_ARTICLES_SLUG,
         'Resolve Settings',
         'Resolve Settings',
         'manage_options',
-        'resolve-settings',
+        GTW_SETTINGS_SLUG,
         'PageSettings',
     );
 }
