@@ -2,11 +2,16 @@
 
 /* Creating the Admin Pages */
 
-function PageArticles() {
-    ?>
-    <div class="wrap">        
+function PageArticles()
+{
+
+    $simpleGlobPath = '**/_blog/article.md';
+    $globPath = MIRROR_PATH . $simpleGlobPath;
+
+?>
+    <div class="wrap">
         <h1>Manage Github Articles</h1>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam rerum nisi, voluptas modi sequi voluptatem dicta, quas eos, quia quos cupiditate. Enim reprehenderit neque asperiores consequatur, eveniet dicta pariatur quasi!</p>
+        <p>According to the glob pattern <code><?= $simpleGlobPath ?></code> and your set resolver function the following files could be found.</p>
 
         <table>
             <thead>
@@ -25,24 +30,41 @@ function PageArticles() {
 
         <pre>
 <?php
-echo plugins_url();
+    echo 'plugins_url(): ' . plugins_url() . '<br>';
+    echo 'WP_PLUGIN_URL: ' . WP_PLUGIN_URL . '<br>';
+    echo 'WP_PLUGIN_URL: ' . WP_PLUGIN_URL . '<br>';
+    echo '__FILE__: ' . __FILE__ . '<br>';
+    echo 'MIRROR_PATH: ' . MIRROR_PATH . '<br>';
+    echo 'GTW_ROOT_PATH: ' . GTW_ROOT_PATH . '<br>';
+    echo 'getcwd(): ' . getcwd() . '<br>';
 
-/* echo plugin_dir_path(); */
-/* echo plugin_basename(); */
-echo '<br>';
-echo WP_PLUGIN_DIR;
+
+    /* Setting CWD */
+    $temp = getcwd();
+
+    chdir(GTW_ROOT_PATH);
+    echo 'getcwd(): ' . getcwd() . '<br>';
+
+    echo '<pre>';
+    echo $globPath;
+    echo '<br>';
+
+    print_r(glob($globPath));
+    echo '</pre>';
+    /* chdir($temp); */
 ?>
         </pre>
     </div>
-    <?php
+<?php
 };
 
-function PageSettings() {
-    ?>
-            
+function PageSettings()
+{
+?>
+
     <h1>Resolve Settings</h1>
-    
-    <form action="" method="post">
+
+    <form action="<?php menu_page_url( 'git-to-wordpress-article-manager' ) ?>" method="post">
 
         <table class="form-table" role="presentation">
             <tbody>
@@ -68,12 +90,13 @@ function PageSettings() {
         <?php submit_button('Save') ?>
     </form>
 
-    <?php
+<?php
 };
 
-add_action( 'admin_menu', 'options_menu' );
+add_action('admin_menu', 'options_menu');
 
-function options_menu() {
+function options_menu()
+{
     add_menu_page(
         'Github to Wordpress',
         'Github to Wordpress',
@@ -87,10 +110,10 @@ function options_menu() {
     add_submenu_page(
         'git-to-wordpress-article-manager',
         'Resolve Settings',
-		'Resolve Settings',
-		'manage_options',
-		'resolve-settings',
-		'PageSettings',
+        'Resolve Settings',
+        'manage_options',
+        'resolve-settings',
+        'PageSettings',
     );
 }
 
