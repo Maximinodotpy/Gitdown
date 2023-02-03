@@ -4,14 +4,41 @@
 
 function PageArticles()
 {
-
+    chdir(GTW_ROOT_PATH);
+    
     $simpleGlobPath = get_option(GTW_SETTING_GLOB);
     $globPath = MIRROR_PATH . $simpleGlobPath;
-
-?>
+    
+    ?>
     <div class="wrap">
         <h1>Manage Github Articles</h1>
         <p>According to the glob pattern <code><?= $simpleGlobPath ?></code> and your set resolver function the following files could be found.</p>
+        
+        
+        <?php
+        
+        if (is_dir(MIRROR_PATH.'.git')) {
+            echo 'There is a .git file'; 
+            $out = [];
+            chdir(MIRROR_PATH);
+            exec('git remote update', $out);
+            exec('git status -uno', $out);
+            exec('git pull', $out);
+            exec('git log -1 --format=%cd', $out);
+            chdir(GTW_ROOT_PATH);
+
+            echo '<pre>';
+            print_r($out);
+            echo '</pre>';
+        } else {
+            echo 'There is not';
+        }
+        ?>
+
+        <a href="" class="button">Fetch Repository</a>
+
+        <br>
+        <br>
 
         <table class="wp-list-table widefat fixed striped table-view-list posts">
             <thead>
@@ -26,18 +53,32 @@ function PageArticles()
 
 
                 /* Add Resolver Function */
-
                 $resolverFunctions = [
                     'simple' => function($path) {
+                        $defaultPostData = [
+                            'name' => $path,
+                            'description' => 'Lorem ipsum dolor sit amet, consectetur ...'
+                        ];
+
                         $fileContent = file_get_contents($path);
+
+                        /* $Parsedown = new Parsedown();
+
+                        $body = $Parsedown->text($fileContent); */
+
+                        
+                        $parser = new Mni\FrontYAML\Parser;
+                        $document = $parser->parse($fileContent, false);
+                        $postData = array_merge($defaultPostData, $document->getYAML() ?? []);
+                        $postData['raw_content'] = $document->getContent();
+
+                        if ( !array_key_exists( 'slug', $postData ) ) {
+                            $postData['slug'] = stringToSlug($postData['name']);
+                        }
 
                         /* $slug = stringToSlug('How to make XY'); */
 
-                        return [
-                            'name' => 'How to make XY',
-                            'slug' => 'how-to-make-xy',
-                            'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ...',
-                        ];
+                        return $postData;
                     },
                     'custom' => ''
                 ];
@@ -59,13 +100,14 @@ function PageArticles()
                         <td>
                             <p class="row-title"><?= $value['name'] ?></p>
                             <p><?= $value['slug'] ?></p>
-                            <p><?= $value['content'] ?></p>
+
+                            <pre style="white-space: pre-wrap;"><?= truncateString($value['raw_content'], 100) ?></pre>
                         </td>
                         <td>Not Published / outdated / up-to-date</td>
                         <td>
-                            <a href="">Publish</a>
-                            <a href="">Update</a>
-                            <a href="">Delete</a>
+                            <a href="" class="button action">Publish</a>
+                            <a href="" class="button action">Update</a>
+                            <a href="" class="button action">Delete</a>
                         </td>
                     </tr>
 

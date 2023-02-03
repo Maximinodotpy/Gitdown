@@ -18,9 +18,12 @@ Domain Path:  /languages
 class GIT_TO_WORDPRESS {
     
     function __construct() {
+        include 'includes/scripts/vendor/autoload.php';
         include 'includes/scripts/config.php';
+        include 'includes/scripts/helpers.php';
         include 'includes/scripts/pages.php';
-        
+    
+
         define('GTW_ROOT_PATH', __DIR__.'/');
 
         // Activation Hook
