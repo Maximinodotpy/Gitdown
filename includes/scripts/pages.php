@@ -5,7 +5,7 @@
 function PageArticles()
 {
 
-    $simpleGlobPath = '**/_blog/article.md';
+    $simpleGlobPath = get_option(GTW_SETTING_GLOB);
     $globPath = MIRROR_PATH . $simpleGlobPath;
 
 ?>
@@ -13,18 +13,66 @@ function PageArticles()
         <h1>Manage Github Articles</h1>
         <p>According to the glob pattern <code><?= $simpleGlobPath ?></code> and your set resolver function the following files could be found.</p>
 
-        <table>
+        <table class="wp-list-table widefat fixed striped table-view-list posts">
             <thead>
                 <tr>
-                    <th>flaskj</th>
-                    <th>flaskj</th>
+                    <th>Github</th>
+                    <th>Wordpress</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>fsd</td>
-                    <td>fsd</td>
-                </tr>
+                <?php
+
+
+                /* Add Resolver Function */
+
+                $resolverFunctions = [
+                    'simple' => function($path) {
+                        $fileContent = file_get_contents($path);
+
+                        /* $slug = stringToSlug('How to make XY'); */
+
+                        return [
+                            'name' => 'How to make XY',
+                            'slug' => 'how-to-make-xy',
+                            'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ...',
+                        ];
+                    },
+                    'custom' => ''
+                ];
+
+                chdir(GTW_ROOT_PATH);
+
+                $paths = glob($globPath);
+                $githubPosts = [];
+
+                foreach ($paths as $path) {
+                    array_push($githubPosts, $resolverFunctions['simple']($path));
+                }
+
+
+                foreach ($githubPosts as $key => $value) {
+
+                ?>
+                    <tr>
+                        <td>
+                            <p class="row-title"><?= $value['name'] ?></p>
+                            <p><?= $value['slug'] ?></p>
+                            <p><?= $value['content'] ?></p>
+                        </td>
+                        <td>Not Published / outdated / up-to-date</td>
+                        <td>
+                            <a href="">Publish</a>
+                            <a href="">Update</a>
+                            <a href="">Delete</a>
+                        </td>
+                    </tr>
+
+                <?php
+                }
+
+                ?>
             </tbody>
         </table>
 
@@ -42,7 +90,7 @@ function PageArticles()
     /* Setting CWD */
     $temp = getcwd();
 
-    chdir(GTW_ROOT_PATH);
+
     echo 'getcwd(): ' . getcwd() . '<br>';
 
     echo '<pre>';
