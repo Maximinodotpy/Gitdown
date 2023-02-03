@@ -22,14 +22,26 @@ class GIT_TO_WORDPRESS {
         include 'includes/scripts/config.php';
         include 'includes/scripts/helpers.php';
         include 'includes/scripts/pages.php';
-    
 
         define('GTW_ROOT_PATH', __DIR__.'/');
 
         // Activation Hook
         register_activation_hook(
             __FILE__,
-            function() {}
+            function() {
+                add_option(GTW_SETTING_GLOB, '**/_blog/article.md');
+                add_option(GTW_SETTING_REPO, 'https://github.com/Maximinodotpy/articles.git');
+            }
+        );
+
+        register_deactivation_hook(
+            __FILE__,
+            function() {
+                delete_option(GTW_SETTING_GLOB);
+                delete_option(GTW_SETTING_REPO);
+
+                deleteFiles(MIRROR_PATH);
+            },
         );
         
         add_action('admin_init', function () {
