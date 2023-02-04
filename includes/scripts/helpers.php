@@ -15,14 +15,28 @@ function truncateString($string, $max) {
     return $string;
 }
 
-function deleteFiles($dir)
-{
-    // loop through the files one by one
-    foreach(glob($dir . '/*') as $file){
-        // check if is a file and not sub-directory
-        if(is_file($file)){
-            // delete file
-            unlink($file);
+function getPostOnWordpress($slug) {
+    foreach (get_posts() as $key => $value) {
+        if ($value->post_name == $slug) {
+            return $value;
+        }
+    }
+    return false;
+}
+
+function getPostOnRemote($slug) {
+    foreach (GTW_REMOTE_ARTICLES as $key => $value) {
+        if ($value->post_name == $slug) {
+            return $value;
         }
     }
 }
+
+/* function deleteFiles($dir)
+{
+    foreach(glob($dir . '/*') as $file){
+        if(is_file($file)){
+            unlink($file);
+        }
+    }
+} */

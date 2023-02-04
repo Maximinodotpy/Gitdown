@@ -20,17 +20,17 @@ Domain Path:  /languages
 class GIT_TO_WORDPRESS {
     
     function __construct() {
-
-        include 'includes/scripts/vendor/autoload.php';
-        include 'includes/scripts/config.php';
-        include 'includes/scripts/helpers.php';
-
+        
+        
+        require_once 'includes/scripts/vendor/autoload.php';
+        require_once 'includes/scripts/helpers.php';
         require_once 'includes/scripts/pages.php';
-
+        require_once 'includes/scripts/config.php';
+        
         define('GTW_ROOT_PATH', __DIR__.'/');
         define('GTW_REMOTE_ARTICLES', $this->getRemoteArticles());
-
-        $remotePosts = $this->getRemoteArticles();
+        
+        $this->actionManager();
 
         // Activation Hook
         register_activation_hook(
@@ -183,6 +183,46 @@ class GIT_TO_WORDPRESS {
         }
     
         return $githubPosts;
+    }
+
+    function publishPost($slug) {
+        $liveData = getPostOnWordpress($slug);
+
+        $remoteData = getPostOnRemote($slug);
+
+        $my_post = array(
+            'post_title'    => $slug,
+            'post_name'    => 'maxim-ist-cool',
+            'post_content'  => 'faslkdfjölaskjdfölaskjdfö',
+            'post_status'   => 'publish',
+            'post_author'   => 1,
+        );
+
+        if ( $liveData ) {
+            $my_post['ID'] = $liveData['id'];
+        }
+        
+        // Insert the post into the database
+        try {
+            wp_insert_post( $my_post );
+        } catch (\Throwable $th) {}
+    }
+
+    function actionManager() {
+        $req = $_GET;
+
+        if (!array_key_exists('action', $req)) return;
+
+        switch ($req['action']) {
+            case 'publish':
+                $this->publishPost($req['slug']);
+                break;
+        }
+
+        // Route Back to OG Page
+        if (count($_GET) != 1) {
+            header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
+        }
     }
 
     

@@ -1,6 +1,5 @@
 <?php
 
-/* Creating the Admin Page */
 function PageArticles()
 {
     ?>
@@ -8,9 +7,8 @@ function PageArticles()
         <h1>Manage Github Articles</h1>
         <p>According to the glob pattern <code><?= get_option(GTW_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
         
-        
         <?php
-        
+        /* 
         chdir(GTW_ROOT_PATH);
         if (is_dir(MIRROR_PATH.'.git')) {
 
@@ -31,12 +29,8 @@ function PageArticles()
             echo 'There is not';
             exec('git clone '.get_option(GTW_SETTING_REPO).' .');
             chdir(GTW_ROOT_PATH);
-        }
+        } */
         ?>
-
-        <a href="" class="button">Fetch Repository</a>
-
-        <pre><?php /* print_r(get_defined_functions()) */ ?></pre>
 
         <br>
         <br>
@@ -52,21 +46,37 @@ function PageArticles()
             <tbody>
                 <?php
 
-                foreach (GTW_REMOTE_ARTICLES as $key => $value) {
+                foreach (GTW_REMOTE_ARTICLES as $key => $remotePost) {
 
                 ?>
                     <tr>
                         <td>
-                            <p class="row-title" title="Post Name"><?= $value['name'] ?></p>
-                            <p title="Post Slug"><?= $value['slug'] ?></p>
+                            <p class="row-title" title="Post Name"><?= $remotePost['name'] ?></p>
+                            <p title="Post Slug"><?= $remotePost['slug'] ?></p>
 
-                            <p title="description"><?= truncateString($value['description'], 100) ?></p>
-                            <pre style="white-space: pre-wrap;" title="Content Snippet"><?= truncateString($value['raw_content'], 100) ?></pre>
+                            <p title="description"><?= truncateString($remotePost['description'], 100) ?></p>
+                            <pre style="white-space: pre-wrap;" title="Content Snippet"><?= truncateString($remotePost['raw_content'], 100) ?></pre>
                         </td>
-                        <td>Not Published / outdated / up-to-date</td>
                         <td>
-                            <a href="" class="button action">Publish</a>
-                            <a href="" class="button action">Update</a>
+                            <?php
+                            
+                            $livePost = getPostOnWordpress($remotePost['slug']);
+                            $isOnWordpress = !!$livePost;
+                            $baseUrl = $_SERVER['REQUEST_URI'];
+
+                            if ($isOnWordpress) {
+                                echo '<div class="row-title">Is on Wordpress</div>';
+                                echo '<br/>';
+                                echo '<div>ID: '.$livePost->ID.'</div>';
+                                echo '<div><a target="_blank" href="'.$livePost->guid.'">Open in new Tab</a></div>';
+                            } else {
+                                echo 'Not on Wordpress';
+                            }
+                            
+                            ?>
+                        </td>
+                        <td>
+                            <a href="<?= $baseUrl.'&action=publish&slug='.$remotePost['slug'] ?>" class="button action">Publish</a>
                             <a href="" class="button action">Delete</a>
                         </td>
                     </tr>
