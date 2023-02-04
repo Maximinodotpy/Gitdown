@@ -20,11 +20,8 @@ Domain Path:  /languages
 class GIT_TO_WORDPRESS {
     
     function __construct() {
-        
-        
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
-        require_once 'includes/scripts/pages.php';
         require_once 'includes/scripts/config.php';
         
         define('GTW_ROOT_PATH', __DIR__.'/');
@@ -32,24 +29,9 @@ class GIT_TO_WORDPRESS {
         
         $this->actionManager();
 
-        // Activation Hook
-        register_activation_hook(
-            __FILE__,
-            function() {
-                add_option(GTW_SETTING_GLOB, '**/_blog/article.md');
-                add_option(GTW_SETTING_REPO, 'https://github.com/Maximinodotpy/articles.git');
-            }
-        );
-
-        register_deactivation_hook(
-            __FILE__,
-            function() {
-                delete_option(GTW_SETTING_GLOB);
-                delete_option(GTW_SETTING_REPO);
-
-                deleteFiles(MIRROR_PATH);
-            },
-        );
+        // Activation and Deactivation Hook
+        register_activation_hook(__FILE__, '__activation');
+        register_deactivation_hook(__FILE__, '__deactivate');
         
         add_action('admin_init', function () {
             /* add_option(GTW_SETTING_REPO, 'fasd'); */
@@ -127,21 +109,38 @@ class GIT_TO_WORDPRESS {
         });
 
         // Adding the Admin Menu
-        add_action('admin_menu', 'options_menu');
-        function options_menu()
-        {
-            add_menu_page(
-                'Github to Wordpress',
-                'Github to Wordpress',
-                'manage_options',
-                GTW_ARTICLES_SLUG,
-                'PageArticles',
-                plugin_dir_url(__FILE__) . 'images/icon.svg',
-                20,
-            );
-        }
+        add_action('admin_menu', 
+            function ()
+            {
+                add_menu_page(
+                    'Github to Wordpress',
+                    'Github to Wordpress',
+                    'manage_options',
+                    GTW_ARTICLES_SLUG,
+                    function () {
+                        $this->_view(GTW_ROOT_PATH.'views/articles.php');
+                    },
+                    plugin_dir_url(__FILE__) . 'images/icon.svg',
+                    20,
+                );
+            }
+        );
     }
 
+
+    function __activation () {
+        add_option(GTW_SETTING_GLOB, '**/_blog/article.md');
+        add_option(GTW_SETTING_REPO, 'https://github.com/Maximinodotpy/articles.git');
+    }
+
+    function __deactivate() {
+        delete_option(GTW_SETTING_GLOB);
+        delete_option(GTW_SETTING_REPO);
+    }
+
+    function _view($path) {
+        require_once($path);
+    }
 
     function getRemoteArticles() {
         $resolverFunctions = [

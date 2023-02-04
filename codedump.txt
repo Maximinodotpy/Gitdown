@@ -1,0 +1,24 @@
+<?php
+        /* 
+        chdir(GTW_ROOT_PATH);
+        if (is_dir(MIRROR_PATH.'.git')) {
+
+            echo 'There is a .git file';
+            $out = [];
+            chdir(MIRROR_PATH);
+            exec('git remote update', $out);
+            exec('git status -uno', $out);
+            exec('git pull', $out);
+            exec('git log -1 --format=%cd', $out);
+            chdir(GTW_ROOT_PATH);
+            
+            echo '<pre>';
+            print_r($out);
+            echo '</pre>';
+        } else {
+            chdir(MIRROR_PATH);
+            echo 'There is not';
+            exec('git clone '.get_option(GTW_SETTING_REPO).' .');
+            chdir(GTW_ROOT_PATH);
+        } */
+        ?>
