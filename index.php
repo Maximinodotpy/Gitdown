@@ -20,23 +20,37 @@ Domain Path:  /languages
 class GIT_TO_WORDPRESS {
     
     function __construct() {
+
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
-        require_once 'includes/scripts/config.php';
-        
+        /* require_once 'includes/scripts/config.php'; */
+
+        define('MIRROR_PATH', 'mirror/');
+        define('PLUGIN_PREFIX', 'gtw');
+
+        // Option Names
+        define('GTW_SETTING_GLOB', PLUGIN_PREFIX.'_glob_setting');
+        define('GTW_SETTING_REPO', PLUGIN_PREFIX.'_repo_setting');
+        define('GTW_SETTING_RESOLVER', PLUGIN_PREFIX.'_resolver_setting');
+
+        /* Admin Menu Slugs */
+        define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
+
         define('GTW_ROOT_PATH', __DIR__.'/');
         define('GTW_REMOTE_ARTICLES', $this->getRemoteArticles());
         define('GTW_LOCAL_ARTICLES', $this->getLocalArticles());
         define('GTW_REMOTE_ARTICLES_MERGED', $this->mergeArticleData());
-        
-        $this->actionManager();
 
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, '__activation');
         register_deactivation_hook(__FILE__, '__deactivate');
         
+        /* add_action('admin_enqueue_scripts', function () {
+            wp_enqueue_script(PLUGIN_PREFIX.'_admin', GTW_ROOT_PATH.'js/admin.js');
+        }); */
+
         add_action('admin_init', function () {
-            /* add_option(GTW_SETTING_REPO, 'fasd'); */
+            
 
             $settingsSectionSlug = PLUGIN_PREFIX.'_settings_section';
             $page = 'reading';
@@ -127,6 +141,49 @@ class GIT_TO_WORDPRESS {
                 );
             }
         );
+
+
+        add_action('gtw_publish', function () {
+            $remoteArticle = '';
+            foreach (GTW_REMOTE_ARTICLES_MERGED as $article) {
+                if ($article['slug'] == $_GET['slug']) {
+                    $remoteArticle = $article;
+                    break;
+                }
+            }
+
+            $Parsedown = new Parsedown();
+    
+            /* TODO: Transpile content from markdown to HTML */
+            $my_post = array(
+                'post_title'    => $remoteArticle['name'],
+                'post_name'    => $remoteArticle['slug'],
+                'post_content'  => $Parsedown->text($remoteArticle['raw_content']),
+                'post_status'   => 'publish',
+            );
+            
+            // Insert the post into the database
+            try {
+                wp_insert_post( $my_post );
+            } catch (\Throwable $th) {}
+
+            ?>
+            <pre style="position: fixed; left: 200px; padding: 1rem; background-color: black; z-index: 99; box-shadow: 0 0 50px 2px black;">
+<?= $_GET['slug'] ?>
+
+            <?php /* print_r($my_post); */ ?>
+            <?php /* print_r($remoteArticle); */ ?>
+
+            </pre>
+            <?php
+        });
+
+        // Run a custom action if there is the `action` get parameter defined.
+        if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
+            do_action('gtw_'.$_GET['action']);
+            /* TODO: route back to the same page without action attribute so it does not run twice. */
+            header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
+        }
     }
 
 
@@ -186,6 +243,7 @@ class GIT_TO_WORDPRESS {
         return $remotePosts;
     }
 
+    /* TODO Potentially Remove this function */
     function getLocalArticles() {
         return get_posts();
     }
@@ -212,46 +270,6 @@ class GIT_TO_WORDPRESS {
         return $merged;
     }
 
-    function publishPost($slug) {
-        $liveData = getPostOnWordpress($slug);
-        $remoteData = getPostOnRemote($slug);
-
-        $my_post = array(
-            'post_title'    => $slug,
-            'post_name'    => 'maxim-ist-cool',
-            'post_content'  => 'faslkdfjölaskjdfölaskjdfö',
-            'post_status'   => 'publish',
-            'post_author'   => 1,
-        );
-
-        if ( $liveData ) {
-            $my_post['ID'] = $liveData['id'];
-        }
-        
-        // Insert the post into the database
-        try {
-            wp_insert_post( $my_post );
-        } catch (\Throwable $th) {}
-    }
-
-    function actionManager() {
-        $req = $_GET;
-
-        if (!array_key_exists('action', $req)) return;
-
-        switch ($req['action']) {
-            case 'publish':
-                $this->publishPost($req['slug']);
-                break;
-        }
-
-        // Route Back to OG Page
-        if (count($_GET) != 1) {
-            header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
-        }
-    }
-
-    
 };
 
 $gtw = new GIT_TO_WORDPRESS();

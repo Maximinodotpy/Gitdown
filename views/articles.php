@@ -34,11 +34,23 @@
 
                             <div class="row-title">Is not on wordpress</div>
 
+                            <pre>
+                                <?php /* print_r($_SERVER) */ ?>
+                            </pre>
+
                         <?php endif ?>
                     </td>
                     <td>
-                        <a href="<?= $baseUrl . '&action=publish&slug=' . $postData['slug'] ?>" class="button action">Publish</a>
-                        <a href="" class="button action">Delete</a>
+                        <?php if ($postData['_is_published']) : ?>
+
+                            <a href="<?= $_SERVER['SCRIPT_FILENAME'] . '&action=update&slug=' . $postData['slug'] ?>" class="button action">Update</a>
+                            <a href="<?= $_SERVER['SCRIPT_FILENAME'] . '&action=deleteh&slug=' . $postData['slug'] ?>" class="button action">Delete</a>
+
+                        <?php else : ?>
+
+                            <a href="<?= $_SERVER['REQUEST_URI'] . '&action=publish&slug=' . $postData['slug'] ?>" class="button action">Publish</a>
+
+                        <?php endif ?>
                     </td>
                 </tr>
 
@@ -48,4 +60,3 @@
         </tbody>
     </table>
 </div>
-};
