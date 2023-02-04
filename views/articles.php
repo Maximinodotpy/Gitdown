@@ -1,6 +1,22 @@
 <div class="wrap">
     <h1>Manage Github Articles</h1>
-    <p>According to the glob pattern <code><?= get_option(GTW_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
+
+    <?php if(GTW_REMOTE_IS_CLONED) : ?>
+    
+        <p>According to the glob pattern <code><?= get_option(GTW_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
+        
+        <a href="" class="button">Update / Publish All</a>
+        
+    <?php else : ?>
+            
+        <p>Lets start by fetching/cloning the Repo ...</p>
+            
+    <?php endif ?>
+            
+    <a href="<?= $_SERVER['SCRIPT_FILENAME'] . '&action=fetch_repo'?>" class="button">Fetch Repo</a>
+    
+    <br>
+    <br>
 
     <table class="wp-list-table widefat fixed striped table-view-list posts">
         <thead>

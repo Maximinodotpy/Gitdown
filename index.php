@@ -41,6 +41,8 @@ class GIT_TO_WORDPRESS {
         define('GTW_LOCAL_ARTICLES', $this->getLocalArticles());
         define('GTW_REMOTE_ARTICLES_MERGED', $this->mergeArticleData());
 
+        define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_PATH.'.git'));
+
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, '__activation');
         register_deactivation_hook(__FILE__, '__deactivate');
@@ -181,7 +183,6 @@ class GIT_TO_WORDPRESS {
         // Run a custom action if there is the `action` get parameter defined.
         if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
             do_action('gtw_'.$_GET['action']);
-            /* TODO: route back to the same page without action attribute so it does not run twice. */
             header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
         }
     }
@@ -240,7 +241,7 @@ class GIT_TO_WORDPRESS {
             array_push($remotePosts, $resolverFunctions['simple']($path));
         }
     
-        return $remotePosts;
+        return array_reverse($remotePosts);
     }
 
     /* TODO Potentially Remove this function */
@@ -269,6 +270,9 @@ class GIT_TO_WORDPRESS {
 
         return $merged;
     }
+
+
+    
 
 };
 
