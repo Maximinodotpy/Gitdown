@@ -26,6 +26,8 @@ class GIT_TO_WORDPRESS {
         
         define('GTW_ROOT_PATH', __DIR__.'/');
         define('GTW_REMOTE_ARTICLES', $this->getRemoteArticles());
+        define('GTW_LOCAL_ARTICLES', $this->getLocalArticles());
+        define('GTW_REMOTE_ARTICLES_MERGED', $this->mergeArticleData());
         
         $this->actionManager();
 
@@ -138,7 +140,9 @@ class GIT_TO_WORDPRESS {
         delete_option(GTW_SETTING_REPO);
     }
 
-    function _view($path) {
+    function _view($path, $input= []) {
+        $gtw_data = $input;
+
         require_once($path);
     }
 
@@ -167,26 +171,49 @@ class GIT_TO_WORDPRESS {
         ];
 
         chdir(GTW_ROOT_PATH);
-
-        chdir(GTW_ROOT_PATH);
     
         $simpleGlobPath = get_option(GTW_SETTING_GLOB);
         $globPath = MIRROR_PATH . $simpleGlobPath;
 
         $paths = glob($globPath);
 
-        $githubPosts = [];
+        $remotePosts = [];
 
         foreach ($paths as $path) {
-            array_push($githubPosts, $resolverFunctions['simple']($path));
+            array_push($remotePosts, $resolverFunctions['simple']($path));
         }
     
-        return $githubPosts;
+        return $remotePosts;
+    }
+
+    function getLocalArticles() {
+        return get_posts();
+    }
+
+    function getRemoteLocalVersion($slug) {
+        foreach (GTW_LOCAL_ARTICLES as $localArticle) {
+            if ($localArticle->post_name == $slug) return $localArticle;
+        }
+        return false;
+    }
+
+    function mergeArticleData() {
+        $merged = [];
+
+        foreach (GTW_REMOTE_ARTICLES as $key => $remoteArticle) {
+            $localArticle = $this->getRemoteLocalVersion($remoteArticle['slug']);
+
+            $remoteArticle['_is_published'] = !!$localArticle;
+            $remoteArticle['_local_post_data'] = $localArticle ?? [];
+
+            array_push($merged, $remoteArticle);
+        }
+
+        return $merged;
     }
 
     function publishPost($slug) {
         $liveData = getPostOnWordpress($slug);
-
         $remoteData = getPostOnRemote($slug);
 
         $my_post = array(
