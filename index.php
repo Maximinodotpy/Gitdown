@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name:  Github to Wordpress
-Plugin URI:   https://maximmaeder
-Description:  Use this Plugin to do stuff
+Plugin URI:   https://maximmaeder.com
+Description:  Use this Plugin to create, update, delete and manage articles hosted on github.
 Version:      1.0
 Author:       Maxim Maeder
-Author URI:   https://maximmaeder
+Author URI:   https://maximmaeder.com
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  git-to-wordpress
@@ -13,17 +13,24 @@ Domain Path:  /languages
 */
 
 /* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
+/* maximmaeder */
+/* fjöalsjfölasjfsjö*ç */
 
 
 class GIT_TO_WORDPRESS {
     
     function __construct() {
+
         include 'includes/scripts/vendor/autoload.php';
         include 'includes/scripts/config.php';
         include 'includes/scripts/helpers.php';
-        include 'includes/scripts/pages.php';
+
+        require_once 'includes/scripts/pages.php';
 
         define('GTW_ROOT_PATH', __DIR__.'/');
+        define('GTW_REMOTE_ARTICLES', $this->getRemoteArticles());
+
+        $remotePosts = $this->getRemoteArticles();
 
         // Activation Hook
         register_activation_hook(
@@ -118,6 +125,64 @@ class GIT_TO_WORDPRESS {
                 $settingsSectionSlug
             );
         });
+
+        // Adding the Admin Menu
+        add_action('admin_menu', 'options_menu');
+        function options_menu()
+        {
+            add_menu_page(
+                'Github to Wordpress',
+                'Github to Wordpress',
+                'manage_options',
+                GTW_ARTICLES_SLUG,
+                'PageArticles',
+                plugin_dir_url(__FILE__) . 'images/icon.svg',
+                20,
+            );
+        }
+    }
+
+
+    function getRemoteArticles() {
+        $resolverFunctions = [
+            'simple' => function($path) {
+                $defaultPostData = [
+                    'name' => $path,
+                    'description' => 'Lorem ipsum dolor sit amet, consectetur ...'
+                ];
+
+                $fileContent = file_get_contents($path);
+
+                $parser = new Mni\FrontYAML\Parser;
+                $document = $parser->parse($fileContent, false);
+                $postData = array_merge($defaultPostData, $document->getYAML() ?? []);
+                $postData['raw_content'] = $document->getContent();
+
+                if ( !array_key_exists( 'slug', $postData ) ) {
+                    $postData['slug'] = stringToSlug($postData['name']);
+                }
+
+                return $postData;
+            },
+            'custom' => ''
+        ];
+
+        chdir(GTW_ROOT_PATH);
+
+        chdir(GTW_ROOT_PATH);
+    
+        $simpleGlobPath = get_option(GTW_SETTING_GLOB);
+        $globPath = MIRROR_PATH . $simpleGlobPath;
+
+        $paths = glob($globPath);
+
+        $githubPosts = [];
+
+        foreach ($paths as $path) {
+            array_push($githubPosts, $resolverFunctions['simple']($path));
+        }
+    
+        return $githubPosts;
     }
 
     

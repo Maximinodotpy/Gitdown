@@ -1,24 +1,20 @@
 <?php
 
-/* Creating the Admin Pages */
-
+/* Creating the Admin Page */
 function PageArticles()
 {
-    chdir(GTW_ROOT_PATH);
-    
-    $simpleGlobPath = get_option(GTW_SETTING_GLOB);
-    $globPath = MIRROR_PATH . $simpleGlobPath;
-    
     ?>
     <div class="wrap">
         <h1>Manage Github Articles</h1>
-        <p>According to the glob pattern <code><?= $simpleGlobPath ?></code> and your set resolver function the following files could be found.</p>
+        <p>According to the glob pattern <code><?= get_option(GTW_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
         
         
         <?php
         
+        chdir(GTW_ROOT_PATH);
         if (is_dir(MIRROR_PATH.'.git')) {
-            echo 'There is a .git file'; 
+
+            echo 'There is a .git file';
             $out = [];
             chdir(MIRROR_PATH);
             exec('git remote update', $out);
@@ -40,6 +36,8 @@ function PageArticles()
 
         <a href="" class="button">Fetch Repository</a>
 
+        <pre><?php /* print_r(get_defined_functions()) */ ?></pre>
+
         <br>
         <br>
 
@@ -54,46 +52,7 @@ function PageArticles()
             <tbody>
                 <?php
 
-
-                /* Add Resolver Function */
-                $resolverFunctions = [
-                    'simple' => function($path) {
-                        $defaultPostData = [
-                            'name' => $path,
-                            'description' => 'Lorem ipsum dolor sit amet, consectetur ...'
-                        ];
-
-                        $fileContent = file_get_contents($path);
-
-                        /* $Parsedown = new Parsedown();
-
-                        $body = $Parsedown->text($fileContent); */
-
-                        $parser = new Mni\FrontYAML\Parser;
-                        $document = $parser->parse($fileContent, false);
-                        $postData = array_merge($defaultPostData, $document->getYAML() ?? []);
-                        $postData['raw_content'] = $document->getContent();
-
-                        if ( !array_key_exists( 'slug', $postData ) ) {
-                            $postData['slug'] = stringToSlug($postData['name']);
-                        }
-
-                        return $postData;
-                    },
-                    'custom' => ''
-                ];
-
-                chdir(GTW_ROOT_PATH);
-
-                $paths = glob($globPath);
-                $githubPosts = [];
-
-                foreach ($paths as $path) {
-                    array_push($githubPosts, $resolverFunctions['simple']($path));
-                }
-
-
-                foreach ($githubPosts as $key => $value) {
+                foreach (GTW_REMOTE_ARTICLES as $key => $value) {
 
                 ?>
                     <tr>
@@ -119,48 +78,19 @@ function PageArticles()
             </tbody>
         </table>
 
-        <pre><code>
-<?php
-    echo 'plugins_url(): ' . plugins_url() . '<br>';
-    echo 'WP_PLUGIN_URL: ' . WP_PLUGIN_URL . '<br>';
-    echo 'WP_PLUGIN_URL: ' . WP_PLUGIN_URL . '<br>';
-    echo '__FILE__: ' . __FILE__ . '<br>';
-    echo 'MIRROR_PATH: ' . MIRROR_PATH . '<br>';
-    echo 'GTW_ROOT_PATH: ' . GTW_ROOT_PATH . '<br>';
-    echo 'getcwd(): ' . getcwd() . '<br>';
-
-
-    /* Setting CWD */
-    $temp = getcwd();
-
-
-    echo 'getcwd(): ' . getcwd() . '<br>';
-
-    echo '<pre>';
-    echo $globPath;
-    echo '<br>';
-
-    print_r(glob($globPath));
-    /* chdir($temp); */
-?>
-        </pre></code>
+        <pre>
+        <?php
+            echo 'plugins_url(): ' . plugins_url() . '<br>';
+            echo 'WP_PLUGIN_URL: ' . WP_PLUGIN_URL . '<br>';
+            echo 'WP_PLUGIN_URL: ' . WP_PLUGIN_URL . '<br>';
+            echo '__FILE__: ' . __FILE__ . '<br>';
+            echo 'MIRROR_PATH: ' . MIRROR_PATH . '<br>';
+            echo 'GTW_ROOT_PATH: ' . GTW_ROOT_PATH . '<br>';
+            echo 'getcwd(): ' . getcwd() . '<br>';
+        ?>
+        </pre>
     </div>
 <?php
 };
-
-
-add_action('admin_menu', 'options_menu');
-function options_menu()
-{
-    add_menu_page(
-        'Github to Wordpress',
-        'Github to Wordpress',
-        'manage_options',
-        GTW_ARTICLES_SLUG,
-        'PageArticles',
-        plugin_dir_url(__FILE__) . 'images/icon.svg',
-        20
-    );
-}
 
 ?>
