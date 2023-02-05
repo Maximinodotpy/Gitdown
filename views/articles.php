@@ -59,8 +59,8 @@
                     <td>
                         <?php if ($postData['_is_published']) : ?>
 
-                            <a href="<?= $_SERVER['SCRIPT_FILENAME'] . '&action=update&slug=' . $postData['slug'] ?>" class="button action">Update</a>
-                            <a href="<?= $_SERVER['SCRIPT_FILENAME'] . '&action=deleteh&slug=' . $postData['slug'] ?>" class="button action">Delete</a>
+                            <a href="<?= $_SERVER['REQUEST_URI'] . '&action=update&slug=' . $postData['slug'] ?>" class="button action">Update</a>
+                            <a href="<?= $_SERVER['REQUEST_URI'] . '&action=deleteh&slug=' . $postData['slug'] ?>" class="button action">Delete</a>
 
                         <?php else : ?>
 

@@ -53,7 +53,6 @@ class GIT_TO_WORDPRESS {
 
         add_action('admin_init', function () {
             
-
             $settingsSectionSlug = PLUGIN_PREFIX.'_settings_section';
             $page = 'reading';
 
@@ -144,47 +143,20 @@ class GIT_TO_WORDPRESS {
             }
         );
 
-
         add_action('gtw_publish', function () {
-            $remoteArticle = '';
-            foreach (GTW_REMOTE_ARTICLES_MERGED as $article) {
-                if ($article['slug'] == $_GET['slug']) {
-                    $remoteArticle = $article;
-                    break;
-                }
-            }
-
-            $Parsedown = new Parsedown();
-    
-            /* TODO: Transpile content from markdown to HTML */
-            $my_post = array(
-                'post_title'    => $remoteArticle['name'],
-                'post_name'    => $remoteArticle['slug'],
-                'post_content'  => $Parsedown->text($remoteArticle['raw_content']),
-                'post_status'   => 'publish',
-            );
-            
-            // Insert the post into the database
-            try {
-                wp_insert_post( $my_post );
-            } catch (\Throwable $th) {}
-
-            ?>
-            <pre style="position: fixed; left: 200px; padding: 1rem; background-color: black; z-index: 99; box-shadow: 0 0 50px 2px black;">
-<?= $_GET['slug'] ?>
-
-            <?php /* print_r($my_post); */ ?>
-            <?php /* print_r($remoteArticle); */ ?>
-
-            </pre>
-            <?php
+            $this->_publishOrUpdateArticle($_GET['slug']);
+        });
+        add_action('gtw_update', function () {
+            $this->_publishOrUpdateArticle($_GET['slug']);
         });
 
-        // Run a custom action if there is the `action` get parameter defined.
-        if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
-            do_action('gtw_'.$_GET['action']);
-            header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
-        }
+        add_action('init', function () {
+            // Run a custom action if there is the `action` get parameter defined.
+            if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
+                do_action('gtw_'.$_GET['action']);
+                header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
+            }
+        });
     }
 
 
@@ -271,9 +243,32 @@ class GIT_TO_WORDPRESS {
         return $merged;
     }
 
+    function _publishOrUpdateArticle($slug) {
+        $remoteArticle = null;
+        foreach (GTW_REMOTE_ARTICLES_MERGED as $article) {
+            if ($article['slug'] == $slug) {
+                $remoteArticle = $article;
+                break;
+            }
+        }
 
-    
+        $Parsedown = new Parsedown();
 
+        $my_post = array(
+            'post_title'    => $remoteArticle['name'],
+            'post_name'    => $remoteArticle['slug'],
+            'post_content'  => $Parsedown->text($remoteArticle['raw_content']),
+            'post_status'   => 'publish',
+        );
+
+        /* Add the ID in case it is already published */
+        if ($remoteArticle['_is_published']) {
+            $my_post['ID'] = $remoteArticle['_local_post_data']->ID;
+        }
+        
+        // Insert the post into the database
+        wp_insert_post( $my_post );
+    }
 };
 
 $gtw = new GIT_TO_WORDPRESS();

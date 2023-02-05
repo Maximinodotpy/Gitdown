@@ -34,3 +34,14 @@
         echo 'getcwd(): ' . getcwd() . '<br>';
         ?>
         </pre>
+
+
+        ?>
+            <pre style="position: fixed; left: 200px; padding: 1rem; background-color: black; z-index: 99; box-shadow: 0 0 50px 2px black;">
+<?= $_GET['slug'] ?>
+
+            <?php /* print_r($my_post); */ ?>
+            <?php /* print_r($remoteArticle); */ ?>
+
+            </pre>
+            <?php
