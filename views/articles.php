@@ -27,7 +27,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach (GTW_REMOTE_ARTICLES_MERGED as $key => $postData) { ?>
+            <?php foreach (array_reverse(GTW_REMOTE_ARTICLES_MERGED) as $key => $postData) { ?>
                 <tr>
                     <td>
                         <p class="row-title" title="Post Name"><?= $postData['name'] ?></p>

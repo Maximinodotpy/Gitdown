@@ -20,10 +20,8 @@ Domain Path:  /languages
 class GIT_TO_WORDPRESS {
     
     function __construct() {
-
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
-        /* require_once 'includes/scripts/config.php'; */
 
         define('MIRROR_PATH', 'mirror/');
         define('PLUGIN_PREFIX', 'gtw');
@@ -46,10 +44,8 @@ class GIT_TO_WORDPRESS {
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, '__activation');
         register_deactivation_hook(__FILE__, '__deactivate');
-        
-        /* add_action('admin_enqueue_scripts', function () {
-            wp_enqueue_script(PLUGIN_PREFIX.'_admin', GTW_ROOT_PATH.'js/admin.js');
-        }); */
+
+        /* $this->_outpour('éslfadkj'); */
 
         add_action('admin_init', function () {
             
@@ -167,11 +163,11 @@ class GIT_TO_WORDPRESS {
             /* $this->_outpour($out); */
         });
 
-        add_action('wp_loaded', function () {
+        add_action('init', function () {
             // Run a custom action if there is the `action` get parameter defined.
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
                 do_action('gtw_'.$_GET['action']);
-                /* header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']); */
+                header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
             }
         });
     }
@@ -235,12 +231,14 @@ class GIT_TO_WORDPRESS {
             array_push($remotePosts, $resolverFunctions['simple']($path));
         }
     
-        return array_reverse($remotePosts);
+        return $remotePosts;
     }
 
     /* TODO Potentially Remove this function */
     function getLocalArticles() {
-        return get_posts();
+        return get_posts([
+            'numberposts' => -1,
+        ]);
     }
 
     function getRemoteLocalVersion($slug) {
@@ -287,9 +285,6 @@ class GIT_TO_WORDPRESS {
         if ($remoteArticle['_is_published']) {
             $my_post['ID'] = $remoteArticle['_local_post_data']->ID;
         }
-        
-        /* $this->_outpour($my_post); */
-        /* $this->_outpour(GTW_REMOTE_ARTICLES_MERGED); */
         
         // Insert the post into the database
         wp_insert_post( $my_post );
