@@ -23,13 +23,14 @@ class GIT_TO_WORDPRESS {
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
 
-        define('MIRROR_PATH', 'mirror/');
         define('PLUGIN_PREFIX', 'gtw');
 
         // Option Names
         define('GTW_SETTING_GLOB', PLUGIN_PREFIX.'_glob_setting');
         define('GTW_SETTING_REPO', PLUGIN_PREFIX.'_repo_setting');
         define('GTW_SETTING_RESOLVER', PLUGIN_PREFIX.'_resolver_setting');
+        
+        define('MIRROR_PATH', 'mirror/');
 
         /* Admin Menu Slugs */
         define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
@@ -147,15 +148,23 @@ class GIT_TO_WORDPRESS {
             }
         });
         add_action('gtw_fetch_repository', function () {
-            chdir(MIRROR_PATH);
             $out = [];
-
+            
+            chdir(MIRROR_PATH);
             /* TODO: Delete Contents of mirror and re clone `git remote get-url origin` */
             if (!GTW_REMOTE_IS_CLONED) {
                 exec('git clone '.get_option(GTW_SETTING_REPO).' .', $out);
             } else {
                 exec('git pull', $out);
-                exec('git remote get-url origin', $out);
+
+                $remoteLink = '';
+                exec('git remote get-url origin', $remoteLink);
+
+                if ($remoteLink[0] != get_option(GTW_SETTING_REPO)) {
+                    // Remove all files and folders from Mirror
+
+                    // TODO: Remove files from mirror and clone the new Repository
+                }
             }
         });
 
@@ -165,11 +174,12 @@ class GIT_TO_WORDPRESS {
             wp_delete_post($article['_local_post_data']->ID);
         });
 
+
         add_action('init', function () {
             // Run a custom action if there is the `action` get parameter defined.
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
                 do_action('gtw_'.$_GET['action']);
-                header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
+                /* header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']); */
             }
         });
     }
@@ -235,7 +245,7 @@ class GIT_TO_WORDPRESS {
     
         return $remotePosts;
     }
-    
+
     function getLocalArticles() {
         return get_posts([
             'numberposts' => -1,

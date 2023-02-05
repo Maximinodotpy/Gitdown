@@ -9,7 +9,7 @@
         
     <?php else : ?>
             
-        <p>Lets start by fetching/cloning the Repo ...</p>
+        <p>Lets start by fetching/cloning the Repo at <code><?= get_option(GTW_SETTING_REPO) ?></code></p>
             
     <?php endif ?>
             
