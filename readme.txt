@@ -13,7 +13,7 @@ Use this Plugin to inserte markdown posts from a github repository. Edit the glo
 
 == Description ==
 
-TO BE WRITTEN
+*Github to Wordpress* can be used to upload markdown posts from a github repository to the WordPress. It allows you to specify a glob pattern that will be used to find the posts and then you can also specify a function that will resolve the content of the posts.
 
 == Frequently Asked Questions ==
 

@@ -235,8 +235,7 @@ class GIT_TO_WORDPRESS {
     
         return $remotePosts;
     }
-
-    /* TODO Potentially Remove this function */
+    
     function getLocalArticles() {
         return get_posts([
             'numberposts' => -1,
