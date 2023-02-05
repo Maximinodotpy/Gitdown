@@ -143,11 +143,12 @@ class GIT_TO_WORDPRESS {
             }
         );
 
-        add_action('gtw_publish', function () {
-            $this->_publishOrUpdateArticle($_GET['slug']);
-        });
-        add_action('gtw_update', function () {
-            $this->_publishOrUpdateArticle($_GET['slug']);
+        add_action('gtw_publish', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
+        add_action('gtw_update', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
+        add_action('gtw_publish_all', function () {
+            foreach (GTW_REMOTE_ARTICLES_MERGED as $article) {
+                $this->_publishOrUpdateArticle($article['slug']);
+            }
         });
 
         add_action('init', function () {

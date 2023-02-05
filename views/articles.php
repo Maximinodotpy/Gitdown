@@ -5,7 +5,7 @@
     
         <p>According to the glob pattern <code><?= get_option(GTW_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
         
-        <a href="" class="button">Update / Publish All</a>
+        <a href="<?= $_SERVER['REQUEST_URI'] . '&action=publish_all' ?>" class="button">Update / Publish All</a>
         
     <?php else : ?>
             
