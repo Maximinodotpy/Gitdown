@@ -13,7 +13,7 @@
             
     <?php endif ?>
             
-    <a href="<?= $_SERVER['SCRIPT_FILENAME'] . '&action=fetch_repo'?>" class="button">Fetch Repo</a>
+    <a href="<?= $_SERVER['REQUEST_URI'] . '&action=fetch_repository'?>" class="button">Fetch Repo</a>
     
     <br>
     <br>

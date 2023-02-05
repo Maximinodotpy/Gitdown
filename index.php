@@ -150,12 +150,28 @@ class GIT_TO_WORDPRESS {
                 $this->_publishOrUpdateArticle($article['slug']);
             }
         });
+        add_action('gtw_fetch_repository', function () {
+            chdir(MIRROR_PATH);
+            $out = [];
 
-        add_action('init', function () {
+            /* TODO: Delete Contents of mirror and re clone `git remote get-url origin` */
+            if (!GTW_REMOTE_IS_CLONED) {
+                exec('git clone '.get_option(GTW_SETTING_REPO).' .', $out);
+            } else {
+                exec('git pull', $out);
+                exec('git remote get-url origin', $out);
+            }
+
+            chdir(GTW_ROOT_PATH);
+
+            /* $this->_outpour($out); */
+        });
+
+        add_action('wp_loaded', function () {
             // Run a custom action if there is the `action` get parameter defined.
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
                 do_action('gtw_'.$_GET['action']);
-                header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
+                /* header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']); */
             }
         });
     }
@@ -188,10 +204,15 @@ class GIT_TO_WORDPRESS {
                 $fileContent = file_get_contents($path);
 
                 $parser = new Mni\FrontYAML\Parser;
+                $postData = [];
                 $document = $parser->parse($fileContent, false);
                 $postData = array_merge($defaultPostData, $document->getYAML() ?? []);
                 $postData['raw_content'] = $document->getContent();
 
+                /* try {
+                } catch (\Throwable $th) {
+                } */
+                
                 if ( !array_key_exists( 'slug', $postData ) ) {
                     $postData['slug'] = stringToSlug($postData['name']);
                 }
@@ -267,8 +288,17 @@ class GIT_TO_WORDPRESS {
             $my_post['ID'] = $remoteArticle['_local_post_data']->ID;
         }
         
+        /* $this->_outpour($my_post); */
+        /* $this->_outpour(GTW_REMOTE_ARTICLES_MERGED); */
+        
         // Insert the post into the database
         wp_insert_post( $my_post );
+    }
+
+    function _outpour($info) {
+        echo '<pre style="position: absolute; right: 200px; z-index: 100; background-color: black; padding: 1rem; white-space: pre-wrap; width: 500px; height: 300px; overflow-y: auto;">';
+        echo esc_html(print_r($info, true));
+        echo '</pre>';
     }
 };
 
