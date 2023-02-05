@@ -157,10 +157,12 @@ class GIT_TO_WORDPRESS {
                 exec('git pull', $out);
                 exec('git remote get-url origin', $out);
             }
+        });
 
-            chdir(GTW_ROOT_PATH);
+        add_action('gtw_delete', function() {
+            $article = $this->getMergedArticleBySlug($_GET['slug']);
 
-            /* $this->_outpour($out); */
+            wp_delete_post($article['_local_post_data']->ID);
         });
 
         add_action('init', function () {
@@ -263,14 +265,19 @@ class GIT_TO_WORDPRESS {
         return $merged;
     }
 
-    function _publishOrUpdateArticle($slug) {
-        $remoteArticle = null;
+    function getMergedArticleBySlug($slug) {
+        $returned_article = null;
         foreach (GTW_REMOTE_ARTICLES_MERGED as $article) {
             if ($article['slug'] == $slug) {
-                $remoteArticle = $article;
+                $returned_article = $article;
                 break;
             }
         }
+        return $returned_article;
+    }
+
+    function _publishOrUpdateArticle($slug) {
+        $remoteArticle = $this->getMergedArticleBySlug($slug);
 
         $Parsedown = new Parsedown();
 
