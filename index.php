@@ -30,12 +30,18 @@ class GIT_TO_WORDPRESS {
         define('GTW_SETTING_REPO', PLUGIN_PREFIX.'_repo_setting');
         define('GTW_SETTING_RESOLVER', PLUGIN_PREFIX.'_resolver_setting');
         
-        define('MIRROR_PATH', 'mirror/');
+        define('MIRROR_PATH', 'mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
 
         /* Admin Menu Slugs */
         define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
 
         define('GTW_ROOT_PATH', __DIR__.'/');
+
+        // Create the Directory where the files are stored in case it does not exist.
+        if (!is_dir(GTW_ROOT_PATH.MIRROR_PATH)) {
+            mkdir(GTW_ROOT_PATH.MIRROR_PATH, 0777, true);
+        }
+
         define('GTW_REMOTE_ARTICLES', $this->getRemoteArticles());
         define('GTW_LOCAL_ARTICLES', $this->getLocalArticles());
         define('GTW_REMOTE_ARTICLES_MERGED', $this->mergeArticleData());
@@ -97,7 +103,7 @@ class GIT_TO_WORDPRESS {
                 'Resolver',
                 function () {
                     ?>
-                       <fieldset>
+                       <fieldset disabled="true">
                             <label for="resolver_simple">
                                 <input type="radio" name="" id="resolver_simple" value="simple">
                                 <span>Simple</span>
@@ -179,7 +185,7 @@ class GIT_TO_WORDPRESS {
             // Run a custom action if there is the `action` get parameter defined.
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
                 do_action('gtw_'.$_GET['action']);
-                /* header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']); */
+                header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
             }
         });
     }
