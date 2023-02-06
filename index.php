@@ -1,11 +1,10 @@
 <?php
 /*
 Plugin Name:  Gitdown
-Plugin URI:   https://maximmaeder.com
-Description:  Use this Plugin to create, update, delete and manage articles hosted on a remote repository.
-Version:      0.1
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
+Description:  Use this Plugin to create, update, delete and manage articles hosted on a remote repository.
+Version:      0.1
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  gitdown
@@ -23,17 +22,23 @@ class Gitdown {
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
 
+        // Defining all the constants
+
+        // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
         define('PLUGIN_PREFIX', 'gd');
+
+        // The Plugin name is used sometimes when the name appears somewhere.
         define('PLUGIN_NAME', 'Gitdown');
 
-        // Option Names
+        // Option names
         define('GTW_SETTING_GLOB', PLUGIN_PREFIX.'_glob_setting');
         define('GTW_SETTING_REPO', PLUGIN_PREFIX.'_repo_setting');
         define('GTW_SETTING_RESOLVER', PLUGIN_PREFIX.'_resolver_setting');
         
+        // Where the current Repository is located depends on the repo url.
         define('MIRROR_PATH', 'mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
 
-        /* Admin Menu Slugs */
+        // Admin Menu Slugs
         define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
 
         define('GTW_ROOT_PATH', __DIR__.'/');
