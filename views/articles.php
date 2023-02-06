@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1>Manage Github Articles</h1>
+    <h1>Manage Git Articles</h1>
 
     <?php if(GTW_REMOTE_IS_CLONED) : ?>
     
@@ -21,7 +21,7 @@
     <table class="wp-list-table widefat fixed striped table-view-list posts">
         <thead>
             <tr>
-                <th>Github</th>
+                <th>Remote</th>
                 <th>Wordpress</th>
                 <th>Actions</th>
             </tr>

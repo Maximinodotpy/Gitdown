@@ -1,14 +1,14 @@
 <?php
 /*
-Plugin Name:  Github to Wordpress
+Plugin Name:  Gitdown
 Plugin URI:   https://maximmaeder.com
-Description:  Use this Plugin to create, update, delete and manage articles hosted on github.
-Version:      1.0
+Description:  Use this Plugin to create, update, delete and manage articles hosted on a remote repository.
+Version:      0.1
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain:  git-to-wordpress
+Text Domain:  gitdown
 Domain Path:  /languages
 */
 
@@ -17,13 +17,14 @@ Domain Path:  /languages
 /* fjöalsjfölasjfsjö*ç */
 
 
-class GIT_TO_WORDPRESS {
+class Gitdown {
     
     function __construct() {
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
 
-        define('PLUGIN_PREFIX', 'gtw');
+        define('PLUGIN_PREFIX', 'gd');
+        define('PLUGIN_NAME', 'Gitdown');
 
         // Option Names
         define('GTW_SETTING_GLOB', PLUGIN_PREFIX.'_glob_setting');
@@ -49,10 +50,8 @@ class GIT_TO_WORDPRESS {
         define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_PATH.'.git'));
 
         // Activation and Deactivation Hook
-        register_activation_hook(__FILE__, '__activation');
+        register_activation_hook(__FILE__, function () { $this->__activate(); });
         register_deactivation_hook(__FILE__, '__deactivate');
-
-        /* $this->_outpour('éslfadkj'); */
 
         add_action('admin_init', function () {
             
@@ -64,9 +63,9 @@ class GIT_TO_WORDPRESS {
 
             add_settings_section(
                 $settingsSectionSlug,
-                'Git To WordPress Settings',
+                PLUGIN_NAME.' Settings',
                 function () {
-                    ?>Edit the Git to WordPress settings here.<?php
+                    ?>Edit the Git to <?= PLUGIN_NAME ?> settings here.<?php
                 },
                 $page
             );
@@ -133,8 +132,8 @@ class GIT_TO_WORDPRESS {
             function ()
             {
                 add_menu_page(
-                    'Github to Wordpress',
-                    'Github to Wordpress',
+                    PLUGIN_NAME,
+                    PLUGIN_NAME,
                     'manage_options',
                     GTW_ARTICLES_SLUG,
                     function () {
@@ -191,7 +190,7 @@ class GIT_TO_WORDPRESS {
     }
 
 
-    function __activation () {
+    function __activate () {
         add_option(GTW_SETTING_GLOB, '**/_blog/article.md');
         add_option(GTW_SETTING_REPO, 'https://github.com/Maximinodotpy/articles.git');
     }
@@ -319,4 +318,4 @@ class GIT_TO_WORDPRESS {
     }
 };
 
-$gtw = new GIT_TO_WORDPRESS();
+$gtw = new Gitdown();
