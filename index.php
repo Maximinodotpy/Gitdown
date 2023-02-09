@@ -226,10 +226,7 @@ class Gitdown {
                 $document = $parser->parse($fileContent, false);
                 $postData = array_merge($defaultPostData, $document->getYAML() ?? []);
                 $postData['raw_content'] = $document->getContent();
-
-                /* try {
-                } catch (\Throwable $th) {
-                } */
+                $postData['featured_image'] = dirname($path).'/preview.png';
                 
                 if ( !array_key_exists( 'slug', $postData ) ) {
                     $postData['slug'] = stringToSlug($postData['name']);
@@ -313,8 +310,33 @@ class Gitdown {
         }
         
         // Insert the post into the database
-        wp_insert_post( $my_post );
+        $post_id = wp_insert_post( $my_post );
+
+
+        // Uploading the Image
+        $imagePath = GTW_ROOT_PATH.$remoteArticle['featured_image'];
+
+        if (!is_file($imagePath)) return;
+
+        $uploadPath = wp_upload_dir()['path'].'/'.$my_post['post_name'].'.png';
+
+        copy($imagePath, $uploadPath);
+
+        $thumbnailId = get_post_thumbnail_id($post_id);
+    
+        $attachment_data = array(
+            'ID' => $thumbnailId,
+            'post_mime_type' => wp_check_filetype( $uploadPath, null )['type'],
+            'post_title' => sanitize_file_name( $uploadPath ),
+            'post_content' => '',
+            'post_status' => 'inherit'
+        );
+
+        $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
+
+        set_post_thumbnail($post_id, $attach_id);
     }
+
 
     function _outpour($info) {
         echo '<pre style="position: absolute; right: 200px; z-index: 100; background-color: black; padding: 1rem; white-space: pre-wrap; width: 500px; height: 300px; overflow-y: auto;">';

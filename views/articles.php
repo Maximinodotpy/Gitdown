@@ -35,6 +35,9 @@
 
                         <p title="description"><?= truncateString($postData['description'], 100) ?></p>
                         <pre style="white-space: pre-wrap;" title="Content Snippet"><?= truncateString($postData['raw_content'], 100) ?></pre>
+
+                        <p alt=""><?= ''.$postData['featured_image'] ?></p>
+
                     </td>
                     <td>
                         <?php if ($postData['_is_published']) : ?>
