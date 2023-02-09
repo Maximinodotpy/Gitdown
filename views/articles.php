@@ -4,8 +4,11 @@
     <?php if(GTW_REMOTE_IS_CLONED) : ?>
     
         <p>According to the glob pattern <code><?= get_option(GTW_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
+
+        <p>Keep in mind that all articles are identified by their <code>slug</code>/<code>post_name</code>. Thats why it is shown here in the Github column. If you change the slug in the markdown file, Gitdown wont recognize that the articles belong together.</p>
         
         <a href="<?= $_SERVER['REQUEST_URI'] . '&action=publish_all' ?>" class="button">Update / Publish All</a>
+        <a href="<?= $_SERVER['REQUEST_URI'] . '&action=delete_all' ?>" class="button">Delete All</a>
         
     <?php else : ?>
             
@@ -36,16 +39,23 @@
                         <p title="description"><?= truncateString($postData['description'], 100) ?></p>
                         <pre style="white-space: pre-wrap;" title="Content Snippet"><?= truncateString($postData['raw_content'], 100) ?></pre>
 
-                        <p alt=""><?= ''.$postData['featured_image'] ?></p>
-
                     </td>
                     <td>
                         <?php if ($postData['_is_published']) : ?>
 
                             <div class="row-title">Is on Wordpress</div>
                             <br/>
+                            
                             <div>ID: <code><?= $postData['_local_post_data']->ID ?></code></div>
+                            <div>Slug: <code><?= $postData['slug'] ?></code></div>
+
+                            <br>
+
                             <div><a target="_blank" href="<?= $postData['_local_post_data']->guid ?>">Open in new Tab</a></div>
+                            <br>
+                            
+                            <img src="<?= get_the_post_thumbnail_url($postData['_local_post_data']->ID) ?>" alt="Thumbnail not Found" style="width: 100%; filter: grayscale(50%); opacity: 0.5">
+                            
 
                             <pre><?php /* echo esc_html(print_r($postData, true)); */ ?></pre>
 
