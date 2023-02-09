@@ -17,10 +17,12 @@ Domain Path:  /languages
 
 
 class Gitdown {
+    private $articleCollection;
     
     function __construct() {
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
+        require_once 'includes/scripts/ArticleCollection.php';
 
         // Defining all the constants
         // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
@@ -42,17 +44,39 @@ class Gitdown {
 
         define('GTW_ROOT_PATH', __DIR__.'/');
 
+        define('GTW_REMOTE_IS_CLONED', is_dir(GTW_ROOT_PATH.MIRROR_PATH.'.git'));
+
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(GTW_ROOT_PATH.MIRROR_PATH)) {
             mkdir(GTW_ROOT_PATH.MIRROR_PATH, 0777, true);
         }
 
-        // Remove the first to consts
-        define('GTW_REMOTE_ARTICLES', $this->getRemoteArticles());
-        define('GTW_LOCAL_ARTICLES', $this->getLocalArticles());
-        define('GTW_REMOTE_ARTICLES_MERGED', $this->mergeArticleData());
+        $resolverFunctions = [
+            'simple' => function($path) {
+                $defaultPostData = [
+                    'name' => $path,
+                    'description' => 'Lorem ipsum dolor sit amet, consectetur ...'
+                ];
 
-        define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_PATH.'.git'));
+                $fileContent = file_get_contents($path);
+
+                $parser = new Mni\FrontYAML\Parser;
+                $postData = [];
+                $document = $parser->parse($fileContent, false);
+                $postData = array_merge($defaultPostData, $document->getYAML() ?? []);
+                $postData['raw_content'] = $document->getContent();
+                $postData['featured_image'] = dirname($path).'/preview.png';
+                
+                if ( !array_key_exists( 'slug', $postData ) ) {
+                    $postData['slug'] = stringToSlug($postData['name']);
+                }
+
+                return $postData;
+            },
+            'custom' => ''
+        ];
+
+        $this->articleCollection = new GTWArticleCollection(GTW_ROOT_PATH.MIRROR_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
 
         $this->_setup_actions();
     }
@@ -146,7 +170,7 @@ class Gitdown {
                     'manage_options',
                     GTW_ARTICLES_SLUG,
                     function () {
-                        $this->_view(GTW_ROOT_PATH.'views/articles.php');
+                        $this->_view(GTW_ROOT_PATH.'views/articles.php', $this->articleCollection->get_all());
                     },
                     plugin_dir_url(__FILE__) . 'images/icon.svg',
                     20,
@@ -157,7 +181,7 @@ class Gitdown {
         add_action(PLUGIN_PREFIX.'_publish', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
         add_action(PLUGIN_PREFIX.'_update', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
         add_action(PLUGIN_PREFIX.'_publish_all', function () {
-            foreach (GTW_REMOTE_ARTICLES_MERGED as $article) {
+            foreach ($this->articleCollection->get_all() as $article) {
                 $this->_publishOrUpdateArticle($article['slug']);
             }
         });
@@ -186,7 +210,7 @@ class Gitdown {
             $this->_delete_article($_GET['slug']);
         });
         add_action(PLUGIN_PREFIX.'_delete_all', function () {
-            foreach (GTW_REMOTE_ARTICLES_MERGED as $article) {
+            foreach ($this->articleCollection->get_all() as $article) {
                 $this->_delete_article($article['slug']);
             }
         });
@@ -218,89 +242,8 @@ class Gitdown {
         require_once($path);
     }
 
-    function getRemoteArticles() {
-        $resolverFunctions = [
-            'simple' => function($path) {
-                $defaultPostData = [
-                    'name' => $path,
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur ...'
-                ];
-
-                $fileContent = file_get_contents($path);
-
-                $parser = new Mni\FrontYAML\Parser;
-                $postData = [];
-                $document = $parser->parse($fileContent, false);
-                $postData = array_merge($defaultPostData, $document->getYAML() ?? []);
-                $postData['raw_content'] = $document->getContent();
-                $postData['featured_image'] = dirname($path).'/preview.png';
-                
-                if ( !array_key_exists( 'slug', $postData ) ) {
-                    $postData['slug'] = stringToSlug($postData['name']);
-                }
-
-                return $postData;
-            },
-            'custom' => ''
-        ];
-
-        chdir(GTW_ROOT_PATH);
-    
-        $simpleGlobPath = get_option(GTW_SETTING_GLOB);
-        $globPath = MIRROR_PATH . $simpleGlobPath;
-
-        $paths = glob($globPath);
-
-        $remotePosts = [];
-
-        foreach ($paths as $path) {
-            array_push($remotePosts, $resolverFunctions['simple']($path));
-        }
-    
-        return $remotePosts;
-    }
-
-    function getLocalArticles() {
-        return get_posts([
-            'numberposts' => -1,
-        ]);
-    }
-
-    function getRemoteLocalVersion($slug) {
-        foreach (GTW_LOCAL_ARTICLES as $localArticle) {
-            if ($localArticle->post_name == $slug) return $localArticle;
-        }
-        return false;
-    }
-
-    function mergeArticleData() {
-        $merged = [];
-
-        foreach (GTW_REMOTE_ARTICLES as $key => $remoteArticle) {
-            $localArticle = $this->getRemoteLocalVersion($remoteArticle['slug']);
-
-            $remoteArticle['_is_published'] = !!$localArticle;
-            $remoteArticle['_local_post_data'] = $localArticle ?? [];
-
-            array_push($merged, $remoteArticle);
-        }
-
-        return $merged;
-    }
-
-    function getMergedArticleBySlug($slug) {
-        $returned_article = null;
-        foreach (GTW_REMOTE_ARTICLES_MERGED as $article) {
-            if ($article['slug'] == $slug) {
-                $returned_article = $article;
-                break;
-            }
-        }
-        return $returned_article;
-    }
-
     function _publishOrUpdateArticle($slug) {
-        $remoteArticle = $this->getMergedArticleBySlug($slug);
+        $remoteArticle = $this->articleCollection->get_by_slug($slug);
 
         $Parsedown = new Parsedown();
 
@@ -334,7 +277,7 @@ class Gitdown {
         $attachment_data = array(
             'ID' => $thumbnailId,
             'post_mime_type' => wp_check_filetype( $uploadPath, null )['type'],
-            'post_title' => sanitize_file_name( $uploadPath ),
+            'post_title' => $my_post['post_title'],
             'post_content' => '',
             'post_status' => 'inherit'
         );
@@ -345,7 +288,8 @@ class Gitdown {
     }
 
     function _delete_article($slug) {
-        $article = $this->getMergedArticleBySlug($slug);
+        $article = $this->articleCollection->get_by_slug($slug);
+
         wp_delete_post($article['_local_post_data']->ID);
     }
 
