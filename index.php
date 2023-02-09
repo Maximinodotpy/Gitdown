@@ -247,28 +247,28 @@ class Gitdown {
 
         $Parsedown = new Parsedown();
     
-        $my_post = array(
+        $post_data = array(
             'post_title'    => $remoteArticle['name'],
             'post_name'    => $remoteArticle['slug'],
-            'post_excerpt ' => $remoteArticle['description'],
+            'post_excerpt' => $remoteArticle['description'],
             'post_content'  => $Parsedown->text($remoteArticle['raw_content']),
             'post_status'   => 'publish',
         );
 
         /* Add the ID in case it is already published */
         if ($remoteArticle['_is_published']) {
-            $my_post['ID'] = $remoteArticle['_local_post_data']->ID;
+            $post_data['ID'] = $remoteArticle['_local_post_data']->ID;
         }
         
         // Insert the post into the database
-        $post_id = wp_insert_post( $my_post );
+        $post_id = wp_insert_post( $post_data );
 
         // Uploading the Image
         $imagePath = GTW_ROOT_PATH.MIRROR_PATH.$remoteArticle['featured_image'];
 
         if (!is_file($imagePath)) return;
 
-        $uploadPath = wp_upload_dir()['path'].'/'.$my_post['post_name'].'.png';
+        $uploadPath = wp_upload_dir()['path'].'/'.$post_data['post_name'].'.png';
 
         copy($imagePath, $uploadPath);
 
@@ -277,7 +277,7 @@ class Gitdown {
         $attachment_data = array(
             'ID' => $thumbnailId,
             'post_mime_type' => wp_check_filetype( $uploadPath, null )['type'],
-            'post_title' => $my_post['post_title'],
+            'post_title' => $post_data['post_title'],
             'post_content' => '',
             'post_status' => 'inherit'
         );

@@ -52,7 +52,7 @@
                             
                             <div>ID: <code><?= $postData['_local_post_data']->ID ?></code></div>
                             <div>Slug: <code><?= $postData['slug'] ?></code></div>
-                            <div>Excerpt: <code><?php ($postData['_local_post_data']->post_excerpt) ?></code></div>
+                            <div>Excerpt: <code><?= $postData['_local_post_data']->post_excerpt ?></code></div>
 
                             <br>
 
