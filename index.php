@@ -246,10 +246,11 @@ class Gitdown {
         $remoteArticle = $this->articleCollection->get_by_slug($slug);
 
         $Parsedown = new Parsedown();
-
+    
         $my_post = array(
             'post_title'    => $remoteArticle['name'],
             'post_name'    => $remoteArticle['slug'],
+            'post_excerpt ' => $remoteArticle['description'],
             'post_content'  => $Parsedown->text($remoteArticle['raw_content']),
             'post_status'   => 'publish',
         );
@@ -262,9 +263,8 @@ class Gitdown {
         // Insert the post into the database
         $post_id = wp_insert_post( $my_post );
 
-
         // Uploading the Image
-        $imagePath = GTW_ROOT_PATH.$remoteArticle['featured_image'];
+        $imagePath = GTW_ROOT_PATH.MIRROR_PATH.$remoteArticle['featured_image'];
 
         if (!is_file($imagePath)) return;
 
@@ -283,7 +283,6 @@ class Gitdown {
         );
 
         $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
-
         set_post_thumbnail($post_id, $attach_id);
     }
 
@@ -301,4 +300,6 @@ class Gitdown {
     }
 };
 
-$gtw = new Gitdown();
+if(is_admin()) {
+    $gtw = new Gitdown();
+}

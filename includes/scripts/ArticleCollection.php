@@ -11,11 +11,6 @@ class GTWArticleCollection {
 
         $paths = glob($glob);
 
-        /* The Resolver Function Returns.
-         *
-         * 
-        */
-
         foreach ($paths as $path) {
             array_push($this->articles, $resolver($path));
         }

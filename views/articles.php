@@ -6,6 +6,10 @@
         <p>According to the glob pattern <code><?= get_option(GTW_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
 
         <p>Keep in mind that all articles are identified by their <code>slug</code>/<code>post_name</code>. Thats why it is shown here in the Github column. If you change the slug in the markdown file, Gitdown wont recognize that the articles belong together.</p>
+
+        <p>The Resolver function has to define following informations for each article.</p>
+
+        <pre><?= file_get_contents(GTW_ROOT_PATH.'includes/scripts/resolver_returns.json') ?></pre>
         
         <a href="<?= $_SERVER['REQUEST_URI'] . '&action=publish_all' ?>" class="button">Update / Publish All</a>
         <a href="<?= $_SERVER['REQUEST_URI'] . '&action=delete_all' ?>" class="button">Delete All</a>
@@ -48,6 +52,7 @@
                             
                             <div>ID: <code><?= $postData['_local_post_data']->ID ?></code></div>
                             <div>Slug: <code><?= $postData['slug'] ?></code></div>
+                            <div>Excerpt: <code><?php ($postData['_local_post_data']->post_excerpt) ?></code></div>
 
                             <br>
 
