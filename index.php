@@ -172,7 +172,7 @@ class Gitdown {
                     function () {
                         $this->_view(GTW_ROOT_PATH.'views/articles.php', $this->articleCollection->get_all());
                     },
-                    plugin_dir_url(__FILE__) . 'images/icon.svg',
+                    'data:image/svg+xml;base64,'.base64_encode(file_get_contents(GTW_ROOT_PATH.'images/icon.svg')),
                     20,
                 );
             }
@@ -279,7 +279,7 @@ class Gitdown {
             'post_mime_type' => wp_check_filetype( $uploadPath, null )['type'],
             'post_title' => $post_data['post_title'],
             'post_content' => '',
-            'post_status' => 'inherit'
+            'post_status' => 'inherit',
         );
 
         $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
@@ -289,9 +289,14 @@ class Gitdown {
     function _delete_article($slug) {
         $article = $this->articleCollection->get_by_slug($slug);
 
-        wp_delete_post($article['_local_post_data']->ID);
-    }
+        $id = $article['_local_post_data']->ID;
+        
+        // Remove Thumbnail Image
+        wp_delete_attachment(get_post_thumbnail_id($id));
 
+        // Remove the Post itself
+        wp_delete_post($id, true);
+    }
 
     function _outpour($info) {
         echo '<pre style="position: absolute; right: 200px; z-index: 100; background-color: black; padding: 1rem; white-space: pre-wrap; width: 500px; height: 300px; overflow-y: auto;">';
