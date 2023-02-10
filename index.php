@@ -12,10 +12,6 @@ Text Domain:  gitdown
 Domain Path:  /languages
 */
 
-/* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
-/* maximmaeder */
-/* fjöalsjfölasjfsjö*ç */
-
 class Gitdown {
     private $articleCollection;
     
@@ -247,12 +243,16 @@ class Gitdown {
 
         $Parsedown = new Parsedown();
     
+
+        $post_status = $remoteArticle['status'];
+        array_search($post_status, ['publish', 'draft']) ? $post_status : 'publish';
+
         $post_data = array(
             'post_title'    => $remoteArticle['name'],
             'post_name'    => $remoteArticle['slug'],
             'post_excerpt' => $remoteArticle['description'],
             'post_content'  => $Parsedown->text($remoteArticle['raw_content']),
-            'post_status'   => 'publish',
+            'post_status'   => $post_status,
         );
 
         /* Add the ID in case it is already published */

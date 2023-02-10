@@ -7,11 +7,11 @@
 
         <p>Keep in mind that all articles are identified by their <code>slug</code>/<code>post_name</code>. Thats why it is shown here in the Github column. If you change the slug in the markdown file, Gitdown wont recognize that the articles belong together.</p>
 
-        <p>The Resolver function has to define following informations for each article.</p>
+        <!-- <p>The Resolver function has to define following informations for each article.</p> -->
 
-        <pre><?= file_get_contents(GTW_ROOT_PATH.'includes/scripts/resolver_returns.json') ?></pre>
+        <!-- <pre><?= file_get_contents(GTW_ROOT_PATH.'includes/scripts/resolver_returns.json') ?></pre> -->
         
-        <a href="<?= $_SERVER['REQUEST_URI'] . '&action=publish_all' ?>" class="button">Update / Publish All</a>
+        <a href="<?= $_SERVER['REQUEST_URI'] . '&action=publish_all' ?>" class="button button-primary">Update / Publish All</a>
         <a href="<?= $_SERVER['REQUEST_URI'] . '&action=delete_all' ?>" class="button">Delete All</a>
         
     <?php else : ?>
@@ -21,6 +21,8 @@
     <?php endif ?>
             
     <a href="<?= $_SERVER['REQUEST_URI'] . '&action=fetch_repository'?>" class="button">Fetch Repo</a>
+
+    <a href="<?= dirname(plugin_dir_url(__FILE__), 1).'/files/example.zip' ?>" download="example" class="button">Download Example Folder Structure</a>
     
     <br>
     <br>
@@ -53,13 +55,14 @@
                             <div>ID: <code><?= $postData['_local_post_data']->ID ?></code></div>
                             <div>Slug: <code><?= $postData['slug'] ?></code></div>
                             <div>Excerpt: <code><?= $postData['_local_post_data']->post_excerpt ?></code></div>
+                            <div>Status: <code><?= $postData['_local_post_data']->post_status ?></code></div>
 
                             <br>
 
                             <div><a target="_blank" href="<?= $postData['_local_post_data']->guid ?>">Open in new Tab</a></div>
                             <br>
                             
-                            <img src="<?= get_the_post_thumbnail_url($postData['_local_post_data']->ID) ?>" alt="Thumbnail not Found" style="width: 100%; filter: grayscale(50%); opacity: 0.5">
+                            <img src="<?= get_the_post_thumbnail_url($postData['_local_post_data']->ID, 'thumbnail') ?>" alt="Thumbnail not Found" style="width: 100%; filter: grayscale(50%); opacity: 0.5">
                             
 
                             <pre><?php /* echo esc_html(print_r($postData, true)); */ ?></pre>

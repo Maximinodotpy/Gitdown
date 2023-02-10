@@ -6,7 +6,6 @@ class GTWArticleCollection {
 
     function __construct ($source, $glob, $resolver) {
 
-        /* $preCWD = getcwd(); */
         chdir($source);
 
         $paths = glob($glob);
@@ -17,6 +16,7 @@ class GTWArticleCollection {
 
         $localArticles = get_posts([
             'numberposts' => -1,
+            'post_status' => 'any',
         ]);
 
         foreach ($this->articles as $key => $article) {
