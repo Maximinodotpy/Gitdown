@@ -3,8 +3,9 @@
 Plugin Name:  Gitdown
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
+Plugin URI:   https://github.com/Maximinodotpy/Gitdown
 Description:  Use this Plugin to create, update, delete and manage articles hosted on a remote repository.
-Version:      0.1
+Version:      0.2
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  gitdown
@@ -14,7 +15,6 @@ Domain Path:  /languages
 /* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
 /* maximmaeder */
 /* fjöalsjfölasjfsjö*ç */
-
 
 class Gitdown {
     private $articleCollection;
@@ -135,7 +135,7 @@ class Gitdown {
                 'Resolver',
                 function () {
                     ?>
-                       <fieldset disabled="true">
+                       <fieldset disabled="true" style="opacity: 0.5">
                             <label for="resolver_simple">
                                 <input type="radio" name="" id="resolver_simple" value="simple">
                                 <span>Simple</span>
