@@ -3,6 +3,7 @@
 
 Gitdown enables you to connect a Remote Repository to your Website and upload markdown articles from there.
 
+![](https://raw.githubusercontent.com/Maximinodotpy/Gitdown/master/images/gitdown.png?token=GHSAT0AAAAAAB6Q4VS4LAW2ICXYCHUTH3JOY7GDDQQ)
 
 ## Usage
 
