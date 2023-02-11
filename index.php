@@ -174,6 +174,7 @@ class Gitdown {
             }
         );
     
+        // Custom Actions
         add_action(PLUGIN_PREFIX.'_publish', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
         add_action(PLUGIN_PREFIX.'_update', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
         add_action(PLUGIN_PREFIX.'_publish_all', function () {
@@ -212,11 +213,28 @@ class Gitdown {
         });
     
     
-        add_action('init', function () {
+        $possible_actions = [
+            'publish', 'delete', 'fetch_repository', 'publish_all', 'delete_all', 'update'
+        ];
+
+        add_action('init', function () use ($possible_actions) {
             // Run a custom action if there is the `action` get parameter defined.
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
-                do_action(PLUGIN_PREFIX.'_'.$_GET['action']);
-                header('Location: '.$_SERVER['SCRIPT_NAME'].'?page='.$_GET['page']);
+
+                $this->_outpour([
+                    $_GET['action'],
+                    $possible_actions,
+                    in_array($_GET['action'], $possible_actions),
+                ]);
+
+                if (in_array($_GET['action'], $possible_actions)) {
+                    $customActionName = PLUGIN_PREFIX.'_'.$_GET['action'];
+                    do_action($customActionName);
+                }
+
+                $adminArea = admin_url().'?page='.GTW_ARTICLES_SLUG;
+
+                /* header('Location: '.$adminArea); */
             }
         });
 
@@ -242,10 +260,9 @@ class Gitdown {
         $remoteArticle = $this->articleCollection->get_by_slug($slug);
 
         $Parsedown = new Parsedown();
-    
 
-        $post_status = $remoteArticle['status'];
-        array_search($post_status, ['publish', 'draft']) ? $post_status : 'publish';
+        $post_status = array_key_exists('status', $remoteArticle) ? $remoteArticle['status'] : 'publish';
+        $post_status = in_array($post_status, ['publish', 'draft']) ? $post_status : 'publish';
 
         $post_data = array(
             'post_title'    => $remoteArticle['name'],

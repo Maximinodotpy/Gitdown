@@ -4,12 +4,12 @@ Donate link: https://maximmaeder.com
 Tags: markdown, github
 Requires at least: 6.1.1
 Tested up to: 6.1.1
-Stable tag: 6.1.1
+Stable tag: 0.2
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Use this Plugin to inserte markdown posts from a remote git repository. Edit the glob pattern and the function that resolves your articles.
+Use this Plugin to insert markdown posts from a remote git repository. Edit the glob pattern and the function that resolves your articles.
 
 == Description ==
 
