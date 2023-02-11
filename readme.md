@@ -1,3 +1,5 @@
+**[ THIS PLUGIN IS IN EARLY DEVELOPMENT ]**
+
 # Gitdown
 *By [Maxim Maeder](https://maximmaeder.com/)*
 
