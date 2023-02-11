@@ -268,7 +268,7 @@ class Gitdown {
             'post_title'    => $remoteArticle['name'],
             'post_name'    => $remoteArticle['slug'],
             'post_excerpt' => $remoteArticle['description'],
-            'post_content'  => $Parsedown->text($remoteArticle['raw_content']),
+            'post_content'  => wp_kses_post($Parsedown->text($remoteArticle['raw_content'])),
             'post_status'   => $post_status,
         );
 
@@ -280,6 +280,7 @@ class Gitdown {
         // Insert the post into the database
         $post_id = wp_insert_post( $post_data );
 
+        
         // Uploading the Image
         $imagePath = GTW_ROOT_PATH.MIRROR_PATH.$remoteArticle['featured_image'];
 

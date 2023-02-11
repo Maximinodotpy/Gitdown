@@ -72,7 +72,7 @@
                     <td>
                         <?php if ($postData['_is_published']) : ?>
 
-                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=update&slug=' . $postData['slug']) ?>" class="button action">Update</a>
+                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=update&slug=' . $postData['slug']) ?>" class="button action button-primary">Update</a>
                             <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=delete&slug=' . $postData['slug']) ?>" class="button action">Delete</a>
 
                         <?php else : ?>
