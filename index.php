@@ -178,7 +178,7 @@ class Gitdown {
         add_action(PLUGIN_PREFIX.'_publish', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
         add_action(PLUGIN_PREFIX.'_update', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
         add_action(PLUGIN_PREFIX.'_publish_all', function () {
-            foreach ($this->articleCollection->get_all() as $article) {
+            foreach (array_reverse($this->articleCollection->get_all()) as $article) {
                 $this->_publishOrUpdateArticle($article['slug']);
             }
         });
