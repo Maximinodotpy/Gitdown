@@ -94,7 +94,7 @@ class Gitdown {
                 $settingsSectionSlug,
                 PLUGIN_NAME.' Settings',
                 function () {
-                    ?>Edit the Git to <?= PLUGIN_NAME ?> settings here.<?php
+                    ?>Edit the Git to <?php echo  PLUGIN_NAME ?> settings here.<?php
                 },
                 $page
             );
@@ -105,7 +105,7 @@ class Gitdown {
                 'Glob Pattern',
                 function () {
                     ?>
-                        <input class="regular-text code" type="text" name="<?=GTW_SETTING_GLOB?>" value="<?=get_option(GTW_SETTING_GLOB)?>">
+                        <input class="regular-text code" type="text" name="<?php echo GTW_SETTING_GLOB?>" value="<?php echo get_option(GTW_SETTING_GLOB)?>">
                         <p class="description">Where are the markdown files that are your articles located? Use a php <a target="_blank" href="https://www.php.net/manual/de/function.glob.php">glob pattern</a> to search for files.</p>
                     <?php
                 },
@@ -118,7 +118,7 @@ class Gitdown {
                 'Repository Location',
                 function () {
                     ?>
-                        <input class="regular-text" type="url" name="<?=GTW_SETTING_REPO?>" value="<?=get_option(GTW_SETTING_REPO)?>">
+                        <input class="regular-text" type="url" name="<?php echo GTW_SETTING_REPO?>" value="<?php echo get_option(GTW_SETTING_REPO)?>">
                         <p class="description">Where is the <code>.git</code> file of your repository located? example: <code>https://github.com/Maximinodotpy/articles.git</code></p>
                     <?php
                 },
@@ -221,11 +221,11 @@ class Gitdown {
             // Run a custom action if there is the `action` get parameter defined.
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
 
-                $this->_outpour([
+                /* $this->_outpour([
                     $_GET['action'],
                     $possible_actions,
                     in_array($_GET['action'], $possible_actions),
-                ]);
+                ]); */
 
                 if (in_array($_GET['action'], $possible_actions)) {
                     $customActionName = PLUGIN_PREFIX.'_'.$_GET['action'];
@@ -234,7 +234,7 @@ class Gitdown {
 
                 $adminArea = admin_url().'?page='.GTW_ARTICLES_SLUG;
 
-                /* header('Location: '.$adminArea); */
+                header('Location: '.$adminArea);
             }
         });
 
@@ -253,7 +253,7 @@ class Gitdown {
     function _view($path, $input= []) {
         $gtw_data = $input;
 
-        require_once($path);
+        include($path);
     }
 
     function _publishOrUpdateArticle($slug) {
