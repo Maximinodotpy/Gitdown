@@ -6,10 +6,6 @@
         <p>According to the glob pattern <code><?php echo get_option(GTW_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
 
         <p>Keep in mind that all articles are identified by their <code>slug</code>/<code>post_name</code>. Thats why it is shown here in the Github column. If you change the slug in the markdown file, Gitdown wont recognize that the articles belong together.</p>
-        
-        <pre>
-            <?php echo esc_attr( 'fasöldkjfaölsdFASDFA-%*ç' ) ?>
-        </pre>
 
         <a href="<?php echo esc_url($_SERVER['REQUEST_URI'].'&action=publish_all') ?>" class="button button-primary">Update / Publish All</a>
         <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=delete_all') ?>" class="button">Delete All</a>
