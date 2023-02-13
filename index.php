@@ -33,18 +33,19 @@ class Gitdown {
         define('GTW_SETTING_RESOLVER', PLUGIN_PREFIX.'_resolver_setting');
         
         // Where the current Repository is located depends on the repo url.
-        define('MIRROR_PATH', 'mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
+        define('MIRROR_PATH', PLUGIN_PREFIX.'_mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
+        define('MIRROR_ABS_PATH', WP_CONTENT_DIR.'/'.MIRROR_PATH);
 
         // Admin Menu Slugs
         define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
 
         define('GTW_ROOT_PATH', __DIR__.'/');
 
-        define('GTW_REMOTE_IS_CLONED', is_dir(GTW_ROOT_PATH.MIRROR_PATH.'.git'));
+        define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_ABS_PATH.'.git'));
 
         // Create the Directory where the files are stored in case it does not exist.
-        if (!is_dir(GTW_ROOT_PATH.MIRROR_PATH)) {
-            mkdir(GTW_ROOT_PATH.MIRROR_PATH, 0777, true);
+        if (!is_dir(MIRROR_ABS_PATH)) {
+            mkdir(MIRROR_ABS_PATH, 0777, true);
         }
 
         $resolverFunctions = [
@@ -72,7 +73,7 @@ class Gitdown {
             'custom' => ''
         ];
 
-        $this->articleCollection = new GTWArticleCollection(GTW_ROOT_PATH.MIRROR_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
+        $this->articleCollection = new GTWArticleCollection(MIRROR_ABS_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
 
         $this->_setup_actions();
     }
@@ -185,7 +186,7 @@ class Gitdown {
         add_action(PLUGIN_PREFIX.'_fetch_repository', function () {
             $out = [];
             
-            chdir(MIRROR_PATH);
+            chdir(MIRROR_ABS_PATH);
             /* TODO: Delete Contents of mirror and re clone `git remote get-url origin` */
             if (!GTW_REMOTE_IS_CLONED) {
                 exec('git clone '.get_option(GTW_SETTING_REPO).' .', $out);
@@ -282,7 +283,7 @@ class Gitdown {
 
         
         // Uploading the Image
-        $imagePath = GTW_ROOT_PATH.MIRROR_PATH.$remoteArticle['featured_image'];
+        $imagePath = MIRROR_ABS_PATH.$remoteArticle['featured_image'];
 
         if (!is_file($imagePath)) return;
 
@@ -302,6 +303,10 @@ class Gitdown {
 
         $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
         set_post_thumbnail($post_id, $attach_id);
+
+        if (function_exists('wp_create_image_subsizes')) {
+            wp_create_image_subsizes($uploadPath, $attach_id);
+        }
     }
 
     function _delete_article($slug) {
