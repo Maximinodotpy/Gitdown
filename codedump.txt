@@ -45,3 +45,6 @@
 
             </pre>
             <?php
+
+
+wp-content\plugins\gitdown\includes\scripts\vendor\wp-cli\wp-cli\bin\wp media regenerate

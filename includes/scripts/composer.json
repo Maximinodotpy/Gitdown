@@ -1,6 +1,7 @@
 {
     "require": {
         "mnapoli/front-yaml": "^2.0",
-        "erusev/parsedown": "^1.7"
+        "erusev/parsedown": "^1.7",
+        "wp-cli/wp-cli-bundle": "*"
     }
 }

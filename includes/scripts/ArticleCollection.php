@@ -17,7 +17,7 @@ class GTWArticleCollection {
             'raw_content' => null,
             'category' => null,
             'tags' => null,
-            'status' => 'draft',
+            'status' => null,
         ];
 
         chdir($source);

@@ -55,11 +55,30 @@ class Gitdown
         }
 
         $this->articleCollection = new GTWArticleCollection();
-        if (file_exists(TEMP_ARTICLE_DATA_ABS_PATH) && false) {
-            $this->articleCollection->set_all(json_decode(file_get_contents(TEMP_ARTICLE_DATA_ABS_PATH), true));
-        } else {
-            $this->refreshTempData();
-        }
+        
+        $resolverFunctions = [
+            'simple' => function($path) {
+                $fileContent = file_get_contents($path);
+
+                $parser = new Mni\FrontYAML\Parser;
+                $postData = [];
+                $document = $parser->parse($fileContent, false);
+                
+                $postData = $document->getYAML() ?? [];
+
+                $postData['raw_content'] = $document->getContent();
+                $postData['featured_image'] = dirname($path).'/preview.png';
+                
+                if ( !array_key_exists( 'slug', $postData ) ) {
+                    $postData['slug'] = stringToSlug($postData['name']);
+                }
+
+                return $postData;
+            },
+            'custom' => ''
+        ];
+
+        $this->articleCollection->parseDirectory(MIRROR_ABS_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
 
         $this->setupActions();
         $this->setupCustomAction();
@@ -253,48 +272,18 @@ class Gitdown
     }
 
     /**
-     * Refresh the JSON Data that is temporarily stored in a file.
-     */
-    private function refreshTempData() {
-        $resolverFunctions = [
-            'simple' => function($path) {
-                $fileContent = file_get_contents($path);
-
-                $parser = new Mni\FrontYAML\Parser;
-                $postData = [];
-                $document = $parser->parse($fileContent, false);
-                
-                $postData = $document->getYAML() ?? [];
-
-                $postData['raw_content'] = $document->getContent();
-                $postData['featured_image'] = dirname($path).'/preview.png';
-                
-                if ( !array_key_exists( 'slug', $postData ) ) {
-                    $postData['slug'] = stringToSlug($postData['name']);
-                }
-
-                return $postData;
-            },
-            'custom' => ''
-        ];
-
-        $this->articleCollection->parseDirectory(MIRROR_ABS_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
-
-        file_put_contents(TEMP_ARTICLE_DATA_ABS_PATH, json_encode($this->articleCollection->get_all(), JSON_PRETTY_PRINT));
-    }
-
-    /**
      * Publish or Update article by slug
      * 
      * @param string $slug Slug of the article matched in remote.
      */
     private function publishOrUpdateArticle($slug) {
 
+        
         $post_data = $this->articleCollection->get_by_slug($slug);
 
         $Parsedown = new Parsedown();
 
-        $post_status = $post_data[GTW_REMOTE_KEY]['status'] ?? 'draft';
+        $post_status = $post_data[GTW_REMOTE_KEY]['status'] ?? 'publish';
 
         $category_id = 0;
         if (!get_category_by_slug($post_data[GTW_REMOTE_KEY]['category'])) {
@@ -303,7 +292,7 @@ class Gitdown
             $category_id = get_category_by_slug($post_data[GTW_REMOTE_KEY]['category'])->term_id;
         }
 
-        $post_data = array(
+        $new_post_data = array(
             'post_title'    => $post_data[GTW_REMOTE_KEY]['name'],
             'post_name'    => $post_data[GTW_REMOTE_KEY]['slug'],
             'post_excerpt' => $post_data[GTW_REMOTE_KEY]['description'],
@@ -314,11 +303,11 @@ class Gitdown
 
         /* Add the ID in case it is already published */
         if ($post_data['_is_published']) {
-            $post_data['ID'] = $post_data[GTW_LOCAL_KEY]['ID'];
+            $new_post_data['ID'] = $post_data[GTW_LOCAL_KEY]['ID'];
         }
         
         // Insert the post into the database
-        $post_id = wp_insert_post( $post_data );
+        $post_id = wp_insert_post( $new_post_data );
 
         
         // Uploading the Image
@@ -326,7 +315,7 @@ class Gitdown
 
         if (!is_file($imagePath)) return;
 
-        $uploadPath = wp_upload_dir()['path'].'/'.$post_data['post_name'].'.png';
+        $uploadPath = wp_upload_dir()['path'].'/'.$new_post_data['post_name'].'.png';
 
         copy($imagePath, $uploadPath);
 
@@ -335,7 +324,7 @@ class Gitdown
         $attachment_data = array(
             'ID' => $thumbnailId,
             'post_mime_type' => wp_check_filetype( $uploadPath, null )['type'],
-            'post_title' => $post_data['post_title'],
+            'post_title' => $new_post_data['post_title'],
             'post_content' => '',
             'post_status' => 'inherit',
         );
@@ -347,7 +336,9 @@ class Gitdown
             wp_create_image_subsizes($uploadPath, $attach_id);
         } */
 
-        $this->refreshTempData();
+        $out = [];
+        exec(GTW_ROOT_PATH.'/includes/scripts/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing', $out);
+        /* $this->outpour($out); */
     }
 
     private function deleteArticle($slug) {
@@ -360,8 +351,6 @@ class Gitdown
         
         // Remove the Post itself
         wp_delete_post($post_id, true);
-
-        $this->refreshTempData();
     }
 
     private function outpour($info) {
