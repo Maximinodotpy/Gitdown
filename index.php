@@ -4,7 +4,7 @@ Plugin Name:  Gitdown
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
 Plugin URI:   https://github.com/Maximinodotpy/Gitdown
-Description:  Use this Plugin to create, update, delete and manage articles hosted on a remote repository.
+Description:  Use this Plugin to create, update, delete and manage markdown articles hosted on a remote repository.
 Version:      0.2
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
