@@ -39,6 +39,7 @@
                         <p title="Post Slug"><?php echo esc_html($postData['slug']) ?></p>
 
                         <p title="description"><?php echo esc_html(truncateString($postData['description'], 100)) ?></p>
+                        <p title="Category"><?php echo esc_html(truncateString($postData['category'], 100)) ?></p>
                         <pre style="white-space: pre-wrap;" title="Content Snippet"><?php echo esc_html(truncateString($postData['raw_content'], 100)) ?></pre>
                     </td>
                     <td>
@@ -66,19 +67,37 @@
                         <?php endif ?>
                     </td>
                     <td>
+                        <div>
                         <?php if ($postData['_is_published']) : ?>
 
                             <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=update&slug=' . $postData['slug']) ?>" class="button action button-primary">Update</a>
                             <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=delete&slug=' . $postData['slug']) ?>" class="button action">Delete</a>
-
+                            
                         <?php else : ?>
-
-                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=publish&slug=' . $postData['slug']) ?>" class="button action">Publish</a>
-
+                                
+                                <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=publish&slug=' . $postData['slug']) ?>" class="button action">Publish</a>
+                                
                         <?php endif ?>
+                        </div>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="3">
+                        <details>
+                            <summary>Raw Data for "<i><?php echo $postData['name'] ?></i>"</summary>
+                            <pre style="white-space: pre-wrap;">
+                                <?php
 
+                                    dumpJSON(json_decode(json_encode($postData)));
+
+                                    /* echo esc_html(json_encode($postData, JSON_PRETTY_PRINT)); */
+
+                                ?>
+                            </pre>
+                        </details>
+
+                    </td>
+                </tr>
             <?php
             }
             ?>

@@ -21,7 +21,7 @@ class GTWArticleCollection {
 
         foreach ($this->articles as $key => $article) {
             
-            $localArticle = $this->array_nested_find($localArticles, function($obj) use (&$article) {
+            $localArticle = $this->_array_nested_find($localArticles, function($obj) use (&$article) {
                 return $obj->post_name == $article['slug'];
             });
 
@@ -32,7 +32,7 @@ class GTWArticleCollection {
         chdir(GTW_ROOT_PATH);
     }
 
-    function array_nested_find($array, $function) {
+    function _array_nested_find($array, $function) {
         foreach ($array as $value) {
             if ($function($value)) return $value;
         }
@@ -42,8 +42,12 @@ class GTWArticleCollection {
         return $this->articles;
     }
 
+    function set_all($articleData) {
+        $this->articles = $articleData;
+    }
+
     function get_by_slug($slug) {
-        return $this->array_nested_find($this->articles, function($obj) use (&$slug) {
+        return $this->_array_nested_find($this->articles, function($obj) use (&$slug) {
             return $obj['slug'] == $slug;
         });
     }

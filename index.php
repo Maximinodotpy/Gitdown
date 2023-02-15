@@ -32,14 +32,13 @@ class Gitdown {
         define('GTW_SETTING_REPO', PLUGIN_PREFIX.'_repo_setting');
         define('GTW_SETTING_RESOLVER', PLUGIN_PREFIX.'_resolver_setting');
         
-        // Where the current Repository is located depends on the repo url.
-        define('MIRROR_PATH', PLUGIN_PREFIX.'_mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
-        define('MIRROR_ABS_PATH', WP_CONTENT_DIR.'/'.MIRROR_PATH);
-
         // Admin Menu Slugs
         define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
-
         define('GTW_ROOT_PATH', __DIR__.'/');
+
+        // Where the current Repository is located depends on the repo url.
+        define('MIRROR_ABS_PATH', WP_CONTENT_DIR.'/'.PLUGIN_PREFIX.'_mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
+        define('TEMP_ARTICLE_DATA_ABS_PATH', GTW_ROOT_PATH.'tempdata.json');
 
         define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_ABS_PATH.'.git'));
 
@@ -82,6 +81,8 @@ class Gitdown {
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, function () { $this->__activate(); });
         register_deactivation_hook(__FILE__, '__deactivate');
+
+        wp_enqueue_style( PLUGIN_PREFIX.'_styles', '/wp-content/plugins/gitdown/css/gitdown.css' );
     
         add_action('admin_init', function () {
             
@@ -222,12 +223,6 @@ class Gitdown {
             // Run a custom action if there is the `action` get parameter defined.
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
 
-                /* $this->_outpour([
-                    $_GET['action'],
-                    $possible_actions,
-                    in_array($_GET['action'], $possible_actions),
-                ]); */
-
                 if (in_array($_GET['action'], $possible_actions)) {
                     $customActionName = PLUGIN_PREFIX.'_'.$_GET['action'];
                     do_action($customActionName);
@@ -265,12 +260,22 @@ class Gitdown {
         $post_status = array_key_exists('status', $remoteArticle) ? $remoteArticle['status'] : 'publish';
         $post_status = in_array($post_status, ['publish', 'draft']) ? $post_status : 'publish';
 
+        $category_id = 0;
+        if (!get_category_by_slug($remoteArticle['category'])) {
+            $category_id = wp_insert_term($remoteArticle['category'], 'category')['term_id'];
+        } else {
+            $category_id = get_category_by_slug($remoteArticle['category'])->term_id;
+        }
+
+        /* $this->_outpour([get_category_by_slug('allgemein'), gettype($remoteArticle['category']), $category_id]); */
+
         $post_data = array(
             'post_title'    => $remoteArticle['name'],
             'post_name'    => $remoteArticle['slug'],
             'post_excerpt' => $remoteArticle['description'],
             'post_content'  => wp_kses_post($Parsedown->text($remoteArticle['raw_content'])),
             'post_status'   => $post_status,
+            'post_category' => [$category_id],
         );
 
         /* Add the ID in case it is already published */
