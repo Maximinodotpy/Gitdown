@@ -42,6 +42,9 @@ class Gitdown {
 
         define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_ABS_PATH.'.git'));
 
+        define('GTW_REMOTE_KEY', 'remote');
+        define('GTW_LOCAL_KEY', 'local');
+
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(MIRROR_ABS_PATH)) {
             mkdir(MIRROR_ABS_PATH, 0777, true);
@@ -49,17 +52,14 @@ class Gitdown {
 
         $resolverFunctions = [
             'simple' => function($path) {
-                $defaultPostData = [
-                    'name' => $path,
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur ...'
-                ];
-
                 $fileContent = file_get_contents($path);
 
                 $parser = new Mni\FrontYAML\Parser;
                 $postData = [];
                 $document = $parser->parse($fileContent, false);
-                $postData = array_merge($defaultPostData, $document->getYAML() ?? []);
+                
+                $postData = $document->getYAML() ?? [];
+
                 $postData['raw_content'] = $document->getContent();
                 $postData['featured_image'] = dirname($path).'/preview.png';
                 
@@ -230,7 +230,7 @@ class Gitdown {
 
                 $adminArea = admin_url().'?page='.GTW_ARTICLES_SLUG;
 
-                header('Location: '.$adminArea);
+                /* header('Location: '.$adminArea); */
             }
         });
 
@@ -257,30 +257,29 @@ class Gitdown {
 
         $Parsedown = new Parsedown();
 
-        $post_status = array_key_exists('status', $remoteArticle) ? $remoteArticle['status'] : 'publish';
-        $post_status = in_array($post_status, ['publish', 'draft']) ? $post_status : 'publish';
+        $post_status = $remoteArticle[GTW_REMOTE_KEY]['status'] ?? 'draft';
 
         $category_id = 0;
-        if (!get_category_by_slug($remoteArticle['category'])) {
-            $category_id = wp_insert_term($remoteArticle['category'], 'category')['term_id'];
+        if (!get_category_by_slug($remoteArticle[GTW_REMOTE_KEY]['category'])) {
+            $category_id = wp_insert_term($remoteArticle[GTW_REMOTE_KEY]['category'], 'category')['term_id'];
         } else {
-            $category_id = get_category_by_slug($remoteArticle['category'])->term_id;
+            $category_id = get_category_by_slug($remoteArticle[GTW_REMOTE_KEY]['category'])->term_id;
         }
 
         /* $this->_outpour([get_category_by_slug('allgemein'), gettype($remoteArticle['category']), $category_id]); */
 
         $post_data = array(
-            'post_title'    => $remoteArticle['name'],
-            'post_name'    => $remoteArticle['slug'],
-            'post_excerpt' => $remoteArticle['description'],
-            'post_content'  => wp_kses_post($Parsedown->text($remoteArticle['raw_content'])),
+            'post_title'    => $remoteArticle[GTW_REMOTE_KEY]['name'],
+            'post_name'    => $remoteArticle[GTW_REMOTE_KEY]['slug'],
+            'post_excerpt' => $remoteArticle[GTW_REMOTE_KEY]['description'],
+            'post_content'  => wp_kses_post($Parsedown->text($remoteArticle[GTW_REMOTE_KEY]['raw_content'])),
             'post_status'   => $post_status,
             'post_category' => [$category_id],
         );
 
         /* Add the ID in case it is already published */
         if ($remoteArticle['_is_published']) {
-            $post_data['ID'] = $remoteArticle['_local_post_data']->ID;
+            $post_data['ID'] = $remoteArticle[GTW_LOCAL_KEY]->ID;
         }
         
         // Insert the post into the database
@@ -288,7 +287,7 @@ class Gitdown {
 
         
         // Uploading the Image
-        $imagePath = MIRROR_ABS_PATH.$remoteArticle['featured_image'];
+        $imagePath = MIRROR_ABS_PATH.$remoteArticle[GTW_REMOTE_KEY]['featured_image'];
 
         if (!is_file($imagePath)) return;
 
@@ -317,7 +316,7 @@ class Gitdown {
     function _delete_article($slug) {
         $article = $this->articleCollection->get_by_slug($slug);
 
-        $id = $article['_local_post_data']->ID;
+        $id = $article[GTW_LOCAL_KEY]->ID;
         
         // Remove Thumbnail Image
         wp_delete_attachment(get_post_thumbnail_id($id));

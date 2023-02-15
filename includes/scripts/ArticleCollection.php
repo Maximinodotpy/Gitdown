@@ -6,12 +6,29 @@ class GTWArticleCollection {
 
     function __construct ($source, $glob, $resolver) {
 
+        $remote_defaults = [
+            'name' => null,
+            'slug' => null,
+            'description' => null,
+            'thumbnail' => null,
+            'content' => null,
+            'raw_content' => null,
+            'category' => null,
+            'tags' => null,
+            'status' => 'draft',
+        ];
+
         chdir($source);
 
         $paths = glob($glob);
 
         foreach ($paths as $path) {
-            array_push($this->articles, $resolver($path));
+
+            $postData = [];
+
+            $postData[GTW_REMOTE_KEY] = array_merge($remote_defaults, $resolver($path));
+
+            array_push($this->articles, $postData);
         }
 
         $localArticles = get_posts([
@@ -22,11 +39,11 @@ class GTWArticleCollection {
         foreach ($this->articles as $key => $article) {
             
             $localArticle = $this->_array_nested_find($localArticles, function($obj) use (&$article) {
-                return $obj->post_name == $article['slug'];
+                return $obj->post_name == $article[GTW_REMOTE_KEY]['slug'];
             });
 
+            $this->articles[$key][GTW_LOCAL_KEY] = $localArticle ?? [];
             $this->articles[$key]['_is_published'] = !!$localArticle;
-            $this->articles[$key]['_local_post_data'] = $localArticle ?? [];
         }
 
         chdir(GTW_ROOT_PATH);
@@ -42,15 +59,9 @@ class GTWArticleCollection {
         return $this->articles;
     }
 
-    function set_all($articleData) {
-        $this->articles = $articleData;
-    }
-
     function get_by_slug($slug) {
         return $this->_array_nested_find($this->articles, function($obj) use (&$slug) {
-            return $obj['slug'] == $slug;
+            return $obj[GTW_REMOTE_KEY]['slug'] == $slug;
         });
     }
-
-    function get_by_id($id) {}
 }

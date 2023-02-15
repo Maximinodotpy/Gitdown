@@ -35,12 +35,12 @@
             <?php foreach (array_reverse($gtw_data) as $key => $postData) { ?>
                 <tr>
                     <td>
-                        <p class="row-title" title="Post Name"><?php echo esc_html($postData['name']) ?></p>
-                        <p title="Post Slug"><?php echo esc_html($postData['slug']) ?></p>
+                        <p class="row-title" title="Post Name"><?php echo esc_html($postData[GTW_REMOTE_KEY]['name']) ?></p>
+                        <p title="Post Slug"><?php echo esc_html($postData[GTW_REMOTE_KEY]['slug']) ?></p>
 
-                        <p title="description"><?php echo esc_html(truncateString($postData['description'], 100)) ?></p>
-                        <p title="Category"><?php echo esc_html(truncateString($postData['category'], 100)) ?></p>
-                        <pre style="white-space: pre-wrap;" title="Content Snippet"><?php echo esc_html(truncateString($postData['raw_content'], 100)) ?></pre>
+                        <p title="description"><?php echo esc_html(truncateString($postData[GTW_REMOTE_KEY]['description'], 100)) ?></p>
+                        <p title="Category"><?php echo esc_html(truncateString($postData[GTW_REMOTE_KEY]['category'], 100)) ?></p>
+                        <pre style="white-space: pre-wrap;" title="Content Snippet"><?php echo esc_html(truncateString($postData[GTW_REMOTE_KEY]['raw_content'], 100)) ?></pre>
                     </td>
                     <td>
                         <?php if ($postData['_is_published']) : ?>
@@ -48,17 +48,17 @@
                             <div class="row-title">✅ Is on Wordpress</div>
                             <br/>
                             
-                            <div>ID: <code><?php echo esc_html($postData['_local_post_data']->ID) ?></code></div>
-                            <div>Slug: <code><?php echo esc_html($postData['slug']) ?></code></div>
-                            <div>Excerpt: <code><?php echo esc_html($postData['_local_post_data']->post_excerpt) ?></code></div>
-                            <div>Status: <code><?php echo esc_html($postData['_local_post_data']->post_status) ?></code></div>
+                            <div>ID: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]->ID) ?></code></div>
+                            <div>Slug: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]->post_name) ?></code></div>
+                            <div>Excerpt: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]->post_excerpt) ?></code></div>
+                            <div>Status: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]->post_status) ?></code></div>
 
                             <br>
 
-                            <div><a target="_blank" href="<?php echo esc_url($postData['_local_post_data']->guid) ?>">Open in new Tab</a></div>
+                            <div><a target="_blank" href="<?php echo esc_url($postData[GTW_LOCAL_KEY]->guid) ?>">Open in new Tab</a></div>
                             <br>
                             
-                            <img src="<?php echo esc_url(get_the_post_thumbnail_url($postData['_local_post_data']->ID, 'thumbnail')) ?>" alt="Thumbnail not Found" style="width: 100%; filter: grayscale(50%); opacity: 0.5">
+                            <img src="<?php echo esc_url(get_the_post_thumbnail_url($postData[GTW_LOCAL_KEY]->ID, 'thumbnail')) ?>" alt="Thumbnail not Found" style="width: 100%; filter: grayscale(50%); opacity: 0.5">
 
                         <?php else : ?>
 
@@ -70,12 +70,12 @@
                         <div>
                         <?php if ($postData['_is_published']) : ?>
 
-                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=update&slug=' . $postData['slug']) ?>" class="button action button-primary">Update</a>
-                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=delete&slug=' . $postData['slug']) ?>" class="button action">Delete</a>
+                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=update&slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action button-primary">Update</a>
+                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=delete&slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action">Delete</a>
                             
                         <?php else : ?>
                                 
-                                <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=publish&slug=' . $postData['slug']) ?>" class="button action">Publish</a>
+                                <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=publish&slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action">Publish</a>
                                 
                         <?php endif ?>
                         </div>
@@ -84,15 +84,9 @@
                 <tr>
                     <td colspan="3">
                         <details>
-                            <summary>Raw Data for "<i><?php echo $postData['name'] ?></i>"</summary>
+                            <summary>Raw Data for "<i><?php echo $postData[GTW_REMOTE_KEY]['name'] ?></i>"</summary>
                             <pre style="white-space: pre-wrap;">
-                                <?php
-
-                                    dumpJSON(json_decode(json_encode($postData)));
-
-                                    /* echo esc_html(json_encode($postData, JSON_PRETTY_PRINT)); */
-
-                                ?>
+                                <?php dumpJSON(json_decode(json_encode($postData)));?>
                             </pre>
                         </details>
 
