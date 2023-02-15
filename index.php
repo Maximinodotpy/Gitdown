@@ -12,10 +12,11 @@ Text Domain:  gitdown
 Domain Path:  /languages
 */
 
-class Gitdown {
+class Gitdown
+{
     private $articleCollection;
     
-    function __construct() {
+    public function __construct() {
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
         require_once 'includes/scripts/ArticleCollection.php';
@@ -50,37 +51,24 @@ class Gitdown {
             mkdir(MIRROR_ABS_PATH, 0777, true);
         }
 
-        $resolverFunctions = [
-            'simple' => function($path) {
-                $fileContent = file_get_contents($path);
+        $this->articleCollection = new GTWArticleCollection();
 
-                $parser = new Mni\FrontYAML\Parser;
-                $postData = [];
-                $document = $parser->parse($fileContent, false);
-                
-                $postData = $document->getYAML() ?? [];
+        if (file_exists(TEMP_ARTICLE_DATA_ABS_PATH) && false) {
+            $this->articleCollection->set_all(json_decode(file_get_contents(TEMP_ARTICLE_DATA_ABS_PATH), true));
+        } else {
+            $this->refreshTempData();
+        }
 
-                $postData['raw_content'] = $document->getContent();
-                $postData['featured_image'] = dirname($path).'/preview.png';
-                
-                if ( !array_key_exists( 'slug', $postData ) ) {
-                    $postData['slug'] = stringToSlug($postData['name']);
-                }
-
-                return $postData;
-            },
-            'custom' => ''
-        ];
-
-        $this->articleCollection = new GTWArticleCollection(MIRROR_ABS_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
-
-        $this->_setup_actions();
+        $this->setupActions();
     }
     
-    function _setup_actions() {
+    /**
+     * Setup all admin actions and hooks.
+     */
+    private function setupActions() {
         // Activation and Deactivation Hook
-        register_activation_hook(__FILE__, function () { $this->__activate(); });
-        register_deactivation_hook(__FILE__, '__deactivate');
+        register_activation_hook(__FILE__, function () { $this->activate(); });
+        register_deactivation_hook(__FILE__, 'deactivate');
     
         add_action('admin_init', function () {
             
@@ -168,7 +156,7 @@ class Gitdown {
                     function () {
                         wp_enqueue_style( PLUGIN_PREFIX.'_styles', '/wp-content/plugins/gitdown/css/gitdown.css' );
 
-                        $this->_view(GTW_ROOT_PATH.'views/articles.php', $this->articleCollection->get_all());
+                        $this->view(GTW_ROOT_PATH.'views/articles.php', $this->articleCollection->get_all());
                     },
                     'data:image/svg+xml;base64,'.base64_encode(file_get_contents(GTW_ROOT_PATH.'images/icon.svg')),
                     20,
@@ -177,11 +165,11 @@ class Gitdown {
         );
     
         // Custom Actions
-        add_action(PLUGIN_PREFIX.'_publish', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
-        add_action(PLUGIN_PREFIX.'_update', function () {$this->_publishOrUpdateArticle($_GET['slug']);});
+        add_action(PLUGIN_PREFIX.'_publish', function () {$this->publishOrUpdateArticle($_GET['slug']);});
+        add_action(PLUGIN_PREFIX.'_update', function () {$this->publishOrUpdateArticle($_GET['slug']);});
         add_action(PLUGIN_PREFIX.'_publish_all', function () {
             foreach (array_reverse($this->articleCollection->get_all()) as $article) {
-                $this->_publishOrUpdateArticle($article['slug']);
+                $this->publishOrUpdateArticle($article['slug']);
             }
         });
         add_action(PLUGIN_PREFIX.'_fetch_repository', function () {
@@ -203,14 +191,16 @@ class Gitdown {
                     // TODO: Remove files from mirror and clone the new Repository
                 }
             }
+
+            $this->refreshTempData();
         });
     
         add_action(PLUGIN_PREFIX.'_delete', function() {
-            $this->_delete_article($_GET['slug']);
+            $this->deleteArticle($_GET['slug']);
         });
         add_action(PLUGIN_PREFIX.'_delete_all', function () {
             foreach ($this->articleCollection->get_all() as $article) {
-                $this->_delete_article($article['slug']);
+                $this->deleteArticle($article['slug']);
             }
         });
     
@@ -236,50 +226,85 @@ class Gitdown {
 
     }
 
-    function __activate () {
+    private function activate () {
         add_option(GTW_SETTING_GLOB, '**/_blog/article.md');
         add_option(GTW_SETTING_REPO, 'https://github.com/Maximinodotpy/articles.git');
     }
 
-    function __deactivate() {
+    private function deactivate() {
         delete_option(GTW_SETTING_GLOB);
         delete_option(GTW_SETTING_REPO);
     }
 
-    function _view($path, $input= []) {
+    private function view($path, $input= []) {
         $gtw_data = $input;
 
         include($path);
     }
 
-    function _publishOrUpdateArticle($slug) {
-        $remoteArticle = $this->articleCollection->get_by_slug($slug);
+    /**
+     * Refresh the JSON Data that is temporarily stored in a file.
+     */
+    private function refreshTempData() {
+        $resolverFunctions = [
+            'simple' => function($path) {
+                $fileContent = file_get_contents($path);
+
+                $parser = new Mni\FrontYAML\Parser;
+                $postData = [];
+                $document = $parser->parse($fileContent, false);
+                
+                $postData = $document->getYAML() ?? [];
+
+                $postData['raw_content'] = $document->getContent();
+                $postData['featured_image'] = dirname($path).'/preview.png';
+                
+                if ( !array_key_exists( 'slug', $postData ) ) {
+                    $postData['slug'] = stringToSlug($postData['name']);
+                }
+
+                return $postData;
+            },
+            'custom' => ''
+        ];
+
+        $this->articleCollection->parseDirectory(MIRROR_ABS_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
+
+        file_put_contents(TEMP_ARTICLE_DATA_ABS_PATH, json_encode($this->articleCollection->get_all(), JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * Publish or Update article by slug
+     * 
+     * @param string $slug Slug of the article matched in remote.
+     */
+    private function publishOrUpdateArticle($slug) {
+
+        $post_data = $this->articleCollection->get_by_slug($slug);
 
         $Parsedown = new Parsedown();
 
-        $post_status = $remoteArticle[GTW_REMOTE_KEY]['status'] ?? 'draft';
+        $post_status = $post_data[GTW_REMOTE_KEY]['status'] ?? 'draft';
 
         $category_id = 0;
-        if (!get_category_by_slug($remoteArticle[GTW_REMOTE_KEY]['category'])) {
-            $category_id = wp_insert_term($remoteArticle[GTW_REMOTE_KEY]['category'], 'category')['term_id'];
+        if (!get_category_by_slug($post_data[GTW_REMOTE_KEY]['category'])) {
+            $category_id = wp_insert_term($post_data[GTW_REMOTE_KEY]['category'], 'category')['term_id'];
         } else {
-            $category_id = get_category_by_slug($remoteArticle[GTW_REMOTE_KEY]['category'])->term_id;
+            $category_id = get_category_by_slug($post_data[GTW_REMOTE_KEY]['category'])->term_id;
         }
 
-        /* $this->_outpour([get_category_by_slug('allgemein'), gettype($remoteArticle['category']), $category_id]); */
-
         $post_data = array(
-            'post_title'    => $remoteArticle[GTW_REMOTE_KEY]['name'],
-            'post_name'    => $remoteArticle[GTW_REMOTE_KEY]['slug'],
-            'post_excerpt' => $remoteArticle[GTW_REMOTE_KEY]['description'],
-            'post_content'  => wp_kses_post($Parsedown->text($remoteArticle[GTW_REMOTE_KEY]['raw_content'])),
+            'post_title'    => $post_data[GTW_REMOTE_KEY]['name'],
+            'post_name'    => $post_data[GTW_REMOTE_KEY]['slug'],
+            'post_excerpt' => $post_data[GTW_REMOTE_KEY]['description'],
+            'post_content'  => wp_kses_post($Parsedown->text($post_data[GTW_REMOTE_KEY]['raw_content'])),
             'post_status'   => $post_status,
             'post_category' => [$category_id],
         );
 
         /* Add the ID in case it is already published */
-        if ($remoteArticle['_is_published']) {
-            $post_data['ID'] = $remoteArticle[GTW_LOCAL_KEY]->ID;
+        if ($post_data['_is_published']) {
+            $post_data['ID'] = $post_data[GTW_LOCAL_KEY]['ID'];
         }
         
         // Insert the post into the database
@@ -287,7 +312,7 @@ class Gitdown {
 
         
         // Uploading the Image
-        $imagePath = MIRROR_ABS_PATH.$remoteArticle[GTW_REMOTE_KEY]['featured_image'];
+        $imagePath = MIRROR_ABS_PATH.$post_data[GTW_REMOTE_KEY]['featured_image'];
 
         if (!is_file($imagePath)) return;
 
@@ -311,26 +336,31 @@ class Gitdown {
         /* if (function_exists('wp_create_image_subsizes')) {
             wp_create_image_subsizes($uploadPath, $attach_id);
         } */
+
+        $this->refreshTempData();
     }
 
-    function _delete_article($slug) {
+    private function deleteArticle($slug) {
         $article = $this->articleCollection->get_by_slug($slug);
 
-        $id = $article[GTW_LOCAL_KEY]->ID;
-        
-        // Remove Thumbnail Image
-        wp_delete_attachment(get_post_thumbnail_id($id));
+        $post_id = $article[GTW_LOCAL_KEY]['ID'];
 
+        // Remove Thumbnail Image
+        wp_delete_attachment(get_post_thumbnail_id($post_id));
+        
         // Remove the Post itself
-        wp_delete_post($id, true);
+        wp_delete_post($post_id, true);
+
+        $this->refreshTempData();
     }
 
-    function _outpour($info) {
+    private function outpour($info) {
         echo '<pre style="position: absolute; right: 200px; z-index: 100; background-color: black; padding: 1rem; white-space: pre-wrap; width: 500px; height: 300px; overflow-y: auto;">';
         echo esc_html(print_r($info, true));
         echo '</pre>';
     }
 };
+
 
 if(is_admin()) {
     $gtw = new Gitdown();

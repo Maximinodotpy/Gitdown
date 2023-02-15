@@ -1,11 +1,13 @@
 <?php
 
-
 class GTWArticleCollection {
     public $articles = [];
 
-    function __construct ($source, $glob, $resolver) {
+    function __construct () {
 
+    }
+
+    function parseDirectory($source, $glob, $resolver) {
         $remote_defaults = [
             'name' => null,
             'slug' => null,
@@ -42,7 +44,7 @@ class GTWArticleCollection {
                 return $obj->post_name == $article[GTW_REMOTE_KEY]['slug'];
             });
 
-            $this->articles[$key][GTW_LOCAL_KEY] = $localArticle ?? [];
+            $this->articles[$key][GTW_LOCAL_KEY] = json_decode(json_encode($localArticle), true) ?? [];
             $this->articles[$key]['_is_published'] = !!$localArticle;
         }
 
@@ -57,6 +59,10 @@ class GTWArticleCollection {
 
     function get_all() {
         return $this->articles;
+    }
+
+    function set_all($data) {
+        $this->articles = $data;
     }
 
     function get_by_slug($slug) {

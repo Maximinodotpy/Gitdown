@@ -50,17 +50,17 @@
                             <div class="row-title">✅ Is on Wordpress</div>
                             <br/>
                             
-                            <div>ID: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]->ID) ?></code></div>
-                            <div>Slug: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]->post_name) ?></code></div>
-                            <div>Excerpt: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]->post_excerpt) ?></code></div>
-                            <div>Status: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]->post_status) ?></code></div>
+                            <div>ID: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]['ID']) ?></code></div>
+                            <div>Slug: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]['post_name']) ?></code></div>
+                            <div>Excerpt: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]['post_excerpt']) ?></code></div>
+                            <div>Status: <code><?php echo esc_html($postData[GTW_LOCAL_KEY]['post_status']) ?></code></div>
 
                             <br>
 
-                            <div><a target="_blank" href="<?php echo esc_url($postData[GTW_LOCAL_KEY]->guid) ?>">Open in new Tab</a></div>
+                            <div><a target="_blank" href="<?php echo esc_url($postData[GTW_LOCAL_KEY]['guid']) ?>">Open in new Tab</a></div>
                             <br>
                             
-                            <img src="<?php echo esc_url(get_the_post_thumbnail_url($postData[GTW_LOCAL_KEY]->ID, 'thumbnail')) ?>" alt="Thumbnail not Found" style="width: 100%; filter: grayscale(50%); opacity: 0.5">
+                            <img src="<?php echo esc_url(get_the_post_thumbnail_url($postData[GTW_LOCAL_KEY]['ID'], 'thumbnail')) ?>" alt="Thumbnail not Found" style="width: 100%; filter: grayscale(50%); opacity: 0.5">
 
                         <?php else : ?>
 
