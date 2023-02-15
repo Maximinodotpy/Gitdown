@@ -1,4 +1,4 @@
-<div class="wrap">
+<div class="wrap gitdown_ui">
     <h1>Manage Git Articles</h1>
 
     <?php if(GTW_REMOTE_IS_CLONED) : ?>
@@ -85,9 +85,7 @@
                     <td colspan="3">
                         <details>
                             <summary>Raw Data for "<i><?php echo $postData[GTW_REMOTE_KEY]['name'] ?></i>"</summary>
-                            <pre style="white-space: pre-wrap;">
-                                <?php dumpJSON(json_decode(json_encode($postData)));?>
-                            </pre>
+                            <pre style="white-space: pre-wrap;"><?php dumpJSON(json_decode(json_encode($postData)));?></pre>
                         </details>
 
                     </td>

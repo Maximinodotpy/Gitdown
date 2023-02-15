@@ -81,8 +81,6 @@ class Gitdown {
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, function () { $this->__activate(); });
         register_deactivation_hook(__FILE__, '__deactivate');
-
-        wp_enqueue_style( PLUGIN_PREFIX.'_styles', '/wp-content/plugins/gitdown/css/gitdown.css' );
     
         add_action('admin_init', function () {
             
@@ -168,6 +166,8 @@ class Gitdown {
                     'manage_options',
                     GTW_ARTICLES_SLUG,
                     function () {
+                        wp_enqueue_style( PLUGIN_PREFIX.'_styles', '/wp-content/plugins/gitdown/css/gitdown.css' );
+
                         $this->_view(GTW_ROOT_PATH.'views/articles.php', $this->articleCollection->get_all());
                     },
                     'data:image/svg+xml;base64,'.base64_encode(file_get_contents(GTW_ROOT_PATH.'images/icon.svg')),
@@ -230,7 +230,7 @@ class Gitdown {
 
                 $adminArea = admin_url().'?page='.GTW_ARTICLES_SLUG;
 
-                /* header('Location: '.$adminArea); */
+                header('Location: '.esc_url($adminArea));
             }
         });
 
@@ -308,9 +308,9 @@ class Gitdown {
         $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
         set_post_thumbnail($post_id, $attach_id);
 
-        if (function_exists('wp_create_image_subsizes')) {
+        /* if (function_exists('wp_create_image_subsizes')) {
             wp_create_image_subsizes($uploadPath, $attach_id);
-        }
+        } */
     }
 
     function _delete_article($slug) {
