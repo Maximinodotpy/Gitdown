@@ -55,7 +55,6 @@ class Gitdown
         }
 
         $this->articleCollection = new GTWArticleCollection();
-
         if (file_exists(TEMP_ARTICLE_DATA_ABS_PATH) && false) {
             $this->articleCollection->set_all(json_decode(file_get_contents(TEMP_ARTICLE_DATA_ABS_PATH), true));
         } else {
@@ -67,7 +66,7 @@ class Gitdown
     }
     
     /**
-     * Setup all admin actions and hooks.
+     * Setup admin actions and hooks.
      */
     private function setupActions() {
         // Activation and Deactivation Hook
@@ -86,7 +85,7 @@ class Gitdown
                 $settingsSectionSlug,
                 PLUGIN_NAME.' Settings',
                 function () {
-                    ?>Edit the Git to <?php echo  PLUGIN_NAME ?> settings here.<?php
+                    $this->view(GTW_ROOT_PATH.'views/settings_head.php');
                 },
                 $page
             );
