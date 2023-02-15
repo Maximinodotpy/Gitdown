@@ -25,6 +25,9 @@ class Gitdown
         // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
         define('PLUGIN_PREFIX', 'gd');
 
+        // The Root path of this Plugin Directory
+        define('GTW_ROOT_PATH', __DIR__.'/');
+
         // The Plugin name is used sometimes when the name appears somewhere.
         define('PLUGIN_NAME', 'Gitdown');
 
@@ -35,14 +38,14 @@ class Gitdown
         
         // Admin Menu Slugs
         define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
-        define('GTW_ROOT_PATH', __DIR__.'/');
-
+        
         // Where the current Repository is located depends on the repo url.
         define('MIRROR_ABS_PATH', WP_CONTENT_DIR.'/'.PLUGIN_PREFIX.'_mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
         define('TEMP_ARTICLE_DATA_ABS_PATH', GTW_ROOT_PATH.'tempdata.json');
 
         define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_ABS_PATH.'.git'));
 
+        // Key names for each article object later on.
         define('GTW_REMOTE_KEY', 'remote');
         define('GTW_LOCAL_KEY', 'local');
 
@@ -60,6 +63,7 @@ class Gitdown
         }
 
         $this->setupActions();
+        $this->setupCustomAction();
     }
     
     /**
@@ -163,15 +167,26 @@ class Gitdown
                 );
             }
         );
-    
+    }
+
+    private function setupCustomAction() {
+        $possible_actions = [
+            'publish', 'delete', 'fetch_repository', 'publish_all', 'delete_all', 'update'
+        ];
+
         // Custom Actions
+
+        // Publishing and Updating
         add_action(PLUGIN_PREFIX.'_publish', function () {$this->publishOrUpdateArticle($_GET['slug']);});
         add_action(PLUGIN_PREFIX.'_update', function () {$this->publishOrUpdateArticle($_GET['slug']);});
+
         add_action(PLUGIN_PREFIX.'_publish_all', function () {
             foreach (array_reverse($this->articleCollection->get_all()) as $article) {
                 $this->publishOrUpdateArticle($article['slug']);
             }
         });
+
+        // Fetching the Repository
         add_action(PLUGIN_PREFIX.'_fetch_repository', function () {
             $out = [];
             
@@ -191,10 +206,10 @@ class Gitdown
                     // TODO: Remove files from mirror and clone the new Repository
                 }
             }
-
-            $this->refreshTempData();
         });
     
+
+        // Deleting a post
         add_action(PLUGIN_PREFIX.'_delete', function() {
             $this->deleteArticle($_GET['slug']);
         });
@@ -205,12 +220,9 @@ class Gitdown
         });
     
     
-        $possible_actions = [
-            'publish', 'delete', 'fetch_repository', 'publish_all', 'delete_all', 'update'
-        ];
-
+        // Run a custom action if there is the `action` get parameter defined.
         add_action('init', function () use ($possible_actions) {
-            // Run a custom action if there is the `action` get parameter defined.
+
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
 
                 if (in_array($_GET['action'], $possible_actions)) {
@@ -223,7 +235,6 @@ class Gitdown
                 header('Location: '.esc_url($adminArea));
             }
         });
-
     }
 
     private function activate () {
