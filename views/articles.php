@@ -60,7 +60,16 @@
                             <div><a target="_blank" href="<?php echo esc_url($postData[GTW_LOCAL_KEY]['guid']) ?>">Open in new Tab</a></div>
                             <br>
                             
-                            <img src="<?php echo esc_url(get_the_post_thumbnail_url($postData[GTW_LOCAL_KEY]['ID'], 'thumbnail')) ?>" alt="Thumbnail not Found" style="width: 100%; filter: grayscale(50%); opacity: 0.5">
+                            <?php if (has_post_thumbnail($postData[GTW_LOCAL_KEY]['ID'])) : ?>
+
+                                <img src="<?php echo esc_url(get_the_post_thumbnail_url($postData[GTW_LOCAL_KEY]['ID'], 'thumbnail')) ?>" alt="Thumbnail not Found" style="max-width: 130px; filter: grayscale(50%); opacity: 0.5">
+
+                            <?php else: ?>
+
+                                <img src="https://placehold.co/600x600/222/fff?text=Missing Image" alt="Missing Image" style="max-width: 130px; filter: grayscale(50%); opacity: 0.5">
+
+                            <?php endif; ?>
+
 
                         <?php else : ?>
 

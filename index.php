@@ -200,7 +200,7 @@ class Gitdown
 
         add_action(PLUGIN_PREFIX.'_publish_all', function () {
             foreach (array_reverse($this->articleCollection->get_all()) as $article) {
-                $this->publishOrUpdateArticle($article['slug']);
+                $this->publishOrUpdateArticle($article[GTW_REMOTE_KEY]['slug']);
             }
         });
 
@@ -332,13 +332,9 @@ class Gitdown
         $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
         set_post_thumbnail($post_id, $attach_id);
 
-        /* if (function_exists('wp_create_image_subsizes')) {
-            wp_create_image_subsizes($uploadPath, $attach_id);
-        } */
-
+        // Using the WP Cli to regenerate the image sizes.
         $out = [];
         exec(GTW_ROOT_PATH.'/includes/scripts/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing', $out);
-        /* $this->outpour($out); */
     }
 
     private function deleteArticle($slug) {
