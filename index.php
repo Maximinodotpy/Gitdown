@@ -52,6 +52,8 @@ class Gitdown
         
         // Admin Menu Slugs
         define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
+        define('GTW_SETTINGS_SECTION',  PLUGIN_PREFIX.'-settings-section');
+        define('GTW_SETTINGS_PAGE',  'reading');
         
         // Where the current Repository is located depends on the repo url.
         define('MIRROR_ABS_PATH', WP_CONTENT_DIR.'/'.PLUGIN_PREFIX.'_mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
@@ -63,7 +65,7 @@ class Gitdown
         define('GTW_LOCAL_KEY', 'local');
 
         // Debug Mode
-        define('GD_DEBUG', false);
+        define('GD_DEBUG', boolval(get_option(GTW_SETTING_DEBUG)));
 
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(MIRROR_ABS_PATH)) {
@@ -117,76 +119,49 @@ class Gitdown
         register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
     
         add_action('admin_init', function () {
-            
-            $settingsSectionSlug = PLUGIN_PREFIX.'_settings_section';
-            $page = 'reading';
     
-            register_setting($page, GTW_SETTING_GLOB);
-            register_setting($page, GTW_SETTING_REPO);
+            register_setting(GTW_SETTINGS_PAGE, GTW_SETTING_GLOB);
+            register_setting(GTW_SETTINGS_PAGE, GTW_SETTING_REPO);
+            register_setting(GTW_SETTINGS_PAGE, GTW_SETTING_DEBUG);
     
             add_settings_section(
-                $settingsSectionSlug,
+                GTW_SETTINGS_SECTION,
                 PLUGIN_NAME.' Settings',
-                function () {
-                    $this->view(GTW_ROOT_PATH.'views/settings_head.php');
-                },
-                $page
+                function () {$this->view(GTW_ROOT_PATH.'views/settings_head.php');},
+                GTW_SETTINGS_PAGE
             );
         
     
             add_settings_field(
                 GTW_SETTING_GLOB,
                 'Glob Pattern',
-                function () {
-                    ?>
-                        <input class="regular-text code" type="text" name="<?php echo GTW_SETTING_GLOB?>" value="<?php echo get_option(GTW_SETTING_GLOB)?>">
-                        <p class="description">Where are the markdown files that are your articles located? Use a php <a target="_blank" href="https://www.php.net/manual/de/function.glob.php">glob pattern</a> to search for files.</p>
-                    <?php
-                },
-                $page,
-                $settingsSectionSlug
-            );
-    
-            add_settings_field(
-                GTW_SETTING_REPO,
-                'Repository Location',
-                function () {
-                    ?>
-                        <input class="regular-text" type="url" name="<?php echo GTW_SETTING_REPO?>" value="<?php echo get_option(GTW_SETTING_REPO)?>">
-                        <p class="description">Where is the <code>.git</code> file of your repository located? example: <code>https://github.com/Maximinodotpy/articles.git</code></p>
-                    <?php
-                },
-                $page,
-                $settingsSectionSlug
+                function () {$this->view(GTW_ROOT_PATH.'views/settings_glob.php');},
+                GTW_SETTINGS_PAGE,
+                GTW_SETTINGS_SECTION
             );
             
             add_settings_field(
+                GTW_SETTING_REPO,
+                'Repository Location',
+                function () {$this->view(GTW_ROOT_PATH.'views/settings_repo.php');},
+                GTW_SETTINGS_PAGE,
+                GTW_SETTINGS_SECTION
+            );
+            
+            add_settings_field(
+                GTW_SETTING_DEBUG,
+                'Debug Mode',
+                function () {$this->view(GTW_ROOT_PATH.'views/settings_debug.php');},
+                GTW_SETTINGS_PAGE,
+                GTW_SETTINGS_SECTION
+            );
+
+            add_settings_field(
                 GTW_SETTING_RESOLVER,
                 'Resolver',
-                function () {
-                    ?>
-                       <fieldset disabled="true" style="opacity: 0.5">
-                            <label for="resolver_simple">
-                                <input type="radio" name="" id="resolver_simple" value="simple">
-                                <span>Simple</span>
-                                <p class="description">The simple resolver will take the Markdown Meta Info and use it to create / update the posts.</p>
-                            </label>
-                            <br>
-    
-                            <label for="resolver_custom">
-                                <input type="radio" name="" id="resolver_custom" value="simple">
-                                <span>Custom</span>
-                                <p class="description">This custom resolver function should return an associative array with the following members: </p>
-                                <br>
-    
-                                <textarea name="" id="" cols="30" rows="10" style="width: 100%"></textarea>
-                            </label>
-                            <br>
-                       </fieldset>
-                    <?php
-                },
-                $page,
-                $settingsSectionSlug
+                function () {$this->view(GTW_ROOT_PATH.'views/settings_resolver.php');},
+                GTW_SETTINGS_PAGE,
+                GTW_SETTINGS_SECTION
             );
         });
 

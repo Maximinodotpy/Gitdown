@@ -29,8 +29,12 @@
         <details open>
             <summary>Debug</summary>
             
-            <pre><?php print_r($gtw_data['time_stamps']) ?></pre>
-            <pre><?php var_dump(PHP_OS); ?></pre>
+            <pre style="white-space: pre-wrap;"><?php dumpJSON(json_decode(json_encode([
+                'post_data' => $gtw_data['articles'],
+                'time_stamps' => $gtw_data['time_stamps'],
+                'os' => PHP_OS,
+                'GTW_REMOTE_IS_CLONED' => GTW_REMOTE_IS_CLONED,
+            ])));?></pre>
         </details>
     <?php endif; ?>
 
