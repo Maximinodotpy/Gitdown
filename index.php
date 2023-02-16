@@ -32,7 +32,7 @@ class Gitdown
 
         $this->debugTime('After Includes');
 
-        
+
         // Defining all the constants
 
         // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
@@ -55,7 +55,6 @@ class Gitdown
         
         // Where the current Repository is located depends on the repo url.
         define('MIRROR_ABS_PATH', WP_CONTENT_DIR.'/'.PLUGIN_PREFIX.'_mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
-        define('TEMP_ARTICLE_DATA_ABS_PATH', GTW_ROOT_PATH.'tempdata.json');
 
         define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_ABS_PATH.'.git'));
 
@@ -235,7 +234,7 @@ class Gitdown
             $out = [];
             
             chdir(MIRROR_ABS_PATH);
-            /* TODO: Delete Contents of mirror and re clone `git remote get-url origin` */
+            
             if (!GTW_REMOTE_IS_CLONED) {
                 exec('git clone '.get_option(GTW_SETTING_REPO).' .', $out);
             } else {
@@ -244,11 +243,7 @@ class Gitdown
                 $remoteLink = '';
                 exec('git remote get-url origin', $remoteLink);
     
-                if ($remoteLink[0] != get_option(GTW_SETTING_REPO)) {
-                    // Remove all files and folders from Mirror
-    
-                    // TODO: Remove files from mirror and clone the new Repository
-                }
+                if ($remoteLink[0] != get_option(GTW_SETTING_REPO)) {}
             }
         });
     
@@ -265,22 +260,20 @@ class Gitdown
     
     
         // Run a custom action if there is the `action` get parameter defined.
-        return;
         add_action('init', function () use ($possible_actions) {
-
             if (!array_key_exists('page', $_GET)) return;
+            if (!array_key_exists('action', $_GET)) return;
+            if (!$_GET['page'] == GTW_ARTICLES_SLUG) return;
+            if (!in_array($_GET['action'], $possible_actions)) return;
 
-            if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
+            // Run the Given Action
+            $customActionName = PLUGIN_PREFIX.'_'.$_GET['action'];
+            do_action($customActionName);
 
-                if (in_array($_GET['action'], $possible_actions)) {
-                    $customActionName = PLUGIN_PREFIX.'_'.$_GET['action'];
-                    do_action($customActionName);
-                }
-
-                $adminArea = admin_url().'?page='.GTW_ARTICLES_SLUG;
-
-                if (!GD_DEBUG) header('Location: '.esc_url($adminArea));
-            }
+            // Route Back to Article Page
+            $adminArea = admin_url().'?page='.GTW_ARTICLES_SLUG;
+            if (!GD_DEBUG) header('Location: '.esc_url($adminArea));
+            
         });
     }
 
