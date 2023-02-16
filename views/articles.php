@@ -25,6 +25,17 @@
     <br>
     <br>
 
+    <?php if (GD_DEBUG) : ?>
+        <details open>
+            <summary>Debug</summary>
+            
+            <pre><?php print_r($gtw_data['time_stamps']) ?></pre>
+            <pre><?php var_dump(PHP_OS); ?></pre>
+        </details>
+    <?php endif; ?>
+
+    <br>
+
     <table class="wp-list-table widefat fixed striped table-view-list posts">
         <thead>
             <tr>
@@ -34,7 +45,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach (array_reverse($gtw_data) as $key => $postData) { ?>
+            <?php foreach (array_reverse($gtw_data['articles']) as $key => $postData) { ?>
                 <tr>
                     <td>
                         <p class="row-title" title="Post Name"><?php echo esc_html($postData[GTW_REMOTE_KEY]['name']) ?></p>

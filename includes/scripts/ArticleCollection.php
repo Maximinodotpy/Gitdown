@@ -28,7 +28,7 @@ class GTWArticleCollection {
 
             $postData = [];
 
-            $postData[GTW_REMOTE_KEY] = array_merge($remote_defaults, $resolver($path));
+            $postData[GTW_REMOTE_KEY] = array_merge($remote_defaults, $resolver($path) ?? []);
 
             array_push($this->articles, $postData);
         }

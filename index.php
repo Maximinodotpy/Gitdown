@@ -15,13 +15,26 @@ Domain Path:  /languages
 class Gitdown
 {
     private $articleCollection;
+    private $startTime;
+    private $timeStamps;
     
     public function __construct() {
+
+        // Performance
+        $this->timeStamps = [];
+        $this->startTime = round(microtime(true) * 1000);
+
+        $this->debugTime('Start');
+
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
         require_once 'includes/scripts/ArticleCollection.php';
 
+        $this->debugTime('After Includes');
+
+        
         // Defining all the constants
+
         // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
         define('PLUGIN_PREFIX', 'gd');
 
@@ -34,6 +47,7 @@ class Gitdown
         // Option names
         define('GTW_SETTING_GLOB', PLUGIN_PREFIX.'_glob_setting');
         define('GTW_SETTING_REPO', PLUGIN_PREFIX.'_repo_setting');
+        define('GTW_SETTING_DEBUG', PLUGIN_PREFIX.'_debug_setting');
         define('GTW_SETTING_RESOLVER', PLUGIN_PREFIX.'_resolver_setting');
         
         // Admin Menu Slugs
@@ -49,15 +63,22 @@ class Gitdown
         define('GTW_REMOTE_KEY', 'remote');
         define('GTW_LOCAL_KEY', 'local');
 
+        // Debug Mode
+        define('GD_DEBUG', false);
+
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(MIRROR_ABS_PATH)) {
             mkdir(MIRROR_ABS_PATH, 0777, true);
         }
 
+        $this->debugTime('After Constants');
+
         $this->articleCollection = new GTWArticleCollection();
         
         $resolverFunctions = [
             'simple' => function($path) {
+                if (!file_exists($path)) return;
+
                 $fileContent = file_get_contents($path);
 
                 $parser = new Mni\FrontYAML\Parser;
@@ -79,9 +100,13 @@ class Gitdown
         ];
 
         $this->articleCollection->parseDirectory(MIRROR_ABS_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
+        $this->debugTime('Populating Article Collection');
 
         $this->setupActions();
+        $this->debugTime('Setting Up Actions');
+
         $this->setupCustomAction();
+        $this->debugTime('Setting up Custom Actions');
     }
     
     /**
@@ -90,7 +115,7 @@ class Gitdown
     private function setupActions() {
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, function () { $this->activate(); });
-        register_deactivation_hook(__FILE__, 'deactivate');
+        register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
     
         add_action('admin_init', function () {
             
@@ -165,6 +190,7 @@ class Gitdown
                 $settingsSectionSlug
             );
         });
+
     
         // Adding the Admin Menu
         add_action('admin_menu', 
@@ -178,7 +204,7 @@ class Gitdown
                     function () {
                         wp_enqueue_style( PLUGIN_PREFIX.'_styles', '/wp-content/plugins/gitdown/css/gitdown.css' );
 
-                        $this->view(GTW_ROOT_PATH.'views/articles.php', $this->articleCollection->get_all());
+                        $this->view(GTW_ROOT_PATH.'views/articles.php', ['articles'=>$this->articleCollection->get_all(), 'time_stamps' => $this->timeStamps]);
                     },
                     'data:image/svg+xml;base64,'.base64_encode(file_get_contents(GTW_ROOT_PATH.'images/icon.svg')),
                     20,
@@ -239,7 +265,10 @@ class Gitdown
     
     
         // Run a custom action if there is the `action` get parameter defined.
+        return;
         add_action('init', function () use ($possible_actions) {
+
+            if (!array_key_exists('page', $_GET)) return;
 
             if (array_key_exists('action', $_GET) && $_GET['page'] == GTW_ARTICLES_SLUG) {
 
@@ -250,19 +279,21 @@ class Gitdown
 
                 $adminArea = admin_url().'?page='.GTW_ARTICLES_SLUG;
 
-                header('Location: '.esc_url($adminArea));
+                if (!GD_DEBUG) header('Location: '.esc_url($adminArea));
             }
         });
     }
 
-    private function activate () {
+    public function activate () {
         add_option(GTW_SETTING_GLOB, '**/_blog/article.md');
         add_option(GTW_SETTING_REPO, 'https://github.com/Maximinodotpy/articles.git');
+        add_option(GTW_SETTING_DEBUG, '0');
     }
 
-    private function deactivate() {
+    public function deactivate() {
         delete_option(GTW_SETTING_GLOB);
         delete_option(GTW_SETTING_REPO);
+        delete_option(GTW_SETTING_DEBUG);
     }
 
     private function view($path, $input= []) {
@@ -277,7 +308,7 @@ class Gitdown
      * @param string $slug Slug of the article matched in remote.
      */
     private function publishOrUpdateArticle($slug) {
-
+        $this->debugTime('Publishing: Start');
         
         $post_data = $this->articleCollection->get_by_slug($slug);
 
@@ -308,7 +339,7 @@ class Gitdown
         
         // Insert the post into the database
         $post_id = wp_insert_post( $new_post_data );
-
+        $this->debugTime('Publishing: After Post inserted');
         
         // Uploading the Image
         $imagePath = MIRROR_ABS_PATH.$post_data[GTW_REMOTE_KEY]['featured_image'];
@@ -331,10 +362,22 @@ class Gitdown
 
         $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
         set_post_thumbnail($post_id, $attach_id);
+        $this->debugTime('Publishing: After Image inserted');
 
         // Using the WP Cli to regenerate the image sizes.
         $out = [];
-        exec(GTW_ROOT_PATH.'/includes/scripts/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing', $out);
+
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {           
+            $command = GTW_ROOT_PATH.'/includes/scripts/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing';
+        } else {
+            $command = GTW_ROOT_PATH.'/includes/scripts/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing > /dev/null &';
+        }
+
+        exec($command, $out);
+
+        $this->outpour($out);
+
+        $this->debugTime('Publishing: End');
     }
 
     private function deleteArticle($slug) {
@@ -350,9 +393,13 @@ class Gitdown
     }
 
     private function outpour($info) {
-        echo '<pre style="position: absolute; right: 200px; z-index: 100; background-color: black; padding: 1rem; white-space: pre-wrap; width: 500px; height: 300px; overflow-y: auto;">';
+        echo '<pre style="position: absolute; right: 200px; z-index: 100; background-color: grey; padding: 1rem; white-space: pre-wrap; width: 500px; height: 300px; overflow-y: auto;">';
         echo esc_html(print_r($info, true));
         echo '</pre>';
+    }
+
+    function debugTime($handle) {
+        $this->timeStamps[$handle] = round(microtime(true) * 1000) - $this->startTime;
     }
 };
 
