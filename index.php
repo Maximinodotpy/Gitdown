@@ -57,7 +57,7 @@ class Gitdown
         
         // Where the current Repository is located depends on the repo url.
         define('MIRROR_ABS_PATH', WP_CONTENT_DIR.'/'.PLUGIN_PREFIX.'_mirror/'.stringToSlug(get_option(GTW_SETTING_REPO)).'/');
-
+        
         define('GTW_REMOTE_IS_CLONED', is_dir(MIRROR_ABS_PATH.'.git'));
 
         // Key names for each article object later on.
@@ -164,10 +164,9 @@ class Gitdown
                 GTW_SETTINGS_SECTION
             );
         });
-
     
         // Adding the Admin Menu
-        add_action('admin_menu', 
+        add_action('admin_menu',
             function ()
             {
                 add_menu_page(
@@ -192,11 +191,30 @@ class Gitdown
             'publish', 'delete', 'fetch_repository', 'publish_all', 'delete_all', 'update'
         ];
 
+        add_filter('manage_post_posts_columns', function($columns) {
+            return array_merge($columns, ['gitdown' => 'Gitdown']);
+        });
+
+        add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
+            if ($column_key != 'gitdown') return;
+
+            $postData = $this->articleCollection->get_by_id($post_id);
+
+            if (!$postData['_is_published']) return;
+            
+            $symbol = count($_GET) == 0 ? '?' : '&';
+
+            ?>
+                <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . $symbol. 'gd_action=update&gd_slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button">Update</a>
+            <?php
+
+        }, 10, 2);
+
         // Custom Actions
 
         // Publishing and Updating
-        add_action(PLUGIN_PREFIX.'_publish', function () {$this->publishOrUpdateArticle($_GET['slug']);});
-        add_action(PLUGIN_PREFIX.'_update', function () {$this->publishOrUpdateArticle($_GET['slug']);});
+        add_action(PLUGIN_PREFIX.'_publish', function () {$this->publishOrUpdateArticle($_GET['gd_slug']);});
+        add_action(PLUGIN_PREFIX.'_update', function () {$this->publishOrUpdateArticle($_GET['gd_slug']);});
 
         add_action(PLUGIN_PREFIX.'_publish_all', function () {
             foreach (array_reverse($this->articleCollection->get_all()) as $article) {
@@ -225,30 +243,44 @@ class Gitdown
 
         // Deleting a post
         add_action(PLUGIN_PREFIX.'_delete', function() {
-            $this->deleteArticle($_GET['slug']);
+            $this->deleteArticle($_GET['gd_slug']);
         });
         add_action(PLUGIN_PREFIX.'_delete_all', function () {
             foreach ($this->articleCollection->get_all() as $article) {
-                $this->deleteArticle($article['slug']);
+                $this->deleteArticle($article[GTW_REMOTE_KEY]['slug']);
             }
         });
     
     
         // Run a custom action if there is the `action` get parameter defined.
         add_action('init', function () use ($possible_actions) {
-            if (!array_key_exists('page', $_GET)) return;
-            if (!array_key_exists('action', $_GET)) return;
-            if (!$_GET['page'] == GTW_ARTICLES_SLUG) return;
-            if (!in_array($_GET['action'], $possible_actions)) return;
-
-            // Run the Given Action
-            $customActionName = PLUGIN_PREFIX.'_'.$_GET['action'];
-            do_action($customActionName);
-
-            // Route Back to Article Page
-            $adminArea = admin_url().'?page='.GTW_ARTICLES_SLUG;
-            if (!GD_DEBUG) header('Location: '.esc_url($adminArea));
             
+            if (!array_key_exists('gd_action', $_GET)) return;
+            if (!in_array($_GET['gd_action'], $possible_actions)) return;
+            
+            
+            // Run the Given Action
+            $customActionName = PLUGIN_PREFIX.'_'.$_GET['gd_action'];
+            do_action($customActionName);
+            
+            
+            // Route Back to Article Page
+            $newURL = explode('?', $_SERVER['REQUEST_URI'])[0];
+            $newURL .= '?';
+            foreach ($_GET as $key => $value) {
+                if (in_array($key, ['gd_action', 'gd_slug'])) continue;
+
+                $newURL .= $key.'='.$value.'&';
+            }
+
+            $newURL = rtrim($newURL, '&');
+
+            $this->outpour([sanitize_url($newURL), $newURL, esc_url($newURL)]);
+
+            if (GD_DEBUG) return;
+
+            wp_redirect($newURL);
+            exit;
         });
     }
 

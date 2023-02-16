@@ -70,4 +70,12 @@ class GTWArticleCollection {
             return $obj[GTW_REMOTE_KEY]['slug'] == $slug;
         });
     }
+
+    function get_by_id($id) {
+        return $this->_array_nested_find($this->articles, function($obj) use (&$id) {
+            return $obj[GTW_LOCAL_KEY]['ID'] == $id;
+        }) ?? [
+            '_is_published' => false,
+        ];
+    }
 }

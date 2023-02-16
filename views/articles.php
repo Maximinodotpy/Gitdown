@@ -10,7 +10,7 @@
         <p>Contact me if <a href="mailto:info@maximmaeder.com?subject=Gitdown: ">here</a> if you found some issues or have any questions.</p>
 
         <a href="<?php echo esc_url($_SERVER['REQUEST_URI'].'&action=publish_all') ?>" class="button button-primary">Update / Publish All</a>
-        <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=delete_all') ?>" class="button">Delete All</a>
+        <a href="<?php echo esc_url($_SERVER['REQUEST_URI'].'&action=delete_all') ?>" class="button">Delete All</a>
         
     <?php else : ?>
             
@@ -30,7 +30,6 @@
             <summary>Debug</summary>
             
             <pre style="white-space: pre-wrap;"><?php dumpJSON(json_decode(json_encode([
-                'post_data' => $gtw_data['articles'],
                 'time_stamps' => $gtw_data['time_stamps'],
                 'os' => PHP_OS,
                 'GTW_REMOTE_IS_CLONED' => GTW_REMOTE_IS_CLONED,
@@ -96,12 +95,12 @@
                         <div>
                         <?php if ($postData['_is_published']) : ?>
 
-                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=update&slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action button-primary">Update</a>
-                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=delete&slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action">Delete</a>
+                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&gd_action=update&gd_slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action button-primary">Update</a>
+                            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&gd_action=delete&gd_slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action">Delete</a>
                             
                         <?php else : ?>
                                 
-                                <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=publish&slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action">Publish</a>
+                                <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&gd_action=publish&gd_slug=' . $postData[GTW_REMOTE_KEY]['slug']) ?>" class="button action">Publish</a>
                                 
                         <?php endif ?>
                         </div>
