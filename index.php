@@ -15,13 +15,14 @@ Domain Path:  /languages
 class Gitdown
 {
     private $articleCollection;
-    private $timeStamps;
+    private $logger;
     private $newURL;
     
     public function __construct() {
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
         require_once 'includes/scripts/ArticleCollection.php';
+        require_once 'includes/scripts/Logger.php';
 
         // The Root path of this Plugin Directory
         define('GTW_ROOT_PATH', __DIR__.'/');
@@ -56,10 +57,29 @@ class Gitdown
         define('GD_DEBUG', boolval(get_option(GTW_SETTING_DEBUG)));
 
 
-        // Performance
-        $logLocation = 'logs/log-'.date("d-m-y_h-i-s").'.json';
+        // Logging
+        $logLocation = GTW_ROOT_PATH.'logs/log-'.date("d-m-y_h-i-s").'.json';
+        $this->logger = new GDLogger($logLocation);
+        $this->logger->info('Start');
+        $this->logger->info('Start Meta Data', [
+            'GD_DEBUG' => GD_DEBUG,
+            'GTW_ROOT_PATH' => GTW_ROOT_PATH,
+            'GTW_REMOTE_IS_CLONED' => GTW_REMOTE_IS_CLONED,
+            'PLUGIN_NAME' => PLUGIN_NAME,
+            'PLUGIN_PREFIX' => PLUGIN_PREFIX,
+            'GTW_SETTING_GLOB' => GTW_SETTING_GLOB,
+            'GTW_SETTING_REPO' => GTW_SETTING_REPO,
+            'GTW_SETTING_DEBUG' => GTW_SETTING_DEBUG,
+            'GTW_SETTING_RESOLVER' => GTW_SETTING_RESOLVER,
+            'GTW_ARTICLES_SLUG' => GTW_ARTICLES_SLUG,
+            'GTW_SETTINGS_SECTION' => GTW_SETTINGS_SECTION,
+            'GTW_SETTINGS_PAGE' => GTW_SETTINGS_PAGE,
+            'MIRROR_ABS_PATH' => MIRROR_ABS_PATH,
+            'GTW_ARTICLES_SLUG' => GTW_ARTICLES_SLUG,
+            'GTW_REMOTE_KEY' => GTW_REMOTE_KEY,
+            'GTW_LOCAL_KEY' => GTW_LOCAL_KEY,
+        ]);
 
-        // Defining all the constants
 
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(MIRROR_ABS_PATH)) {
@@ -93,10 +113,12 @@ class Gitdown
         ];
 
         $this->articleCollection->parseDirectory(MIRROR_ABS_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
+        $this->logger->info('Populating Article Collection', 'Count: '.count($this->articleCollection->get_all()));
 
+        // Setting up the Action Hooks
         $this->setupActions();
-
         $this->setupCustomAction();
+        $this->logger->info('Set up Action Hooks');
     }
     
     /**
@@ -166,7 +188,7 @@ class Gitdown
                     function () {
                         wp_enqueue_style( PLUGIN_PREFIX.'_styles', '/wp-content/plugins/gitdown/css/gitdown.css' );
 
-                        $this->view(GTW_ROOT_PATH.'views/articles.php', ['articles'=>$this->articleCollection->get_all(), 'time_stamps' => $this->timeStamps]);
+                        $this->view(GTW_ROOT_PATH.'views/articles.php', ['articles'=>$this->articleCollection->get_all()]);
                     },
                     'data:image/svg+xml;base64,'.base64_encode(file_get_contents(GTW_ROOT_PATH.'images/icon.svg')),
                     20,
@@ -250,6 +272,8 @@ class Gitdown
 
         // Fetching the Repository
         add_action(PLUGIN_PREFIX.'_fetch_repository', function () {
+            set_time_limit(0);
+            
             $out = [];
             
             chdir(MIRROR_ABS_PATH);
@@ -323,6 +347,7 @@ class Gitdown
      */
     private function publishOrUpdateArticle($slug) {
         set_time_limit(0);
+        $this->logger->info('Updating Post ...');
         
         $post_data = $this->articleCollection->get_by_slug($slug);
 
@@ -388,6 +413,8 @@ class Gitdown
         exec($command, $out);
 
         $this->newURL = add_query_arg('gd_notice', 'Updated '.$post_data[GTW_REMOTE_KEY]['name'].'.', $this->newURL);
+
+        $this->logger->info('Post Updated');
     }
 
     private function deleteArticle($slug) {
@@ -401,7 +428,9 @@ class Gitdown
         wp_delete_attachment(get_post_thumbnail_id($post_id));
         
         // Remove the Post itself
-        wp_delete_post($post_id, true);
+        $result = wp_delete_post($post_id, true);
+    
+        $this->logger->info('Post Deleted', 'fölaksjdf');
 
         $this->newURL = add_query_arg('gd_notice', 'Deleted "'.$article[GTW_REMOTE_KEY]['name'].'".', $this->newURL);
     }

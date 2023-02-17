@@ -30,7 +30,6 @@
             <summary>Debug</summary>
             
             <pre style="white-space: pre-wrap;"><?php dumpJSON(json_decode(json_encode([
-                'time_stamps' => $gtw_data['time_stamps'],
                 'os' => PHP_OS,
                 'GTW_REMOTE_IS_CLONED' => GTW_REMOTE_IS_CLONED,
             ])));?></pre>
