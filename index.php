@@ -15,28 +15,13 @@ Domain Path:  /languages
 class Gitdown
 {
     private $articleCollection;
-    private $startTime;
     private $timeStamps;
+    private $newURL;
     
     public function __construct() {
-
-        // Performance
-        $this->timeStamps = [];
-        $this->startTime = round(microtime(true) * 1000);
-
-        $this->debugTime('Start');
-
         require_once 'includes/scripts/vendor/autoload.php';
         require_once 'includes/scripts/helpers.php';
         require_once 'includes/scripts/ArticleCollection.php';
-
-        $this->debugTime('After Includes');
-
-
-        // Defining all the constants
-
-        // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
-        define('PLUGIN_PREFIX', 'gd');
 
         // The Root path of this Plugin Directory
         define('GTW_ROOT_PATH', __DIR__.'/');
@@ -44,12 +29,15 @@ class Gitdown
         // The Plugin name is used sometimes when the name appears somewhere.
         define('PLUGIN_NAME', 'Gitdown');
 
+        // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
+        define('PLUGIN_PREFIX', 'gd');
+
         // Option names
         define('GTW_SETTING_GLOB', PLUGIN_PREFIX.'_glob_setting');
         define('GTW_SETTING_REPO', PLUGIN_PREFIX.'_repo_setting');
         define('GTW_SETTING_DEBUG', PLUGIN_PREFIX.'_debug_setting');
         define('GTW_SETTING_RESOLVER', PLUGIN_PREFIX.'_resolver_setting');
-        
+
         // Admin Menu Slugs
         define('GTW_ARTICLES_SLUG', PLUGIN_PREFIX.'-article-manager');
         define('GTW_SETTINGS_SECTION',  PLUGIN_PREFIX.'-settings-section');
@@ -67,12 +55,16 @@ class Gitdown
         // Debug Mode
         define('GD_DEBUG', boolval(get_option(GTW_SETTING_DEBUG)));
 
+
+        // Performance
+        $logLocation = 'logs/log-'.date("d-m-y_h-i-s").'.json';
+
+        // Defining all the constants
+
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(MIRROR_ABS_PATH)) {
             mkdir(MIRROR_ABS_PATH, 0777, true);
         }
-
-        $this->debugTime('After Constants');
 
         $this->articleCollection = new GTWArticleCollection();
         
@@ -101,13 +93,10 @@ class Gitdown
         ];
 
         $this->articleCollection->parseDirectory(MIRROR_ABS_PATH, get_option(GTW_SETTING_GLOB), $resolverFunctions['simple']);
-        $this->debugTime('Populating Article Collection');
 
         $this->setupActions();
-        $this->debugTime('Setting Up Actions');
 
         $this->setupCustomAction();
-        $this->debugTime('Setting up Custom Actions');
     }
     
     /**
@@ -184,13 +173,8 @@ class Gitdown
                 );
             }
         );
-    }
 
-    private function setupCustomAction() {
-        $possible_actions = [
-            'publish', 'delete', 'fetch_repository', 'publish_all', 'delete_all', 'update'
-        ];
-
+        // Custom Column for Post List
         add_filter('manage_post_posts_columns', function($columns) {
             return array_merge($columns, ['gitdown' => 'Gitdown']);
         });
@@ -209,6 +193,48 @@ class Gitdown
             <?php
 
         }, 10, 2);
+
+        // Custom Action for Post List Bulk Actions
+        add_filter('bulk_actions-edit-post', function($bulk_actions) {
+            $bulk_actions['gd_update'] = 'Gitdown: Update';
+            return $bulk_actions;
+        });
+
+        add_filter('handle_bulk_actions-edit-post', function($redirect_url, $action, $post_ids) {
+            if ($action == 'gd_update') {
+
+                $count = 0;
+
+                foreach ($post_ids as $post_id) { 
+                    $postData = $this->articleCollection->get_by_id($post_id);
+
+                    if ($postData['_is_published']) {
+                        $count++;
+                        $this->publishOrUpdateArticle($postData[GTW_REMOTE_KEY]['slug']);
+                    };
+
+                }
+                
+                $redirect_url = add_query_arg('gd_notice', 'Gitdown: Updated '.$count.' Posts', $redirect_url);
+            }
+            return $redirect_url;
+        }, 10, 3);
+
+
+        add_action('admin_notices', function() {
+            if (!empty($_REQUEST['gd_notice'])) {
+                $notification_text = $_REQUEST['gd_notice'];
+
+                echo '<div id="message" class="updated notice is-dismissable"><p>' . $notification_text . '</p></div>';
+            }
+        });
+    }
+
+    private function setupCustomAction() {
+        $possible_actions = [
+            'publish', 'delete', 'fetch_repository', 'publish_all', 'delete_all', 'update'
+        ];
+
 
         // Custom Actions
 
@@ -239,7 +265,6 @@ class Gitdown
                 if ($remoteLink[0] != get_option(GTW_SETTING_REPO)) {}
             }
         });
-    
 
         // Deleting a post
         add_action(PLUGIN_PREFIX.'_delete', function() {
@@ -251,35 +276,24 @@ class Gitdown
             }
         });
     
-    
         // Run a custom action if there is the `action` get parameter defined.
         add_action('init', function () use ($possible_actions) {
             
             if (!array_key_exists('gd_action', $_GET)) return;
             if (!in_array($_GET['gd_action'], $possible_actions)) return;
             
+            $this->newURL = $_SERVER['REQUEST_URI'];
+            $this->newURL = remove_query_arg('gd_action', $this->newURL);
+            $this->newURL = remove_query_arg('gd_slug', $this->newURL);
+            $this->newURL = remove_query_arg('gd_notice', $this->newURL);
             
             // Run the Given Action
             $customActionName = PLUGIN_PREFIX.'_'.$_GET['gd_action'];
             do_action($customActionName);
-            
-            
-            // Route Back to Article Page
-            $newURL = explode('?', $_SERVER['REQUEST_URI'])[0];
-            $newURL .= '?';
-            foreach ($_GET as $key => $value) {
-                if (in_array($key, ['gd_action', 'gd_slug'])) continue;
-
-                $newURL .= $key.'='.$value.'&';
-            }
-
-            $newURL = rtrim($newURL, '&');
-
-            $this->outpour([sanitize_url($newURL), $newURL, esc_url($newURL)]);
 
             if (GD_DEBUG) return;
 
-            wp_redirect($newURL);
+            wp_redirect(sanitize_url($this->newURL));
             exit;
         });
     }
@@ -308,7 +322,7 @@ class Gitdown
      * @param string $slug Slug of the article matched in remote.
      */
     private function publishOrUpdateArticle($slug) {
-        $this->debugTime('Publishing: Start');
+        set_time_limit(0);
         
         $post_data = $this->articleCollection->get_by_slug($slug);
 
@@ -339,7 +353,6 @@ class Gitdown
         
         // Insert the post into the database
         $post_id = wp_insert_post( $new_post_data );
-        $this->debugTime('Publishing: After Post inserted');
         
         // Uploading the Image
         $imagePath = MIRROR_ABS_PATH.$post_data[GTW_REMOTE_KEY]['featured_image'];
@@ -362,26 +375,25 @@ class Gitdown
 
         $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
         set_post_thumbnail($post_id, $attach_id);
-        $this->debugTime('Publishing: After Image inserted');
 
         // Using the WP Cli to regenerate the image sizes.
         $out = [];
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {           
-            $command = GTW_ROOT_PATH.'/includes/scripts/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing';
+            $command = GTW_ROOT_PATH.'/includes/scripts/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing > nul';
         } else {
             $command = GTW_ROOT_PATH.'/includes/scripts/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing > /dev/null &';
         }
 
         exec($command, $out);
 
-        $this->outpour($out);
-
-        $this->debugTime('Publishing: End');
+        $this->newURL = add_query_arg('gd_notice', 'Updated '.$post_data[GTW_REMOTE_KEY]['name'].'.', $this->newURL);
     }
 
     private function deleteArticle($slug) {
         $article = $this->articleCollection->get_by_slug($slug);
+
+        if (!$article['_is_published']) return;
 
         $post_id = $article[GTW_LOCAL_KEY]['ID'];
 
@@ -390,16 +402,14 @@ class Gitdown
         
         // Remove the Post itself
         wp_delete_post($post_id, true);
+
+        $this->newURL = add_query_arg('gd_notice', 'Deleted "'.$article[GTW_REMOTE_KEY]['name'].'".', $this->newURL);
     }
 
     private function outpour($info) {
         echo '<pre style="position: absolute; right: 200px; z-index: 100; background-color: grey; padding: 1rem; white-space: pre-wrap; width: 500px; height: 300px; overflow-y: auto;">';
         echo esc_html(print_r($info, true));
         echo '</pre>';
-    }
-
-    function debugTime($handle) {
-        $this->timeStamps[$handle] = round(microtime(true) * 1000) - $this->startTime;
     }
 };
 

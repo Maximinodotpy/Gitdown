@@ -9,8 +9,8 @@
 
         <p>Contact me if <a href="mailto:info@maximmaeder.com?subject=Gitdown: ">here</a> if you found some issues or have any questions.</p>
 
-        <a href="<?php echo esc_url($_SERVER['REQUEST_URI'].'&action=publish_all') ?>" class="button button-primary">Update / Publish All</a>
-        <a href="<?php echo esc_url($_SERVER['REQUEST_URI'].'&action=delete_all') ?>" class="button">Delete All</a>
+        <a href="<?php echo esc_url($_SERVER['REQUEST_URI'].'&gd_action=publish_all') ?>" class="button button-primary">Update / Publish All</a>
+        <a href="<?php echo esc_url($_SERVER['REQUEST_URI'].'&gd_action=delete_all') ?>" class="button">Delete All</a>
         
     <?php else : ?>
             
@@ -18,7 +18,7 @@
             
     <?php endif ?>
             
-    <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&action=fetch_repository') ?>" class="button">Fetch Repo</a>
+    <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&gd_action=fetch_repository') ?>" class="button">Fetch Repo</a>
 
     <a href="<?php echo esc_url(dirname(plugin_dir_url(__FILE__), 1).'/files/example.zip') ?>" download="example" class="button">Download Example Folder Structure</a>
     
@@ -39,6 +39,8 @@
 
     <br>
 
+    <br>
+
     <table class="wp-list-table widefat fixed striped table-view-list posts">
         <thead>
             <tr>
@@ -56,7 +58,7 @@
 
                         <p title="description"><?php echo esc_html(truncateString($postData[GTW_REMOTE_KEY]['description'], 100)) ?></p>
                         <p title="Category"><?php echo esc_html(truncateString($postData[GTW_REMOTE_KEY]['category'], 100)) ?></p>
-                        <pre style="white-space: pre-wrap;" title="Content Snippet"><?php echo esc_html(truncateString($postData[GTW_REMOTE_KEY]['raw_content'], 100)) ?></pre>
+                        <pre style="white-space: pre-wrap;" title="Content Snippet"><?php echo esc_html(truncateString($postData[GTW_REMOTE_KEY]['raw_content'], 350)) ?></pre>
                     </td>
                     <td>
                         <?php if ($postData['_is_published']) : ?>

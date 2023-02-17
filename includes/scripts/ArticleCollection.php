@@ -73,7 +73,7 @@ class GTWArticleCollection {
 
     function get_by_id($id) {
         return $this->_array_nested_find($this->articles, function($obj) use (&$id) {
-            return $obj[GTW_LOCAL_KEY]['ID'] == $id;
+            return $obj[GTW_LOCAL_KEY]['ID'] ?? -1 == $id;
         }) ?? [
             '_is_published' => false,
         ];
