@@ -299,7 +299,35 @@ class Gitdown
                 $this->deleteArticle($article[GD_REMOTE_KEY]['slug']);
             }
         });
-    
+        
+
+        add_action('admin_enqueue_scripts', function () {
+            wp_enqueue_script('jföasldkjföalskjd', GD_ROOT_URL.'js/admin.js');
+            wp_add_inline_script(
+                "jföasldkjföalskjd",
+                "const PHPVARS = " . json_encode(array(
+                    "ajaxurl" => admin_url("admin-ajax.php"),
+                    "nonce" => wp_create_nonce(),
+                )),
+                "before"
+              );
+        });
+
+        add_action("wp_ajax_nopriv_get_time", "ajax_get_time");
+        add_action("wp_ajax_get_time", "ajax_get_time");
+        
+        function ajax_get_time() {
+            $time = date("d.m.Y H:i:s");
+            $id = uniqid();
+            $result = array(
+                "time" => $time,
+                "focking" => 'fasdlkfjaösdlk',
+                "id" => $id
+            );
+            echo json_encode($result);
+            die();
+        }
+
         // Run a custom action if there is the `action` get parameter defined.
         add_action('init', function () use ($possible_actions) {
             
