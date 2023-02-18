@@ -1,6 +1,6 @@
 <?php
 
-class GTWArticleCollection {
+class GD_ArticleCollection {
     public $articles = [];
 
     function __construct () {
@@ -28,7 +28,7 @@ class GTWArticleCollection {
 
             $postData = [];
 
-            $postData[GTW_REMOTE_KEY] = array_merge($remote_defaults, $resolver($path) ?? []);
+            $postData[GD_REMOTE_KEY] = array_merge($remote_defaults, $resolver($path) ?? []);
 
             array_push($this->articles, $postData);
         }
@@ -41,14 +41,14 @@ class GTWArticleCollection {
         foreach ($this->articles as $key => $article) {
             
             $localArticle = $this->_array_nested_find($localArticles, function($obj) use (&$article) {
-                return $obj->post_name == $article[GTW_REMOTE_KEY]['slug'];
+                return $obj->post_name == $article[GD_REMOTE_KEY]['slug'];
             });
 
-            $this->articles[$key][GTW_LOCAL_KEY] = json_decode(json_encode($localArticle), true) ?? [];
+            $this->articles[$key][GD_LOCAL_KEY] = json_decode(json_encode($localArticle), true) ?? [];
             $this->articles[$key]['_is_published'] = !!$localArticle;
         }
 
-        chdir(GTW_ROOT_PATH);
+        chdir(GD_ROOT_PATH);
     }
 
     function _array_nested_find($array, $function) {
@@ -67,13 +67,13 @@ class GTWArticleCollection {
 
     function get_by_slug($slug) {
         return $this->_array_nested_find($this->articles, function($obj) use (&$slug) {
-            return $obj[GTW_REMOTE_KEY]['slug'] == $slug;
+            return $obj[GD_REMOTE_KEY]['slug'] == $slug;
         });
     }
 
     function get_by_id($id) {
         return $this->_array_nested_find($this->articles, function($obj) use (&$id) {
-            return $obj[GTW_LOCAL_KEY]['ID'] ?? -1 == $id;
+            return $obj[GD_LOCAL_KEY]['ID'] ?? -1 == $id;
         }) ?? [
             '_is_published' => false,
         ];

@@ -1,6 +1,6 @@
 <?php
 
-class GDLogger {
+class GD_Logger {
     private $outputPath;
     private $startTime;
     private $log;
@@ -24,6 +24,7 @@ class GDLogger {
 
     function saveLog() {
         if (!GD_DEBUG) return;
+        if (!file_exists(dirname($this->outputPath))) mkdir(dirname($this->outputPath), 0777, true);
         file_put_contents($this->outputPath, json_encode($this->log, JSON_PRETTY_PRINT));
     }
 

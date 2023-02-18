@@ -30,6 +30,8 @@ description: 'The Description for my awesome post.'
 ```
 
 If you don't define a slug it will simply take the name and transform it to a valid slug. Keep in mind that if you change the slug (or name if you don't have a slug) Gitdown wont recognize the article again so you have to delete it manually and reupload it.
+
+It will also search for a file with the name `.preview` in the same folder as the article to add as the thumbnail.
  
 ## Notes
 

@@ -1,1 +1,1 @@
-Edit the Git to <?php echo  PLUGIN_NAME ?> settings here.
+Edit the Git to <?php echo  GD_PLUGIN_NAME ?> settings here.
