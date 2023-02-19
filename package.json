@@ -1,0 +1,23 @@
+{
+	"name": "gitdown",
+	"version": "1.0.0",
+	"description": "Wordpress Plugin to get Articles from a Git Repo and Publish them on Wordpress.",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Maximinodotpy/Gitdown.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Maximinodotpy/Gitdown/issues"
+	},
+	"homepage": "https://github.com/Maximinodotpy/Gitdown#readme",
+	"devDependencies": {
+		"eslint": "^8.34.0",
+		"eslint-plugin-vue": "^9.9.0"
+	}
+}
