@@ -68,6 +68,10 @@
                                 <div>Status: <code>{{ item.local.post_status }}</code></div>
                             <div>
                         </template>
+
+                        <template v-else>
+                            ❌ Not on wordpress
+                        </template>
                     </td>
                     <td class="tw-relative tw-box-border">
                         <div v-if="item._is_published">
