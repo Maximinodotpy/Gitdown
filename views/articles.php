@@ -1,42 +1,23 @@
 <div class="wrap gitdown_ui" id="vue_app">
-    <h1>Manage Git Articles</h1>
+    <h1>Manage Git Articles ...</h1>
+    <p>...  for <code>{{ metadata.repo_url }}</code>.</p>
 
-    <?php if (GD_REMOTE_IS_CLONED) : ?>
+    <p>According to the glob pattern <code><?php echo get_option(GD_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
 
-        <p>According to the glob pattern <code><?php echo get_option(GD_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
+    <!-- <p>Keep in mind that all articles are identified by their <code>slug</code>/<code>post_name</code>. Thats why it is shown here in the Github column. If you change the slug in the markdown file, Gitdown wont recognize that the articles belong together.</p> -->
 
-        <p>Keep in mind that all articles are identified by their <code>slug</code>/<code>post_name</code>. Thats why it is shown here in the Github column. If you change the slug in the markdown file, Gitdown wont recognize that the articles belong together.</p>
-
-        <p>Contact me if <a href="mailto:info@maximmaeder.com?subject=Gitdown: ">here</a> if you found some issues or have any questions.</p>
-
+    <!-- <p>Contact me if <a href="mailto:info@maximmaeder.com?subject=Gitdown: ">here</a> if you found some issues or have any questions.</p> -->
+    
+    
+    <div class="tablenav top">
         <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&gd_action=publish_all') ?>" class="button button-primary">Update / Publish All</a>
+        
         <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&gd_action=delete_all') ?>" class="button">Delete All</a>
-
-    <?php else : ?>
-
-        <p>Lets start by fetching/cloning the Repo at <code><?php echo esc_url(get_option(GD_SETTING_REPO)) ?></code></p>
-
-    <?php endif ?>
-
-    <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . '&gd_action=fetch_repository') ?>" class="button">Fetch Repo</a>
-
-    <a href="<?php echo esc_url(dirname(plugin_dir_url(__FILE__), 1) . '/files/example.zip') ?>" download="example" class="button">Download Example Folder Structure</a>
-
-    <br>
-    <br>
-
-    <?php if (GD_DEBUG) : ?>
-        <details open>
-            <summary>Debug</summary>
-
-            <pre style="white-space: pre-wrap;"><?php gd_dumpJSON(json_decode(json_encode([
-                                                    'os' => PHP_OS,
-                                                    'GD_REMOTE_IS_CLONED' => GD_REMOTE_IS_CLONED,
-                                                ]))); ?></pre>
-        </details>
-    <?php endif; ?>
-
-    <br>
+        
+        <button @click="sync()" class="button">Reload</button>
+        
+        <a href="<?php echo esc_url(dirname(plugin_dir_url(__FILE__), 1) . '/files/example.zip') ?>" download="example" class="button">Download Example Folder Structure</a>
+    </div>
 
     <br>
 
@@ -85,7 +66,10 @@
                         <button class="button action" @click="updateArticle(item.remote.slug)">Publish</button>
                     </div>
 
-                    <div :ref="item.remote.slug" style="visibility: hidden">Loading ...</div>
+                    <div :ref="item.remote.slug" style="visibility: hidden; display: flex; align-items: center; font-weight: 600">
+                        <img src="<?php echo GD_ROOT_URL.'images/loader.svg' ?>" alt="Loader" style="width: 30px">
+                        Loading
+                    </div>
                 </td>
             </tr>
         </tbody>

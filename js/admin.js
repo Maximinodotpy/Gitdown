@@ -3,15 +3,14 @@ const { createApp } = Vue
 const vueApp = createApp({
     data() {
         return {
-            message: 'Hello Vue!',
-            articles: []
+            articles: [],
+            metadata: {
+                repo_url: 'https://github.com/Maximinodotpy/articles.git'
+            }
         }
     },
     async mounted() {
-        this.articles = (await this.callAJAX({
-            action: 'get_all_articles',
-        })).reverse()
-        console.log(this.articles);
+        this.sync()
     },
     methods: {
         async callAJAX(desiredData) {
@@ -69,6 +68,15 @@ const vueApp = createApp({
 
             loaderElement.style.visibility = 'hidden';
         },
+
+        async sync() {
+            this.articles = [];
+            
+            this.articles = (await this.callAJAX({
+                action: 'get_all_articles',
+            })).reverse()
+            console.log(this.articles);
+        }
     }
 })
 

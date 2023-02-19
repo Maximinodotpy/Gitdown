@@ -47,6 +47,7 @@ class Gitdown
         
         // Where the current Repository is located depends on the repo url.
         define('GD_MIRROR_PATH', WP_CONTENT_DIR.'/'.GD_PLUGIN_PREFIX.'_mirror/'.gd_stringToSlug(get_option(GD_SETTING_REPO)).'/');
+        define('GD_MIRROR_URL', WP_CONTENT_URL.'/'.GD_PLUGIN_PREFIX.'_mirror/'.gd_stringToSlug(get_option(GD_SETTING_REPO)).'/');
         
         define('GD_REMOTE_IS_CLONED', is_dir(GD_MIRROR_PATH.'.git'));
 
