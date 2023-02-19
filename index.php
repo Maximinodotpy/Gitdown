@@ -195,6 +195,11 @@ class Gitdown
                     'data:image/svg+xml;base64,'.base64_encode(file_get_contents(GD_ROOT_PATH.'images/icon.svg')),
                     20,
                 );
+
+                add_action('admin_enqueue_scripts', function () {
+                    wp_enqueue_script('jföasldkjföalskjdflaskjd', GD_ROOT_URL.'js/vue.js');
+                    wp_enqueue_script('jföasldkjföalskjd', GD_ROOT_URL.'js/admin.js');
+                });
             }
         );
 
@@ -299,34 +304,20 @@ class Gitdown
                 $this->deleteArticle($article[GD_REMOTE_KEY]['slug']);
             }
         });
-        
 
-        add_action('admin_enqueue_scripts', function () {
-            wp_enqueue_script('jföasldkjföalskjd', GD_ROOT_URL.'js/admin.js');
-            wp_add_inline_script(
-                "jföasldkjföalskjd",
-                "const PHPVARS = " . json_encode(array(
-                    "ajaxurl" => admin_url("admin-ajax.php"),
-                    "nonce" => wp_create_nonce(),
-                )),
-                "before"
-              );
-        });
-
-        add_action("wp_ajax_nopriv_get_time", "ajax_get_time");
-        add_action("wp_ajax_get_time", "ajax_get_time");
-        
-        function ajax_get_time() {
-            $time = date("d.m.Y H:i:s");
-            $id = uniqid();
-            $result = array(
-                "time" => $time,
-                "focking" => 'fasdlkfjaösdlk',
-                "id" => $id
-            );
-            echo json_encode($result);
+        // Ajax Calls
+        add_action("wp_ajax_get_all_articles", function() {
+            echo json_encode($this->articleCollection->get_all());
             die();
-        }
+        });
+        add_action("wp_ajax_update_article", function() {
+            echo json_encode($this->publishOrUpdateArticle($_REQUEST['slug']));
+            echo 'fasdfasdf';
+            /* $this->logger->info('ajax: update article ', $_REQUEST['slug']); */
+            /* echo 'faösldkjf'; */
+            die();
+        });
+        
 
         // Run a custom action if there is the `action` get parameter defined.
         add_action('init', function () use ($possible_actions) {
@@ -442,6 +433,8 @@ class Gitdown
         $this->newURL = add_query_arg('gd_notice', 'Updated '.$post_data[GD_REMOTE_KEY]['name'].'.', $this->newURL);
 
         $this->logger->info('Post Updated');
+
+        return $post_id;
     }
 
     private function deleteArticle($slug) {
