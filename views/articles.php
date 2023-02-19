@@ -1,8 +1,5 @@
 <div class="wrap gitdown_ui" id="vue_app">
-    <h1>Manage Git Articles ...</h1>
-    <p>... for <code>{{ metadata.repo_url }}</code>.</p>
-
-    <p>According to the glob pattern <code><?php echo get_option(GD_SETTING_GLOB) ?></code> and your set resolver function the following files could be found.</p>
+    <h1>Manage Git Articles</h1>
 
     <div style="display: flow-root;">
         <ul class='subsubsub'>
