@@ -6,6 +6,7 @@ const vueApp = createApp({
         return {
             articles: [],
             search_query: '',
+            complex_view: false,
             metadata: {
                 repo_url: 'https://github.com/Maximinodotpy/articles.git'
             }
@@ -35,10 +36,10 @@ const vueApp = createApp({
 
         async updateArticle(slug) {
             const loaderElement = this.$refs[slug][0]
+            loaderElement.style.visibility = 'visible'
 
             console.log('Updating: '+slug)
 
-            loaderElement.style.visibility = 'visible'
 
             const newData = await this.callAJAX({
                 action: 'update_article',
