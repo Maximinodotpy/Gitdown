@@ -1,24 +1,3 @@
-/* console.log('Maxim Maeder');
-
-console.log({ document });
-console.log(this);
-console.log(ajaxurl);
-
-let obj = { action: 'get_time' };
-
-const data = new FormData();
-
-data.append('action', 'get_time');
-
-fetch(ajaxurl, {
-    method: 'POST', // or 'PUT'
-    credentials: 'same-origin',
-    body: data,
-})
-    .then((re) => re.json())
-    .then((json) => console.log(json))
- */
-
 const { createApp } = Vue
 
 const vueApp = createApp({
@@ -29,9 +8,9 @@ const vueApp = createApp({
         }
     },
     async mounted() {
-        this.articles = await this.callAJAX({
+        this.articles = (await this.callAJAX({
             action: 'get_all_articles',
-        })
+        })).reverse()
         console.log(this.articles);
     },
     methods: {
@@ -47,17 +26,49 @@ const vueApp = createApp({
             return await re.json();
         },
         async updateArticle(slug) {
+            const loaderElement = this.$refs[slug][0]
+
             console.log('Updating: '+slug);
+
+            loaderElement.style.visibility = 'visible';
 
             const newData = await this.callAJAX({
                 action: 'update_article',
                 slug: slug,
             })
 
-            console.log(newData);
-            /* const old = this.articles.find(article => article.slug == slug);
-            old = newData */
-        }
+            this.articles.find(article => {
+                if (article.remote.slug == slug) {
+                    article.local = newData;
+                    article._is_published = true;
+                }
+            });
+
+            loaderElement.style.visibility = 'hidden';
+        },
+        async deleteArticle(slug) {
+            const loaderElement = this.$refs[slug][0]
+            loaderElement.style.visibility = 'visible';
+
+
+            console.log('Deleting: '+slug);
+
+            const newData = await this.callAJAX({
+                action: 'delete_article',
+                slug: slug,
+            })
+
+            if (newData) {
+                this.articles.forEach(article => {
+                    if (article.remote.slug == slug) {
+                        article._is_published = false;
+                        article.local = {};
+                    }
+                })
+            }
+
+            loaderElement.style.visibility = 'hidden';
+        },
     }
 })
 

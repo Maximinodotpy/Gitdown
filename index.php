@@ -312,9 +312,10 @@ class Gitdown
         });
         add_action("wp_ajax_update_article", function() {
             echo json_encode($this->publishOrUpdateArticle($_REQUEST['slug']));
-            echo 'fasdfasdf';
-            /* $this->logger->info('ajax: update article ', $_REQUEST['slug']); */
-            /* echo 'faösldkjf'; */
+            die();
+        });
+        add_action("wp_ajax_delete_article", function() {
+            echo json_encode($this->deleteArticle($_REQUEST['slug']));
             die();
         });
         
@@ -400,41 +401,41 @@ class Gitdown
         // Uploading the Image
         $imagePath = GD_MIRROR_PATH.$post_data[GD_REMOTE_KEY]['featured_image'];
 
-        if (!is_file($imagePath)) return;
-
-        $uploadPath = wp_upload_dir()['path'].'/'.$new_post_data['post_name'].'.png';
-
-        copy($imagePath, $uploadPath);
-
-        $thumbnailId = get_post_thumbnail_id($post_id);
+        if (is_file($imagePath)) {
+            $uploadPath = wp_upload_dir()['path'].'/'.$new_post_data['post_name'].'.png';
     
-        $attachment_data = array(
-            'ID' => $thumbnailId,
-            'post_mime_type' => wp_check_filetype( $uploadPath, null )['type'],
-            'post_title' => $new_post_data['post_title'],
-            'post_content' => '',
-            'post_status' => 'inherit',
-        );
-
-        $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
-        set_post_thumbnail($post_id, $attach_id);
-
-        // Using the WP Cli to regenerate the image sizes.
-        $out = [];
-
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {           
-            $command = GD_ROOT_PATH.'php/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing > nul';
-        } else {
-            $command = GD_ROOT_PATH.'php/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing > /dev/null &';
-        }
-
-        exec($command, $out);
+            copy($imagePath, $uploadPath);
+    
+            $thumbnailId = get_post_thumbnail_id($post_id);
+        
+            $attachment_data = array(
+                'ID' => $thumbnailId,
+                'post_mime_type' => wp_check_filetype( $uploadPath, null )['type'],
+                'post_title' => $new_post_data['post_title'],
+                'post_content' => '',
+                'post_status' => 'inherit',
+            );
+    
+            $attach_id = wp_insert_attachment( $attachment_data, $uploadPath, $post_id );
+            set_post_thumbnail($post_id, $attach_id);
+    
+            // Using the WP Cli to regenerate the image sizes.
+            $out = [];
+    
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {           
+                $command = GD_ROOT_PATH.'php/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing > nul';
+            } else {
+                $command = GD_ROOT_PATH.'php/vendor/wp-cli/wp-cli/bin/wp media regenerate '.$attach_id.' --only-missing > /dev/null &';
+            }
+    
+            exec($command, $out);
+        };
 
         $this->newURL = add_query_arg('gd_notice', 'Updated '.$post_data[GD_REMOTE_KEY]['name'].'.', $this->newURL);
 
         $this->logger->info('Post Updated');
 
-        return $post_id;
+        return get_post($post_id);
     }
 
     private function deleteArticle($slug) {
@@ -453,6 +454,8 @@ class Gitdown
         $this->logger->info('Post Deleted', 'fölaksjdf');
 
         $this->newURL = add_query_arg('gd_notice', 'Deleted "'.$article[GD_REMOTE_KEY]['name'].'".', $this->newURL);
+
+        return !!$result;
     }
 
     private function outpour($info) {

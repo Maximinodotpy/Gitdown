@@ -1,4 +1,4 @@
-<div class="wrap gitdown_ui">
+<div class="wrap gitdown_ui" id="vue_app">
     <h1>Manage Git Articles</h1>
 
     <?php if (GD_REMOTE_IS_CLONED) : ?>
@@ -40,7 +40,7 @@
 
     <br>
 
-    <table class="fixed wp-list-table widefat striped table-view-list posts" id="vue_app">
+    <table class="fixed wp-list-table widefat striped table-view-list posts">
         <thead>
             <tr>
                 <th>Remote</th>
@@ -77,13 +77,15 @@
                 </td>
                 <td>
                     <div v-if="item._is_published">
-                        <button href="" class="button action button-primary" @click="updateArticle(item.remote.slug)">Update</button>
-                        <button href="" class="button action">Delete</button>
+                        <button class="button action button-primary" @click="updateArticle(item.remote.slug)">Update</button>
+                        <button class="button action" @click="deleteArticle(item.remote.slug)">Delete</button>
                     </div>
                         
                     <div v-else>
-                        <button href="" class="button action">Publish</button>
+                        <button class="button action" @click="updateArticle(item.remote.slug)">Publish</button>
                     </div>
+
+                    <div :ref="item.remote.slug" style="visibility: hidden">Loading ...</div>
                 </td>
             </tr>
         </tbody>
