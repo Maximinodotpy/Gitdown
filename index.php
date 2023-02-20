@@ -90,6 +90,13 @@ class Gitdown
             mkdir(GD_MIRROR_PATH, 0777, true);
         }
 
+        chdir(GD_MIRROR_PATH);
+        if (!GD_REMOTE_IS_CLONED) {
+            exec('git clone ' . get_option(GD_SETTING_REPO) . ' .', $out);
+        } else {
+            exec('git pull', $out);
+        }
+
         $this->articleCollection = new GD_ArticleCollection();
 
         $resolverFunctions = [
@@ -131,17 +138,15 @@ class Gitdown
     private function setupActions()
     {
         // Activation and Deactivation Hook
-        register_activation_hook(__FILE__, function () {
-            $this->activate();
-        });
-        register_deactivation_hook(__FILE__, function () {
-            $this->deactivate();
-        });
+        register_activation_hook(__FILE__, function () { $this->activate(); });
+        register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
+        wp_enqueue_style(GD_PLUGIN_PREFIX . '_styles', GD_ROOT_URL . 'css/gitdown.css');
 
         add_action('admin_init', function () {
 
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_GLOB);
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_REPO);
+            register_setting(GD_SETTINGS_PAGE, GD_SETTING_RESOLVER);
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_DEBUG);
 
             add_settings_section(
@@ -204,41 +209,17 @@ class Gitdown
                     GD_PLUGIN_NAME,
                     'manage_options',
                     GD_ARTICLES_SLUG,
-                    function () {
-                        wp_enqueue_style(GD_PLUGIN_PREFIX . '_styles', GD_ROOT_URL . 'css/gitdown.css');
-
-                        $this->view(GD_ROOT_PATH . 'views/articles.php', ['articles' => $this->articleCollection->get_all()]);
-                    },
+                    function () { include(GD_ROOT_PATH . 'views/articles.php'); },
                     'data:image/svg+xml;base64,' . base64_encode(file_get_contents(GD_ROOT_PATH . 'images/icon.svg')),
                     20,
                 );
 
                 add_action('admin_enqueue_scripts', function () {
-                    wp_enqueue_script('jföasldkjföalskjdflaskjd', GD_ROOT_URL . 'js/vue.js');
-                    wp_enqueue_script('jföasldkjföalskjd', GD_ROOT_URL . 'js/admin.js');
+                    wp_enqueue_script('gd_vuejs', GD_ROOT_URL . 'js/vue.js');
+                    wp_enqueue_script('gd_adminjs', GD_ROOT_URL . 'js/admin.js');
                 });
             }
         );
-
-        // Custom Column for Post List
-        add_filter('manage_post_posts_columns', function ($columns) {
-            return array_merge($columns, ['gitdown' => 'Gitdown']);
-        });
-
-        add_action('manage_post_posts_custom_column', function ($column_key, $post_id) {
-            if ($column_key != 'gitdown') return;
-
-            $postData = $this->articleCollection->get_by_id($post_id);
-
-            if (!$postData['_is_published']) return;
-
-            $symbol = count($_GET) == 0 ? '?' : '&';
-
-?>
-            <a href="<?php echo esc_url($_SERVER['REQUEST_URI'] . $symbol . 'gd_action=update&gd_slug=' . $postData[GD_REMOTE_KEY]['slug']) ?>" class="button">Update</a>
-<?php
-
-        }, 10, 2);
 
         // Custom Action for Post List Bulk Actions
         add_filter('bulk_actions-edit-post', function ($bulk_actions) {
@@ -295,56 +276,6 @@ class Gitdown
 
     private function setupCustomAction()
     {
-        $possible_actions = [
-            'publish', 'delete', 'fetch_repository', 'publish_all', 'delete_all', 'update'
-        ];
-
-
-        // Custom Actions
-
-        // Publishing and Updating
-        add_action(GD_PLUGIN_PREFIX . '_publish', function () {
-            $this->publishOrUpdateArticle($_GET['gd_slug']);
-        });
-        add_action(GD_PLUGIN_PREFIX . '_update', function () {
-            $this->publishOrUpdateArticle($_GET['gd_slug']);
-        });
-
-        add_action(GD_PLUGIN_PREFIX . '_publish_all', function () {
-            foreach (array_reverse($this->articleCollection->get_all()) as $article) {
-                $this->publishOrUpdateArticle($article[GD_REMOTE_KEY]['slug']);
-            }
-        });
-
-        // Fetching the Repository
-        add_action(GD_PLUGIN_PREFIX . '_fetch_repository', function () {
-            $out = [];
-
-            chdir(GD_MIRROR_PATH);
-
-            if (!GD_REMOTE_IS_CLONED) {
-                exec('git clone ' . get_option(GD_SETTING_REPO) . ' .', $out);
-            } else {
-                exec('git pull', $out);
-
-                $remoteLink = '';
-                exec('git remote get-url origin', $remoteLink);
-
-                if ($remoteLink[0] != get_option(GD_SETTING_REPO)) {
-                }
-            }
-        });
-
-        // Deleting a post
-        add_action(GD_PLUGIN_PREFIX . '_delete', function () {
-            $this->deleteArticle($_GET['gd_slug']);
-        });
-        add_action(GD_PLUGIN_PREFIX . '_delete_all', function () {
-            foreach ($this->articleCollection->get_all() as $article) {
-                $this->deleteArticle($article[GD_REMOTE_KEY]['slug']);
-            }
-        });
-
         // Ajax Calls
         add_action("wp_ajax_get_all_articles", function () {
             echo json_encode($this->articleCollection->get_all());
@@ -358,32 +289,11 @@ class Gitdown
             echo json_encode($this->deleteArticle($_REQUEST['slug']));
             die();
         });
-
-
-        // Run a custom action if there is the `action` get parameter defined.
-        add_action('init', function () use ($possible_actions) {
-
-            if (!array_key_exists('gd_action', $_GET)) return;
-            if (!in_array($_GET['gd_action'], $possible_actions)) return;
-
-            $this->newURL = esc_url($_SERVER['REQUEST_URI']);
-            $this->newURL = remove_query_arg('gd_action', $this->newURL);
-            $this->newURL = remove_query_arg('gd_slug', $this->newURL);
-            $this->newURL = remove_query_arg('gd_notice', $this->newURL);
-
-            // Run the Given Action
-            $customActionName = GD_PLUGIN_PREFIX . '_' . $_GET['gd_action'];
-            do_action($customActionName);
-
-            if (GD_DEBUG) return;
-
-            wp_redirect(sanitize_url($this->newURL));
-            exit;
-        });
     }
 
     public function activate()
     {
+        add_option(GD_SETTING_RESOLVER, 'simple');
         add_option(GD_SETTING_GLOB, '**/_blog/article.md');
         add_option(GD_SETTING_REPO, 'https://github.com/Maximinodotpy/articles.git');
         add_option(GD_SETTING_DEBUG, '0');
@@ -391,6 +301,7 @@ class Gitdown
 
     public function deactivate()
     {
+        delete_option(GD_SETTING_RESOLVER);
         delete_option(GD_SETTING_GLOB);
         delete_option(GD_SETTING_REPO);
         delete_option(GD_SETTING_DEBUG);
@@ -496,18 +407,10 @@ class Gitdown
         // Remove the Post itself
         $result = wp_delete_post($post_id, true);
 
-        $this->logger->info('Post Deleted', 'fölaksjdf');
+        $this->logger->info('Post Deleted', $result);
 
-        $this->newURL = add_query_arg('gd_notice', 'Deleted "' . $article[GD_REMOTE_KEY]['name'] . '".', $this->newURL);
-
+        // Returning the result so The Frontend knows it
         return !!$result;
-    }
-
-    private function outpour($info)
-    {
-        echo '<pre style="position: absolute; right: 200px; z-index: 100; background-color: grey; padding: 1rem; white-space: pre-wrap; width: 500px; height: 300px; overflow-y: auto;">';
-        echo esc_html(print_r($info, true));
-        echo '</pre>';
     }
 };
 
