@@ -99,32 +99,7 @@ class Gitdown
         $this->articleCollection = new GD_ArticleCollection();
         $this->articleCollection->logger = $this->logger;
 
-        $resolverFunctions = [
-            'simple' => function ($path) {
-                if (!file_exists($path)) return;
-
-                $fileContent = file_get_contents($path);
-
-                $parser = new Mni\FrontYAML\Parser;
-                $postData = [];
-                $document = $parser->parse($fileContent, false);
-
-                $postData = $document->getYAML() ?? [];
-
-                $postData['raw_content'] = $document->getContent();
-                $postData['featured_image'] = dirname($path) . '/preview.png';
-
-                if (!array_key_exists('slug', $postData)) {
-                    $postData['slug'] = gd_stringToSlug($postData['name']);
-                }
-
-                return $postData;
-            },
-            'dir_cat' => function ($path) {},
-            'custom' => ''
-        ];
-
-        $this->articleCollection->parseDirectory(GD_MIRROR_PATH, get_option(GD_SETTING_GLOB), $resolverFunctions['simple']);
+        $this->articleCollection->parseDirectory(GD_MIRROR_PATH, get_option(GD_SETTING_GLOB));
         $this->logger->info('Populating Article Collection', 'Count: ' . count($this->articleCollection->get_all()));
 
         // Setting up the Action Hooks

@@ -9,7 +9,7 @@ class GD_ArticleCollection {
 
     }
 
-    function parseDirectory($source, $glob, $resolver) {
+    function parseDirectory($source, $glob) {
         $remote_defaults = [
             'name' => null,
             'slug' => null,
@@ -30,7 +30,7 @@ class GD_ArticleCollection {
 
             $postData = [];
 
-            $postData[GD_REMOTE_KEY] = array_merge($remote_defaults, $resolver($path) ?? []);
+            $postData[GD_REMOTE_KEY] = array_merge($remote_defaults, $this->resolver($path) ?? []);
 
             array_push($this->articles, $postData);
         }
@@ -52,6 +52,56 @@ class GD_ArticleCollection {
 
         chdir(GD_ROOT_PATH);
     }
+
+    private function resolver($document_path) {
+
+        $resolver_simple = function ($path) {
+
+            if (!file_exists($path)) return;
+
+            $fileContent = file_get_contents($path);
+
+            $parser = new Mni\FrontYAML\Parser;
+            $postData = [];
+            $document = $parser->parse($fileContent, false);
+
+            $postData = $document->getYAML() ?? [];
+
+            $postData['raw_content'] = $document->getContent();
+            $postData['featured_image'] = dirname($path) . '/preview.png';
+
+            if (!array_key_exists('slug', $postData)) {
+                $postData['slug'] = gd_stringToSlug($postData['name']);
+            }
+
+            return $postData;
+        };
+
+        
+        $resolver_dir_cat = function ($path) use ($resolver_simple) {
+            $post_data = $resolver_simple($path);
+
+            $post_data['category'] = [dirname($path)];
+
+            return $post_data;
+        };
+
+
+        switch (get_option(GD_SETTING_RESOLVER)) {
+            case 'simple':
+                return $resolver_simple($document_path);
+                break;
+
+            case 'dir_cat':
+                return $resolver_dir_cat($document_path);
+                break;
+
+            default;
+                return $resolver_simple($document_path);
+                break;
+        }
+
+    } 
 
     function _array_nested_find($array, $function) {
         foreach ($array as $value) {
