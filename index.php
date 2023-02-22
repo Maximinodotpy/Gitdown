@@ -9,14 +9,12 @@ Version:      0.2
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  gitdown
-Domain Path:  /languages
 */
 
 class Gitdown
 {
     private $articleCollection;
     private $logger;
-    private $newURL;
 
     public function __construct()
     {
@@ -145,7 +143,12 @@ class Gitdown
         register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
         wp_enqueue_style(GD_PLUGIN_PREFIX . '_styles', GD_ROOT_URL . 'css/gitdown.css');
 
+        add_action( 'init', function() {
+            load_plugin_textdomain( 'gitdown', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+        } );
+        
         add_action('admin_init', function () {
+
 
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_GLOB);
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_REPO);
