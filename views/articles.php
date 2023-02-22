@@ -49,7 +49,9 @@
             <tr v-for="item in articles" class="tw-relative tw-box-border">
                 <template v-if="item.remote.name.toLowerCase().includes(search_query.toLowerCase())">
                     <td>
-                        <p class="row-title" title="Post Name">{{ item.remote.name }}</p>
+                        <p class="row-title" title="Post Name">{{ item.remote.name }}
+                            <span class="tw-text-neutral-400">— {{ item.remote.status ?? 'publish' }}</span>
+                        </p>
 
                         <div v-if="complex_view">
                             <p title="Post Slug">{{ item.remote.slug }}</p>

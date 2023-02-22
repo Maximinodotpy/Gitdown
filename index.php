@@ -63,6 +63,7 @@ class Gitdown
         // Logging
         $logLocation = GD_ROOT_PATH . 'logs/log-' . date("d-m-y_h-i-s") . '.json';
         $this->logger = new GD_Logger($logLocation);
+
         $this->logger->info('Start');
         $this->logger->info('Start Meta Data', [
             'GD_DEBUG' => GD_DEBUG,
@@ -98,6 +99,7 @@ class Gitdown
         }
 
         $this->articleCollection = new GD_ArticleCollection();
+        $this->articleCollection->logger = $this->logger;
 
         $resolverFunctions = [
             'simple' => function ($path) {
@@ -120,6 +122,7 @@ class Gitdown
 
                 return $postData;
             },
+            'dir_cat' => function ($path) {},
             'custom' => ''
         ];
 
@@ -220,7 +223,41 @@ class Gitdown
                 });
             }
         );
+        
+        add_action('admin_enqueue_scripts', function ($hook) {
+            if ('post.php' != $hook) return;
+            if (!$this->articleCollection->get_by_id($_GET['post'])['_is_published']) return;
+            
+            wp_enqueue_script('edit-warning', GD_ROOT_URL . 'js/edit-warning.js');
+        });
+        
+        add_filter('manage_post_posts_columns', function($columns) {
+            return array_merge($columns, ['gd_status' => 'Gitdown Status']);
+        });
+        add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
+            if ($column_key == 'gd_status') {
+                    $post_data = $this->articleCollection->get_by_id($post_id);
+                    
+                    if ($post_data['_is_published']) {
+                        echo '<div class="tw-font-semibold" >✅ Originates from <br/> Repository</div>';
+                    } else {
+                        echo '<div class="tw-font-semibold" >❌ Not from Repository</div>';
+                    }
 
+            }
+        }, 10, 2);
+
+        add_filter( 'post_row_actions', function ( $actions, $post ) {
+            $this->logger->info('Inline Actions', $post->ID);
+            $postData = $this->articleCollection->get_by_id($post->ID);
+
+            if ($postData['_is_published']) {
+                unset( $actions['inline hide-if-no-js'] );
+            }
+            
+            return $actions;
+        }, 10, 2 );
+        
         // Custom Action for Post List Bulk Actions
         add_filter('bulk_actions-edit-post', function ($bulk_actions) {
             $bulk_actions['gd_update'] = 'Gitdown: Update';
@@ -237,11 +274,13 @@ class Gitdown
 
                     if ($postData['_is_published']) {
                         $count++;
-                        $this->publishOrUpdateArticle($postData[GD_REMOTE_KEY]['slug']);
+                        $this->articleCollection->updateArticle($postData[GD_REMOTE_KEY]['slug']);
                     };
                 }
 
                 $redirect_url = add_query_arg('gd_notice', 'Gitdown: Updated ' . $count . ' Posts', $redirect_url);
+                $redirect_url = remove_query_arg('gd_action');
+                $redirect_url = remove_query_arg('gd_slug');
             }
             return $redirect_url;
         }, 10, 3);
@@ -282,11 +321,11 @@ class Gitdown
             die();
         });
         add_action("wp_ajax_update_article", function () {
-            echo json_encode($this->publishOrUpdateArticle($_REQUEST['slug']));
+            echo json_encode($this->articleCollection->updateArticle($_REQUEST['slug']));
             die();
         });
         add_action("wp_ajax_delete_article", function () {
-            echo json_encode($this->deleteArticle($_REQUEST['slug']));
+            echo json_encode($this->articleCollection->deleteArticle($_REQUEST['slug']));
             die();
         });
     }
@@ -312,105 +351,6 @@ class Gitdown
         $gtw_data = $input;
 
         include($path);
-    }
-
-    /**
-     * Publish or Update article by slug
-     * 
-     * @param string $slug Slug of the article matched in remote.
-     */
-    private function publishOrUpdateArticle($slug)
-    {
-        $this->logger->info('Updating Post ...');
-
-        $post_data = $this->articleCollection->get_by_slug($slug);
-
-        $Parsedown = new Parsedown();
-
-        $post_status = $post_data[GD_REMOTE_KEY]['status'] ?? 'publish';
-
-        $category_id = 0;
-        if (!get_category_by_slug($post_data[GD_REMOTE_KEY]['category'])) {
-            $category_id = wp_insert_term($post_data[GD_REMOTE_KEY]['category'], 'category')['term_id'];
-        } else {
-            $category_id = get_category_by_slug($post_data[GD_REMOTE_KEY]['category'])->term_id;
-        }
-
-        $new_post_data = array(
-            'post_title'    => $post_data[GD_REMOTE_KEY]['name'],
-            'post_name'    => $post_data[GD_REMOTE_KEY]['slug'],
-            'post_excerpt' => $post_data[GD_REMOTE_KEY]['description'],
-            'post_content'  => wp_kses_post($Parsedown->text($post_data[GD_REMOTE_KEY]['raw_content'])),
-            'post_status'   => $post_status,
-            'post_category' => [$category_id],
-        );
-
-        /* Add the ID in case it is already published */
-        if ($post_data['_is_published']) {
-            $new_post_data['ID'] = $post_data[GD_LOCAL_KEY]['ID'];
-        }
-
-        // Insert the post into the database
-        $post_id = wp_insert_post($new_post_data);
-
-        // Uploading the Image
-        $imagePath = GD_MIRROR_PATH . $post_data[GD_REMOTE_KEY]['featured_image'];
-
-        if (is_file($imagePath)) {
-            $uploadPath = wp_upload_dir()['path'] . '/' . $new_post_data['post_name'] . '.png';
-
-            copy($imagePath, $uploadPath);
-
-            $thumbnailId = get_post_thumbnail_id($post_id);
-
-            $attachment_data = array(
-                'ID' => $thumbnailId,
-                'post_mime_type' => wp_check_filetype($uploadPath, null)['type'],
-                'post_title' => $new_post_data['post_title'],
-                'post_content' => '',
-                'post_status' => 'inherit',
-            );
-
-            $attach_id = wp_insert_attachment($attachment_data, $uploadPath, $post_id);
-            set_post_thumbnail($post_id, $attach_id);
-
-            // Using the WP Cli to regenerate the image sizes.
-            $out = [];
-
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $command = GD_ROOT_PATH . 'php/vendor/wp-cli/wp-cli/bin/wp media regenerate ' . $attach_id . ' --only-missing > nul';
-            } else {
-                $command = GD_ROOT_PATH . 'php/vendor/wp-cli/wp-cli/bin/wp media regenerate ' . $attach_id . ' --only-missing > /dev/null &';
-            }
-
-            exec($command, $out);
-        };
-
-        $this->newURL = add_query_arg('gd_notice', 'Updated ' . $post_data[GD_REMOTE_KEY]['name'] . '.', $this->newURL);
-
-        $this->logger->info('Post Updated');
-
-        return get_post($post_id);
-    }
-
-    private function deleteArticle($slug)
-    {
-        $article = $this->articleCollection->get_by_slug($slug);
-
-        if (!$article['_is_published']) return;
-
-        $post_id = $article[GD_LOCAL_KEY]['ID'];
-
-        // Remove Thumbnail Image
-        wp_delete_attachment(get_post_thumbnail_id($post_id));
-
-        // Remove the Post itself
-        $result = wp_delete_post($post_id, true);
-
-        $this->logger->info('Post Deleted', $result);
-
-        // Returning the result so The Frontend knows it
-        return !!$result;
     }
 };
 

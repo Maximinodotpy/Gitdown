@@ -1,0 +1,1 @@
+alert('This Article was added vie Gitdown and your specified repository, If you edit the article here it will be overwritten by gitdown next time you try to update it there.')
