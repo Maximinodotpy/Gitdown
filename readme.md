@@ -1,5 +1,3 @@
-**[ THIS PLUGIN IS IN EARLY DEVELOPMENT ]**
-
 # Gitdown
 *By [Maxim Maeder](https://maximmaeder.com/)*
 
@@ -36,19 +34,15 @@ It will also search for a file with the name `.preview` in the same folder as th
 ## Notes
 
 - **Articles**
-
     You can `Upload` and `Delete` single posts or you can `Publish All` and `Delete All`.
 
 - **Thumbnails**
-
     Gitdown will try to upload featured images hosted on the Repository and It will also delete them if the articles is removed.
 
 - **Glob Pattern**
-
     Use glob patterns to tell Gitdown where to look for posts in the repository.
 
 ## Possible Future Features
-- Specify post status (`publish` or `draft`) in the meta data of the Article.
 - Specify `Tags` and `Categories` in the meta data of the Article.
 - Multiple Resolver functions and a custom Resolver Function.
 - Multiple Glob Patterns.

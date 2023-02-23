@@ -178,6 +178,13 @@ class GD_ArticleCollection {
             set_post_thumbnail($post_id, $attach_id);
 
             // Regenerate Image Sizes for Thumbnail
+            /* $editor = wp_get_image_editor($uploadPath);
+            $this->logger->info('Editor', $editor);
+
+            foreach (wp_get_registered_image_subsizes() as $key => $size) {
+                $this->logger->info($key, $size);
+            } */
+
             wp_create_image_subsizes( $uploadPath, $attach_id );
         };
 

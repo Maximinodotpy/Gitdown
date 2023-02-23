@@ -140,6 +140,14 @@
   margin-top: 0.75rem !important;
 }
 
+.tw-mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+.tw-mb-6 {
+  margin-bottom: 1.5rem !important;
+}
+
 .tw-box-border {
   box-sizing: border-box !important;
 }

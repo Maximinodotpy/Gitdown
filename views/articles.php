@@ -1,7 +1,7 @@
 <div class="wrap gitdown_ui" id="vue_app">
     <h1><?php _e('Manage Git Articles', 'gitdown')?></h1>
 
-    <p><?php _e('This plugin was made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a>. Support me and the project by ...</p>
+    <p><?php _e('This plugin was made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a>.</p>
 
     <div style="display: flow-root;">
         <ul class='subsubsub'>
@@ -21,6 +21,8 @@
         <button @click="sync()" class="button tw-mr-2"><?php _e('Reload', 'gitdown')?></button>
 
         <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button tw-mr-2"><?php _e('Download Example Folder Structure', 'gitdown')?></a>
+
+        <a href="<?php echo get_site_url(null, 'wp-admin/options-reading.php') ?>" class="button tw-mr-2"><?php _e('Settings', 'gitdown')?></a>
 
         <p class="search-box">
             <span class="tw-inline-block">
@@ -87,10 +89,10 @@
                     </td>
                     <td class="tw-relative tw-box-border">
                         <div v-if="item._is_published">
-                            <button class="button action button-primary tw-mr-4" @click="updateArticle(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
-                            <button class="button action tw-mr-4" @click="deleteArticle(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
+                            <button class="button action button-primary tw-mr-2 tw-mb-2 tw-inline-block" @click="updateArticle(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
+                            <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="deleteArticle(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
 
-                            <a target="_blank" class="button action" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?></a>
+                            <a target="_blank" class="button action tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
                         </div>
 
                         <div v-else>

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Gitdown 0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gitdown\n"
 "POT-Creation-Date: 2023-02-22T10:53:54+01:00\n"
-"PO-Revision-Date: 2023-02-22 10:54+0100\n"
+"PO-Revision-Date: 2023-02-23 06:49+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -29,6 +29,9 @@ msgid ""
 "Use this Plugin to create, update, delete and manage markdown articles "
 "hosted on a remote repository."
 msgstr ""
+"Mit diesem Plugin können Sie Markdown-Artikel erstellen, "
+"aktualisieren, löschen und verwalten, die in einem entfernten "
+"Repository gehostet werden."
 
 #. Author of the plugin
 msgid "Maxim Maeder"
@@ -40,7 +43,7 @@ msgstr ""
 
 #: views/articles.php:2
 msgid "Manage Git Articles"
-msgstr ""
+msgstr "Git-Artikel verwalten"
 
 #: views/articles.php:15
 msgid "Update All"
@@ -56,11 +59,11 @@ msgstr "Neu laden"
 
 #: views/articles.php:21
 msgid "Download Example Folder Structure"
-msgstr ""
+msgstr "Beispielordner herunterladen"
 
 #: views/articles.php:27
 msgid "Complex View"
-msgstr ""
+msgstr "Erweiterte Ansicht"
 
 #: views/articles.php:43
 msgid "Remote"
