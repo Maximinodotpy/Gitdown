@@ -193,7 +193,11 @@ class Gitdown
                     20,
                 );
 
+                wp_enqueue_style(GD_PLUGIN_PREFIX . '_styles_tour', GD_ROOT_URL . 'css/tour.css');
+                
                 add_action('admin_enqueue_scripts', function () {
+                    
+                    wp_enqueue_script('edit-warning', GD_ROOT_URL . 'js/tour.js');
                     wp_enqueue_script('gd_vuejs', GD_ROOT_URL . 'js/vue.js');
                     wp_enqueue_script('gd_adminjs', GD_ROOT_URL . 'js/admin.js');
                 });

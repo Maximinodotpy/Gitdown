@@ -14,15 +14,17 @@
     <br>
 
     <div>
-        <button @click="updateAllArticles()" class="tw-mr-2 button button-primary"><?php _e('Update All', 'gitdown')?></button>
+        <button id="pa" @click="updateAllArticles()" class="tw-mr-2 button button-primary"><?php _e('Update All', 'gitdown')?></button>
 
-        <button @click="deleteAll()" class="button tw-mr-2"><?php _e('Delete All', 'gitdown')?></button>
+        <button id="da" @click="deleteAll()" class="button tw-mr-2"><?php _e('Delete All', 'gitdown')?></button>
 
-        <button @click="sync()" class="button tw-mr-2"><?php _e('Reload', 'gitdown')?></button>
+        <button id="sy" @click="sync()" class="button tw-mr-2"><?php _e('Reload', 'gitdown')?></button>
 
         <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button tw-mr-2"><?php _e('Download Example Folder Structure', 'gitdown')?></a>
 
         <a href="<?php echo get_site_url(null, 'wp-admin/options-reading.php') ?>" class="button tw-mr-2"><?php _e('Settings', 'gitdown')?></a>
+        
+        <a href="<?php /* echo add_query_arg('run_tour', '') */ ?>" class="button tw-mr-2" disabled="true"><?php _e('Take Tour', 'gitdown')?></a>
 
         <p class="search-box">
             <span class="tw-inline-block">
@@ -65,7 +67,7 @@
         </thead>
         <tbody>
             <tr v-for="item in articles" class="tw-relative tw-box-border">
-                <template v-if="item.remote.name.toLowerCase().includes(search_query.toLowerCase())">
+                <template v-if="item?.remote?.name?.toLowerCase().includes(search_query?.toLowerCase())">
                     <td>
                         <p class="row-title" title="Post Name">{{ item.remote.name }}
                             <span class="tw-text-neutral-400">— {{ item.remote.status ?? 'publish' }}</span>
