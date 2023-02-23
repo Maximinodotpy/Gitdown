@@ -42,15 +42,21 @@
     <table class="fixed wp-list-table widefat striped table-view-list posts">
         <thead>
             <tr>
-                <th>
-                    <span class="inline-block tw-mr-2">
+                <th class="tw-flex tw-flex-col">
+                    <span class="inline-block tw-mr-2 tw-mb-3">
                         <?php _e('Remote', 'gitdown')?>
                     </span>
-                    <a href="<?php echo get_option(GD_SETTING_REPO) ?>" target="_blank">
-                        <code>
-                            <?php echo basename(get_option(GD_SETTING_REPO)) ?>
+                    
+                    <span class="tw-block">
+                        <a href="<?php echo get_option(GD_SETTING_REPO) ?>" target="_blank">
+                            <code class=""><?php echo basename(get_option(GD_SETTING_REPO)) ?></code>
+                        </a>
+                        →
+                        <code class="">
+                            <?php echo get_option(GD_SETTING_GLOB) ?>
                         </code>
-                    </a>
+                        ↓
+                    </span>
                 </th>
                 <th>Wordpress</th>
                 <th><?php _e('Actions', 'gitdown')?></th>

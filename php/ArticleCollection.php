@@ -13,18 +13,22 @@ class GD_ArticleCollection {
         $remote_defaults = [
             'name' => null,
             'slug' => null,
-            'description' => null,
+            'description' => '',
             'thumbnail' => null,
             'content' => null,
             'raw_content' => null,
-            'category' => null,
-            'tags' => null,
+            'category' => [],
+            'tags' => [],
             'status' => null,
         ];
 
         chdir($source);
 
-        $paths = glob($glob);
+        $paths = [];
+
+        foreach (explode(',', $glob) as $single_glob) {
+            $paths = array_merge($paths, glob($single_glob));
+        }
 
         foreach ($paths as $path) {
 
@@ -142,10 +146,10 @@ class GD_ArticleCollection {
         $new_post_data = array(
             'post_title'    => $post_data[GD_REMOTE_KEY]['name'],
             'post_name'    => $post_data[GD_REMOTE_KEY]['slug'],
-            'post_excerpt' => $post_data[GD_REMOTE_KEY]['description'],
+            'post_excerpt' => $post_data[GD_REMOTE_KEY]['description'] ?? '',
             'post_content'  => wp_kses_post($Parsedown->text($post_data[GD_REMOTE_KEY]['raw_content'])),
             'post_status'   => $post_data[GD_REMOTE_KEY]['status'] ?? 'publish',
-            'post_category' => $this->createCategories($post_data[GD_REMOTE_KEY]['category']),
+            'post_category' => $this->createCategories($post_data[GD_REMOTE_KEY]['category'] ?? []),
         );
 
         /* Add the ID in case it is already published */
