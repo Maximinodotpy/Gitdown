@@ -1,0 +1,5 @@
+
+      [console_scripts]
+      po-to-xls = poxls.po_to_xls:main
+      xls-to-po = poxls.xls_to_po:main
+      

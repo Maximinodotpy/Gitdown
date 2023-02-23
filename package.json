@@ -5,7 +5,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"tailwind": "npx tailwindcss -i ./css/input.css -o ./css/gitdown.css --watch",
-		"build": "python \"_dev_helpers/dist.py\""
+		"build": "python \"_dev_helpers/dist.py\"",
+		"start_env": "\"_dev_helpers/Scripts/activate\""
 	},
 	"repository": {
 		"type": "git",
