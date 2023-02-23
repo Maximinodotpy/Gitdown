@@ -117,7 +117,7 @@ class Gitdown
         wp_enqueue_style(GD_PLUGIN_PREFIX . '_styles', GD_ROOT_URL . 'css/gitdown.css');
 
         add_action( 'init', function() {
-            load_plugin_textdomain( 'gitdown', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+            load_plugin_textdomain( 'gitdown', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/po/' );
         } );
         
         add_action('admin_init', function () {
