@@ -309,7 +309,7 @@ class Gitdown
     public function activate()
     {
         add_option(GD_SETTING_RESOLVER, 'simple');
-        add_option(GD_SETTING_GLOB, '*.md');
+        add_option(GD_SETTING_GLOB, '**/*.md');
         add_option(GD_SETTING_REPO, 'https://github.com/Maximinodotpy/gitdown-test-repository.git');
         add_option(GD_SETTING_DEBUG, '0');
     }

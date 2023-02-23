@@ -10,10 +10,8 @@
         </li>
         <li>
             <b><?php _e('Glob Pattern', 'gitdown') ?></b>
-            <div class="tw-mb-6"><?php _e('With the glob pattern you specifiy where in your repository the files are. For example: <code>**/*.md</code> will match any file that ends with .md. Use <a href="https://globster.xyz/">globster.xyz</a> to learn and test your glob pattern or you can try it out right down below this paragraph.', 'gitdown') ?></div>
-
-            <br>
-
+            <div class="tw-mb-2"><?php _e('With the glob pattern you specifiy where in your repository the files are. For example: <code>**/*.md</code> will match any file that ends with .md. Use <a href="https://globster.xyz/">globster.xyz</a> to learn and test your glob pattern or you can try it out right down below this paragraph.', 'gitdown') ?></div>
+                
             <?php 
 
             $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20-%20My%20First%20Article%2Findex.html%2C%2F00%20-%20My%20First%20Article%2Farticle.md%2C%2F01%20-%20How%20to%20minify%20CSS%20with%20Python%2Fminify.py%2C%2F01%20-%20How%20to%20minify%20CSS%20with%20Python%2Farticle.md%2C%2F02%20-%20How%20to%20setup%20a%20wordpress%20theme%2Farticle.md&embed=1';
