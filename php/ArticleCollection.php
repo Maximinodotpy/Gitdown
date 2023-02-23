@@ -178,16 +178,8 @@ class GD_ArticleCollection {
             $attach_id = wp_insert_attachment($attachment_data, $uploadPath, $post_id);
             set_post_thumbnail($post_id, $attach_id);
 
-            // Using the WP Cli to regenerate the image sizes.
-            $out = [];
-
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $command = GD_ROOT_PATH . 'php/vendor/wp-cli/wp-cli/bin/wp media regenerate ' . $attach_id . ' --only-missing > nul';
-            } else {
-                $command = GD_ROOT_PATH . 'php/vendor/wp-cli/wp-cli/bin/wp media regenerate ' . $attach_id . ' --only-missing > /dev/null &';
-            }
-
-            exec($command, $out);
+            // Regenerate Image Sizes for Thumbnail
+            $this->regenerateThumbnail();
         };
 
         $this->logger->info('Post Updated');
@@ -241,5 +233,9 @@ class GD_ArticleCollection {
             array_push($returned_ids, $current_last_id);
         }
         return $returned_ids;
+    }
+
+    public function regenerateThumbnail() {
+
     }
 }

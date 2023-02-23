@@ -1,6 +1,8 @@
 <div class="wrap gitdown_ui" id="vue_app">
     <h1><?php _e('Manage Git Articles', 'gitdown')?></h1>
 
+    <p><?php _e('This plugin was made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a>. Support me and the project by ...</p>
+
     <div style="display: flow-root;">
         <ul class='subsubsub'>
             {{ articles.filter(article => article._is_published).length }}
@@ -18,7 +20,7 @@
 
         <button @click="sync()" class="button tw-mr-2"><?php _e('Reload', 'gitdown')?></button>
 
-        <a href="<?php echo esc_url(dirname(plugin_dir_url(__FILE__), 1) . '/files/example.zip') ?>" download="example" class="button tw-mr-2"><?php _e('Download Example Folder Structure', 'gitdown')?></a>
+        <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button tw-mr-2"><?php _e('Download Example Folder Structure', 'gitdown')?></a>
 
         <p class="search-box">
             <span class="tw-inline-block">

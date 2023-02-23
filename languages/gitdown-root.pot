@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-02-22T10:53:54+01:00\n"
+"POT-Creation-Date: 2023-02-22T15:26:30+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: gitdown\n"
@@ -38,58 +38,62 @@ msgstr ""
 msgid "Manage Git Articles"
 msgstr ""
 
-#: views/articles.php:15
-msgid "Update All"
+#: views/articles.php:4
+msgid "This plugin was made by"
 msgstr ""
 
 #: views/articles.php:17
-msgid "Delete All"
+msgid "Update All"
 msgstr ""
 
 #: views/articles.php:19
-msgid "Reload"
+msgid "Delete All"
 msgstr ""
 
 #: views/articles.php:21
+msgid "Reload"
+msgstr ""
+
+#: views/articles.php:23
 msgid "Download Example Folder Structure"
 msgstr ""
 
-#: views/articles.php:27
+#: views/articles.php:29
 msgid "Complex View"
 msgstr ""
 
-#: views/articles.php:43
+#: views/articles.php:45
 msgid "Remote"
 msgstr ""
 
-#: views/articles.php:52
+#: views/articles.php:54
 msgid "Actions"
 msgstr ""
 
-#: views/articles.php:72
+#: views/articles.php:74
 msgid "Is on Wordpress"
 msgstr ""
 
-#: views/articles.php:83
+#: views/articles.php:85
 msgid "Not on wordpress"
 msgstr ""
 
-#: views/articles.php:88
+#: views/articles.php:90
 msgid "Update"
 msgstr ""
 
-#: views/articles.php:89
+#: views/articles.php:91
 msgid "Delete"
 msgstr ""
 
-#: views/articles.php:91
+#: views/articles.php:93
 msgid "Open in new Tab"
 msgstr ""
 
-#: views/articles.php:95
+#: views/articles.php:97
 msgid "Publish"
 msgstr ""
 
-#: views/articles.php:105
+#: views/articles.php:107
 msgid "Loading"
 msgstr ""

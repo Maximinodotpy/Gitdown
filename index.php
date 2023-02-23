@@ -6,8 +6,6 @@ Author URI:   https://maximmaeder.com
 Plugin URI:   https://github.com/Maximinodotpy/Gitdown
 Description:  Use this Plugin to create, update, delete and manage markdown articles hosted on a remote repository.
 Version:      0.2
-License:      GPL2
-License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  gitdown
 */
 
@@ -311,8 +309,8 @@ class Gitdown
     public function activate()
     {
         add_option(GD_SETTING_RESOLVER, 'simple');
-        add_option(GD_SETTING_GLOB, '**/_blog/article.md');
-        add_option(GD_SETTING_REPO, 'https://github.com/Maximinodotpy/articles.git');
+        add_option(GD_SETTING_GLOB, '*.md');
+        add_option(GD_SETTING_REPO, 'https://github.com/Maximinodotpy/gitdown-test-repository.git');
         add_option(GD_SETTING_DEBUG, '0');
     }
 
