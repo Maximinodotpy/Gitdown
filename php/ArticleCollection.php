@@ -139,7 +139,6 @@ class GD_ArticleCollection {
 
         $Parsedown = new Parsedown();
 
-
         $new_post_data = array(
             'post_title'    => $post_data[GD_REMOTE_KEY]['name'],
             'post_name'    => $post_data[GD_REMOTE_KEY]['slug'],
@@ -179,7 +178,7 @@ class GD_ArticleCollection {
             set_post_thumbnail($post_id, $attach_id);
 
             // Regenerate Image Sizes for Thumbnail
-            $this->regenerateThumbnail();
+            wp_create_image_subsizes( $uploadPath, $attach_id );
         };
 
         $this->logger->info('Post Updated');
@@ -235,7 +234,7 @@ class GD_ArticleCollection {
         return $returned_ids;
     }
 
-    public function regenerateThumbnail() {
+    /* public function regenerateThumbnail() {
 
-    }
+    } */
 }
