@@ -121,6 +121,13 @@ class Gitdown
         
         add_action('admin_init', function () {
 
+            // Redirect if the plugin has been activated.
+            if (get_option('gd_do_activation_redirect', false)) {
+                delete_option('gd_do_activation_redirect');
+                
+                wp_redirect(home_url('/wp-admin/admin.php?page=gd-article-manager&how_to'));
+            }
+
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_GLOB);
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_REPO);
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_RESOLVER);
@@ -296,7 +303,7 @@ class Gitdown
         add_option(GD_SETTING_REPO, 'https://github.com/Maximinodotpy/gitdown-test-repository.git');
         add_option(GD_SETTING_DEBUG, '0');
 
-        wp_redirect(home_url('/wp-admin/admin.php?page=gd-article-manager&how_to'));
+        add_option('gd_do_activation_redirect', true);
     }
 
     public function deactivate()
