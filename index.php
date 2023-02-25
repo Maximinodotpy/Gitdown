@@ -3,11 +3,14 @@
 Plugin Name:  Gitdown
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
-Plugin URI:   https://github.com/Maximinodotpy/Gitdown
 Description:  Use this Plugin to create, update, delete and manage markdown articles hosted on a remote repository.
 Version:      0.2
 Text Domain:  gitdown
 */
+
+/* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
+/* maximmaeder */
+/* fjöalsjfölasjfsjö*ç */
 
 class Gitdown
 {
@@ -115,13 +118,8 @@ class Gitdown
         register_activation_hook(__FILE__, function () { $this->activate(); });
         register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
         wp_enqueue_style(GD_PLUGIN_PREFIX . '_styles', GD_ROOT_URL . 'css/gitdown.css');
-
-        add_action( 'init', function() {
-            load_plugin_textdomain( 'gitdown', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/po/' );
-        } );
         
         add_action('admin_init', function () {
-
 
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_GLOB);
             register_setting(GD_SETTINGS_PAGE, GD_SETTING_REPO);
@@ -188,16 +186,15 @@ class Gitdown
                     GD_PLUGIN_NAME,
                     'manage_options',
                     GD_ARTICLES_SLUG,
-                    function () { include(GD_ROOT_PATH . 'views/articles.php'); },
+                    function () { 
+                        if (isset($_GET['how_to'])) include(GD_ROOT_PATH . 'views/how_to/how_to.php');
+                        else include(GD_ROOT_PATH . 'views/articles.php');
+                    },
                     'data:image/svg+xml;base64,' . base64_encode(file_get_contents(GD_ROOT_PATH . 'images/icon.svg')),
                     20,
                 );
-
-                wp_enqueue_style(GD_PLUGIN_PREFIX . '_styles_tour', GD_ROOT_URL . 'css/tour.css');
                 
                 add_action('admin_enqueue_scripts', function () {
-                    
-                    wp_enqueue_script('edit-warning', GD_ROOT_URL . 'js/tour.js');
                     wp_enqueue_script('gd_vuejs', GD_ROOT_URL . 'js/vue.js');
                     wp_enqueue_script('gd_adminjs', GD_ROOT_URL . 'js/admin.js');
                 });
@@ -273,24 +270,6 @@ class Gitdown
                 echo '<div id="message" class="updated notice is-dismissable"><p>' . esc_html($notification_text) . '</p></div>';
             }
         });
-
-        add_action('admin_head', function () {
-            $current_screen = get_current_screen();
-            
-            if ($current_screen->id != 'toplevel_page_'.GD_ARTICLES_SLUG) return;
-            
-            $current_screen->add_help_tab(array(
-                'id' => 'resolving_help',
-                'title' => 'Resolving',
-                'callback' => function() { include(GD_ROOT_PATH.'views/help_resolving.php'); },
-            ));
-
-            $current_screen->add_help_tab(array(
-                'id' => 'ui_help',
-                'title' => 'User Interface',
-                'callback' => function() { include(GD_ROOT_PATH.'views/help_userinterface.php'); },
-            ));
-        });
     }
 
     private function setupCustomAction()
@@ -316,6 +295,8 @@ class Gitdown
         add_option(GD_SETTING_GLOB, '**/*.md');
         add_option(GD_SETTING_REPO, 'https://github.com/Maximinodotpy/gitdown-test-repository.git');
         add_option(GD_SETTING_DEBUG, '0');
+
+        wp_redirect(home_url('/wp-admin/admin.php?page=gd-article-manager&how_to'));
     }
 
     public function deactivate()

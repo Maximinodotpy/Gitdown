@@ -1,0 +1,185 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: ca\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Utilitzeu aquest complement per crear, actualitzar, suprimir i gestionar "
+"articles de Markdown allotjats en un dipòsit remot."
+
+msgid "Manage Git Articles"
+msgstr "Gestiona els articles Git"
+
+msgid "This plugin was made by"
+msgstr "Aquest complement es va fer per"
+
+msgid "Update All"
+msgstr "Actualitzeu tot"
+
+msgid "Delete All"
+msgstr "Eliminar tots"
+
+msgid "Reload"
+msgstr "Recarregar"
+
+msgid "Download Example Folder Structure"
+msgstr "Descarregueu l'estructura de la carpeta d'exemple"
+
+msgid "Settings"
+msgstr "Configuració"
+
+msgid "Take Tour"
+msgstr "Fes Tour"
+
+msgid "Complex View"
+msgstr "Vista complexa"
+
+msgid "Remote"
+msgstr "Distant"
+
+msgid "Actions"
+msgstr "Accions"
+
+msgid "Is on Wordpress"
+msgstr "Està a WordPress"
+
+msgid "Not on wordpress"
+msgstr "No a WordPress"
+
+msgid "Update"
+msgstr "Actualitzar"
+
+msgid "Delete"
+msgstr "Esborrar"
+
+msgid "Open in new Tab"
+msgstr "Obert a la pestanya nova"
+
+msgid "Publish"
+msgstr "Publicar"
+
+msgid "Loading"
+msgstr "Càrrega"
+
+msgid "Resolver"
+msgstr "Resoldre"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Gitdown intenta trobar i comprendre els vostres articles en un dipòsit "
+"determinat de algunes maneres diferents. Aquest procés s'anomena "
+"\"resolució\" i comporta tres passos, que haureu de seguir quan editeu la "
+"configuració."
+
+msgid "Repository"
+msgstr "Repositori"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Abans de començar, heu d’especificar on es troba el vostre dipòsit. De "
+"manera predeterminada, hi ha un dipòsit d’exemple que podeu utilitzar per "
+"provar i aprendre com funciona aquest complement."
+
+msgid "Glob Pattern"
+msgstr "Patró global"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"Amb el patró global, especifiqueu on al vostre dipòsit són els fitxers. Per "
+"exemple: <code> **/*. Md </code> coincidirà amb qualsevol fitxer que "
+"finalitzi amb .md. Utilitzeu <a href=\"https://globster.xyz/\"> globster.xyz"
+" </a> per aprendre i provar el vostre patró global o podeu provar -ho just a"
+" sota d'aquest paràgraf."
+
+msgid "Resolver Function"
+msgstr "Funció de resolució"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"A partir d’ara, no us heu de preocupar massa per la funció de resolució, ja "
+"que només n’hi ha dos: el directori senzill i a la categoria. Tots dos "
+"buscaran informació de la matèria frontal dins dels fitxers de marcatge i "
+"emplenaran la informació meta sobre la publicació d'aquesta manera."
+
+msgid "User Interface"
+msgstr "Interfície d'usuari"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"La interfície d'usuari és força directa. GitDown insereix tres elements d'UI"
+" diferents a la vostra pàgina. Veieu la descripció a continuació."
+
+msgid "Article Overview"
+msgstr "Visió general de l'article"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Aquí és on esteu actualment. Aquí veieu totes les publicacions dins de la "
+"representació que s’han trobat a través del patró i el resoldor global. "
+"Podeu publicar, actualitzar i suprimir publicacions aquí. Tingueu en compte "
+"que les publicacions s’identifiquen per la seva bossa."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Podeu introduir un mode de vista complex on veieu més informació sobre els "
+"articles que poden ser útils a l’hora de configurar."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Eliminar una publicació significa que es suprimirà a WordPress no al "
+"dipòsit, per la qual cosa es recomana fer una còpia de seguretat de les "
+"publicacions prèviament."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

@@ -1,0 +1,185 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: cy\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Defnyddiwch yr ategyn hwn i greu, diweddaru, dileu a rheoli erthyglau marcio"
+" a gynhelir ar ystorfa anghysbell."
+
+msgid "Manage Git Articles"
+msgstr "Rheoli Erthyglau Git"
+
+msgid "This plugin was made by"
+msgstr "Gwnaed yr ategyn hwn gan"
+
+msgid "Update All"
+msgstr "Diweddarwch Bawb"
+
+msgid "Delete All"
+msgstr "Dileu popeth"
+
+msgid "Reload"
+msgstr "Hail -lwythet"
+
+msgid "Download Example Folder Structure"
+msgstr "Lawrlwytho strwythur ffolder enghreifftiol"
+
+msgid "Settings"
+msgstr "Ngosodiadau"
+
+msgid "Take Tour"
+msgstr "Thaith"
+
+msgid "Complex View"
+msgstr "Golygfa gymhleth"
+
+msgid "Remote"
+msgstr "Anghysbell"
+
+msgid "Actions"
+msgstr "Nghamau"
+
+msgid "Is on Wordpress"
+msgstr "Ar wordpress"
+
+msgid "Not on wordpress"
+msgstr "Ddim ar WordPress"
+
+msgid "Update"
+msgstr "Diweddara ’"
+
+msgid "Delete"
+msgstr "Croeswn"
+
+msgid "Open in new Tab"
+msgstr "Ar agor mewn tab newydd"
+
+msgid "Publish"
+msgstr "Cyhoedda ’"
+
+msgid "Loading"
+msgstr "Lwythi"
+
+msgid "Resolver"
+msgstr "Ailddyraniadau"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Mae Gitdown yn ceisio dod o hyd i'ch erthyglau a'u deall mewn ystorfa "
+"benodol mewn ychydig wahanol ffyrdd. Gelwir y broses hon yn \"datrys\" ac "
+"mae'n golygu tri cham, y dylech eu dilyn wrth olygu'r gosodiadau."
+
+msgid "Repository"
+msgstr "Ystorfa"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Cyn y gallwch chi ddechrau mae'n rhaid i chi benodol lle mae'ch ystorfa. Yn "
+"ddiofyn mae yna ystorfa enghreifftiol y gallwch ei defnyddio i brofi a dysgu"
+" sut mae'r ategyn hwn yn gweithio."
+
+msgid "Glob Pattern"
+msgstr "Patrwm glob"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"Gyda'r patrwm glob rydych chi'n ei nodi lle mae'r ffeiliau yn eich ystorfa. "
+"Er enghraifft: bydd <code> **/*. Md </code> yn cyfateb i unrhyw ffeil sy'n "
+"gorffen ag .md. Defnyddiwch <a href=\"https://globster.xyz/\"> globster.xyz "
+"</a> i ddysgu a phrofi'ch patrwm glob neu gallwch roi cynnig arno i lawr "
+"islaw'r paragraff hwn."
+
+msgid "Resolver Function"
+msgstr "Swyddogaeth Resolver"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"Ar hyn o bryd does dim rhaid i chi boeni gormod am y swyddogaeth Resolver "
+"gan mai dim ond dau sydd: syml a chyfeiriadur i'r categori. Bydd y ddau "
+"ohonyn nhw'n edrych am wybodaeth mater blaen yn y ffeiliau marcio ac yn "
+"llenwi gwybodaeth meta am y post fel hyn."
+
+msgid "User Interface"
+msgstr "Rhyngwyneb defnyddiwr"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Mae'r rhyngwyneb defnyddiwr yn eithaf syml. Mae Gitdown yn mewnosod tair "
+"elfen UI wahanol yn eich tudalen rydych chi'n gweld disgrifiad ohonyn nhw "
+"isod."
+
+msgid "Article Overview"
+msgstr "Trosolwg o'r erthygl"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Dyma lle rydych chi ar hyn o bryd. Yma fe welwch yr holl swyddi o fewn y "
+"repo a ddarganfuwyd trwy'r patrwm glob ac ail -wneud. Gallwch gyhoeddi, "
+"diweddaru a dileu swyddi yma. Cadwch mewn cof bod pyst yn cael eu nodi gan "
+"eu gwlithod."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Gallwch chi fynd i mewn i fodd gweld cymhleth lle rydych chi'n gweld mwy o "
+"wybodaeth am yr erthyglau a allai fod yn ddefnyddiol wrth sefydlu."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Mae dileu post yn golygu y bydd yn cael ei ddileu ar WordPress nid yn yr "
+"ystorfa, felly fe'ch cynghorir i wneud copi wrth gefn o'ch swyddi ymlaen "
+"llaw."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

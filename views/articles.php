@@ -24,7 +24,7 @@
 
         <a href="<?php echo get_site_url(null, 'wp-admin/options-reading.php') ?>" class="button tw-mr-2"><?php _e('Settings', 'gitdown')?></a>
         
-        <a href="<?php /* echo add_query_arg('run_tour', '') */ ?>" class="button tw-mr-2" disabled="true"><?php _e('Take Tour', 'gitdown')?></a>
+        <a href="<?php echo home_url('wp-admin/admin.php?page=gd-article-manager&how_to') ?>" class="button tw-mr-2"><?php _e('How to use Gitdown?', 'gitdown')?></a>
 
         <p class="search-box">
             <span class="tw-inline-block">

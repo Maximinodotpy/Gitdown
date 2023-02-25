@@ -1,0 +1,184 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: hr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Upotrijebite ovaj dodatak za stvaranje, ažuriranje, brisanje i upravljanje "
+"člancima Markdown -a hostiranih na udaljenom spremištu."
+
+msgid "Manage Git Articles"
+msgstr "Upravljanje GIT člancima"
+
+msgid "This plugin was made by"
+msgstr "Ovaj dodatak je napravio"
+
+msgid "Update All"
+msgstr "Ažuriraj sve"
+
+msgid "Delete All"
+msgstr "Izbrisati sve"
+
+msgid "Reload"
+msgstr "Ponovno učitati"
+
+msgid "Download Example Folder Structure"
+msgstr "Preuzmite primjeru strukture mape"
+
+msgid "Settings"
+msgstr "Postavke"
+
+msgid "Take Tour"
+msgstr "Obilaziti"
+
+msgid "Complex View"
+msgstr "Složen pogled"
+
+msgid "Remote"
+msgstr "Daljinski"
+
+msgid "Actions"
+msgstr "Radnja"
+
+msgid "Is on Wordpress"
+msgstr "Je na wordpress"
+
+msgid "Not on wordpress"
+msgstr "Ne na WordPressu"
+
+msgid "Update"
+msgstr "Ažuriraj"
+
+msgid "Delete"
+msgstr "Izbrisati"
+
+msgid "Open in new Tab"
+msgstr "Otvoreno na novoj kartici"
+
+msgid "Publish"
+msgstr "Objaviti"
+
+msgid "Loading"
+msgstr "Učitavam"
+
+msgid "Resolver"
+msgstr "Seriver"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Gitdown pokušava pronaći i razumjeti svoje članke u određenom skladištu na "
+"nekoliko različitih načina. Taj se postupak naziva \"rješavanje\" i "
+"podrazumijeva tri koraka, koji biste trebali slijediti prilikom uređivanja "
+"postavki."
+
+msgid "Repository"
+msgstr "Skladište"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Prije nego što započnete, morate specificirati gdje se nalazi vaše "
+"spremište. Prema zadanim postavkama postoji primjer spremišta koje možete "
+"koristiti za testiranje i saznanje kako funkcionira ovaj dodatak."
+
+msgid "Glob Pattern"
+msgstr "Uzorak"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"Uz uzorak globusa, vi u svom spremištu nalaze se datoteke u vašem spremištu."
+" Na primjer: <code> **/*. MD </code> podudarat će se s bilo kojom datotekom "
+"koja završava s .MD. Koristite <ahref=\"https://globster.xyz/\"> "
+"globster.xyz </a> Da biste naučili i testirali svoj uzorak na globusu ili ga"
+" možete isprobati ispod ovog stavka."
+
+msgid "Resolver Function"
+msgstr "Funkcija razlučivača"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"Od sada se ne morate previše brinuti o funkciji razlučivača jer postoje samo"
+" dvije: jednostavne i direktorij do kategorije. Oboje će tražiti informacije"
+" o prednjim materijalima unutar datoteka Markdown i ispuniti meta podatke o "
+"postu na ovaj način."
+
+msgid "User Interface"
+msgstr "Korisničko sučelje"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Korisničko sučelje prilično je ravno naprijed. GitDown ubacuje tri različita"
+" elementa UI u vašu stranicu, vidite ih u nastavku."
+
+msgid "Article Overview"
+msgstr "Pregled članka"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Ovdje trenutno jeste. Ovdje vidite sve postove unutar Repo -a koji su "
+"pronađeni putem Glob Ofter i Resolver. O ovdje možete objaviti, ažurirati i "
+"izbrisati postove. Imajte na umu da su postovi identificirani prema njihovom"
+" pužu."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Možete unijeti složen način prikaza u kojem vidite više informacija o "
+"člancima koji mogu biti korisni prilikom postavljanja."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Brisanje posta znači da će se izbrisati na WordPress -u, a ne u skladištu, "
+"pa se savjetuje da unaprijed napravite sigurnosnu kopiju vaših postova."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

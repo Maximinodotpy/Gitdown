@@ -1,5 +1,5 @@
 
-import os
+import os, polib
 
 all=[
     'af',
@@ -71,5 +71,9 @@ os.chdir(os.path.join(os.getcwd(), 'languages'))
 
 for lang in all:
     print(lang)
-    os.system(f'xls-to-po {lang} translations.xlsx po/gitdown-{lang}.po')
-    """ os.system(f'"C:\Program Files (x86)\Poedit\GettextTools\\bin\msgunfmt.exe" po/gitdown-{lang}.po -o po/gitdown-{lang}.po') """
+
+    poPath = f'po/gitdown-{lang}.po'
+
+    os.system(f'xls-to-po {lang} translations.xlsx {poPath}')
+    poFile = polib.pofile(poPath)
+    poFile.save_as_mofile(f'po/gitdown-{lang}.mo')

@@ -1,0 +1,191 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: el\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Χρησιμοποιήστε αυτό το plugin για να δημιουργήσετε, να ενημερώσετε, να "
+"διαγράψετε και να διαχειριστείτε άρθρα MarkDown που φιλοξενούνται σε "
+"απομακρυσμένο αποθετήριο."
+
+msgid "Manage Git Articles"
+msgstr "Διαχείριση άρθρων git"
+
+msgid "This plugin was made by"
+msgstr "Αυτό το plugin έγινε από"
+
+msgid "Update All"
+msgstr "Ενημέρωση όλων"
+
+msgid "Delete All"
+msgstr "Διαγραφή όλων"
+
+msgid "Reload"
+msgstr "Γεμίζω πάλι"
+
+msgid "Download Example Folder Structure"
+msgstr "Λήψη δομής φακέλου παραδείγματος"
+
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+msgid "Take Tour"
+msgstr "Περιηγηθείτε σε εκδρομή"
+
+msgid "Complex View"
+msgstr "Περίπλοκη άποψη"
+
+msgid "Remote"
+msgstr "Μακρινός"
+
+msgid "Actions"
+msgstr "Ενέργειες"
+
+msgid "Is on Wordpress"
+msgstr "Είναι στο WordPress"
+
+msgid "Not on wordpress"
+msgstr "Όχι στο WordPress"
+
+msgid "Update"
+msgstr "Εκσυγχρονίζω"
+
+msgid "Delete"
+msgstr "Διαγράφω"
+
+msgid "Open in new Tab"
+msgstr "Ανοίξτε σε νέα καρτέλα"
+
+msgid "Publish"
+msgstr "Δημοσιεύω"
+
+msgid "Loading"
+msgstr "Φόρτωση"
+
+msgid "Resolver"
+msgstr "Διαλύων"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Το Gitdown προσπαθεί να βρει και να καταλάβει τα άρθρα σας σε ένα "
+"συγκεκριμένο αποθετήριο με λίγους διαφορετικούς τρόπους. Αυτή η διαδικασία "
+"ονομάζεται \"επίλυση\" και συνεπάγεται τρία βήματα, που πρέπει να "
+"ακολουθήσετε κατά την επεξεργασία των ρυθμίσεων."
+
+msgid "Repository"
+msgstr "Αποθήκη"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Πριν μπορέσετε να ξεκινήσετε, πρέπει να προσδιορίσετε όπου βρίσκεται το "
+"αποθετήριο σας. Από προεπιλογή υπάρχει ένα παράδειγμα αποθετηρίου που "
+"μπορείτε να χρησιμοποιήσετε για να δοκιμάσετε και να μάθετε πώς λειτουργεί "
+"αυτό το plugin."
+
+msgid "Glob Pattern"
+msgstr "Σφαίρα"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"Με το μοτίβο Glob, το συγκεκριμένο, όπου στο αποθετήριο σας είναι τα αρχεία."
+" Για παράδειγμα: <code> **/*. MD </code> θα ταιριάζει με οποιοδήποτε αρχείο "
+"που τελειώνει με το .md. Χρησιμοποιήστε το <a "
+"href=\"https://globster.xyz/\"> globster.xyz </a> Για να μάθετε και να "
+"δοκιμάσετε το μοτίβο της σφαίρας σας ή μπορείτε να το δοκιμάσετε ακριβώς "
+"κάτω από αυτή την παράγραφο."
+
+msgid "Resolver Function"
+msgstr "Λειτουργία διαλυτή"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"Από τώρα δεν χρειάζεται να ανησυχείτε πάρα πολύ για τη λειτουργία του "
+"διαλυτή, καθώς υπάρχουν μόνο δύο: απλός και κατάλογος στην κατηγορία. Και οι"
+" δύο θα αναζητήσουν πληροφορίες μπροστινής ύλης μέσα στα αρχεία Markdown και"
+" θα συμπληρώσουν τις μετα -πληροφορίες σχετικά με την ανάρτηση με αυτόν τον "
+"τρόπο."
+
+msgid "User Interface"
+msgstr "Διεπαφή χρήστη"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Η διεπαφή χρήστη είναι αρκετά ευθεία προς τα εμπρός. Το Gitdown εισάγει τρία"
+" διαφορετικά στοιχεία UI στη σελίδα σας, βλέπετε την περιγραφή τους "
+"παρακάτω."
+
+msgid "Article Overview"
+msgstr "Επισκόπηση άρθρου"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Αυτό είναι όπου είστε σήμερα. Εδώ βλέπετε όλες τις δημοσιεύσεις μέσα στο "
+"repo που έχουν βρεθεί μέσω του μοτίβου Glob και του resolver. Μπορείτε να "
+"δημοσιεύσετε, να ενημερώσετε και να διαγράψετε δημοσιεύσεις εδώ. Λάβετε "
+"υπόψη ότι οι θέσεις αναγνωρίζονται από το γυμνοσάλιαγκα τους."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Μπορείτε να εισαγάγετε μια σύνθετη λειτουργία προβολής όπου βλέπετε "
+"περισσότερες πληροφορίες σχετικά με τα άρθρα που μπορεί να είναι χρήσιμα "
+"κατά τη δημιουργία."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Η διαγραφή μιας ανάρτησης σημαίνει ότι θα διαγραφεί στο WordPress όχι στο "
+"χώρο αποθήκευσης, οπότε συνιστάται να δημιουργήσετε εκ των προτέρων "
+"αντίγραφα ασφαλείας των δημοσιεύσεών σας."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

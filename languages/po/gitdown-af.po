@@ -1,0 +1,184 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: af\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Gebruik hierdie inprop om Markdown -artikels wat op 'n afgeleë bewaarplek "
+"aangebied word, te skep, op te dateer, te verwyder en te bestuur."
+
+msgid "Manage Git Articles"
+msgstr "Bestuur GIT -artikels"
+
+msgid "This plugin was made by"
+msgstr "Hierdie inprop is gemaak deur"
+
+msgid "Update All"
+msgstr "Dateer almal op"
+
+msgid "Delete All"
+msgstr "Vee alles uit"
+
+msgid "Reload"
+msgstr "Herlaai"
+
+msgid "Download Example Folder Structure"
+msgstr "Laai voorbeeldmolstruktuur af"
+
+msgid "Settings"
+msgstr "Instellings"
+
+msgid "Take Tour"
+msgstr "Neem toer"
+
+msgid "Complex View"
+msgstr "Komplekse uitsig"
+
+msgid "Remote"
+msgstr "Afgeleë"
+
+msgid "Actions"
+msgstr "Aksies"
+
+msgid "Is on Wordpress"
+msgstr "Is op WordPress"
+
+msgid "Not on wordpress"
+msgstr "Nie op WordPress nie"
+
+msgid "Update"
+msgstr "Opdateer"
+
+msgid "Delete"
+msgstr "Verwyder"
+
+msgid "Open in new Tab"
+msgstr "Oop in nuwe oortjie"
+
+msgid "Publish"
+msgstr "Publiseer"
+
+msgid "Loading"
+msgstr "Laai"
+
+msgid "Resolver"
+msgstr "Resolusie"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Gitdown probeer om u artikels op 'n gegewe bewaarplek op 'n paar "
+"verskillende maniere te vind en te verstaan. Hierdie proses word 'oplossing'"
+" genoem en dit behels drie stappe wat u moet volg wanneer u die instellings "
+"redigeer."
+
+msgid "Repository"
+msgstr "Bewaarplek"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Voordat u kan begin, moet u spesifiek wees waar u bewaarplek geleë is. Daar "
+"is standaard 'n voorbeeldbewaarplek wat u kan gebruik om te toets en te leer"
+" hoe hierdie inprop werk."
+
+msgid "Glob Pattern"
+msgstr "Bolpatroon"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"Met die aardpatroon is u spesifiek waar die lêers in u bewaarplek is. "
+"Byvoorbeeld: <code> **/*. MD </code> sal ooreenstem met enige lêer wat "
+"eindig met .md. Gebruik <a href=\"https://globster.xyz/\"> globster.xyz </a>"
+" Om u aardpatroon te leer en te toets, of u kan dit onder hierdie paragraaf "
+"probeer."
+
+msgid "Resolver Function"
+msgstr "Resolverfunksie"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"U hoef nou nie te veel te bekommer oor die resolusiefunksie nie, want daar "
+"is net twee: eenvoudige en gids in die kategorie. Hulle sal albei in die "
+"Markdown -lêers na vooraanstaande inligting kyk en meta -inligting oor die "
+"pos op hierdie manier invul."
+
+msgid "User Interface"
+msgstr "Gebruikerskoppelvlak"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Die gebruikerskoppelvlak is redelik reguit. Gitdown plaas drie verskillende "
+"UI -element in u bladsy. U sien die beskrywing daarvan hieronder."
+
+msgid "Article Overview"
+msgstr "Artikeloorsig"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Dit is waar u tans is. Hier sien u al die poste binne die repo wat via die "
+"aardpatroon en resolver gevind is. U kan hier plasings publiseer, opdateer "
+"en uitvee. Hou in gedagte dat poste deur hul slak geïdentifiseer word."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"U kan 'n komplekse aansigmodus invoer waar u meer inligting oor die artikels"
+" sien wat nuttig kan wees as u opstel."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Die verwydering van 'n pos beteken dat dit op WordPress nie in die "
+"bewaarplek geskrap sal word nie, en daarom word dit aangeraai om vooraf 'n "
+"rugsteun van u poste te maak."
+
+msgid "Posts Overview"
+msgstr "Posts Oorsig"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

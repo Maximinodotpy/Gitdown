@@ -1,0 +1,160 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: zh-tw\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr "使用此插件來創建，更新，刪除和管理在遠程存儲庫上託管的標記文章。"
+
+msgid "Manage Git Articles"
+msgstr "管理GIT文章"
+
+msgid "This plugin was made by"
+msgstr "這個插件由"
+
+msgid "Update All"
+msgstr "全部更新"
+
+msgid "Delete All"
+msgstr "刪除所有"
+
+msgid "Reload"
+msgstr "重新加載"
+
+msgid "Download Example Folder Structure"
+msgstr "下載示例文件夾結構"
+
+msgid "Settings"
+msgstr "設置"
+
+msgid "Take Tour"
+msgstr "旅遊"
+
+msgid "Complex View"
+msgstr "複雜的視圖"
+
+msgid "Remote"
+msgstr "偏僻的"
+
+msgid "Actions"
+msgstr "動作"
+
+msgid "Is on Wordpress"
+msgstr "在WordPress上"
+
+msgid "Not on wordpress"
+msgstr "不在WordPress上"
+
+msgid "Update"
+msgstr "更新"
+
+msgid "Delete"
+msgstr "刪除"
+
+msgid "Open in new Tab"
+msgstr "在新標籤中打開"
+
+msgid "Publish"
+msgstr "發布"
+
+msgid "Loading"
+msgstr "加載"
+
+msgid "Resolver"
+msgstr "解析器"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr "Gitdown試圖以幾種不同的方式在給定的存儲庫中查找和理解您的文章。此過程稱為“解決”，它需要三個步驟，在編輯設置時應遵循。"
+
+msgid "Repository"
+msgstr "存儲庫"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr "在開始之前，您必須指定存儲庫的位置。默認情況下，您可以使用一個示例存儲庫來測試和了解此插件的工作原理。"
+
+msgid "Glob Pattern"
+msgstr "球模式"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"使用Glog模式，您可以在存儲庫中指定文件所在。例如：<code> **/*。MD </code>將匹配以.md結尾的任何文件。使用<a "
+"href=\"https://globster.xyz/\"> globster.xyz </a>學習和測試您的球模式，或者您可以在此段落下方嘗試一下。"
+
+msgid "Resolver Function"
+msgstr "解析器功能"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"到目前為止，您不必太擔心解析器功能，因為只有兩個：類別的簡單和目錄。他們都將在Markdown文件中查找前提信息，並以這種方式填寫有關該帖子的元信息。"
+
+msgid "User Interface"
+msgstr "用戶界面"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr "用戶界面非常簡單。 Gitdown將三個不同的UI元素插入您的頁面，您在下面看到它們的描述。"
+
+msgid "Article Overview"
+msgstr "文章概述"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"這就是您目前的位置。在這裡，您可以看到通過Glob圖案和解析器找到的存儲庫中的所有帖子。您可以在此處發布，更新和刪除帖子。請記住，帖子是通過其slug標識的。"
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr "您可以輸入複雜的視圖模式，在其中您可以看到有關文章的更多信息，這些文章在設置時可能很有用。"
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr "刪除帖子意味著它將在不在存儲庫中的WordPress上刪除，因此建議事先對您的帖子進行備份。"
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

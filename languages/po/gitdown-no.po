@@ -1,0 +1,183 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: no\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Bruk denne pluginen til å opprette, oppdatere, slette og administrere "
+"markdown -artikler som er vert på et eksternt depot."
+
+msgid "Manage Git Articles"
+msgstr "Administrer git -artikler"
+
+msgid "This plugin was made by"
+msgstr "Denne pluginen ble laget av"
+
+msgid "Update All"
+msgstr "Oppdater alt"
+
+msgid "Delete All"
+msgstr "Slette alle"
+
+msgid "Reload"
+msgstr "Last på nytt"
+
+msgid "Download Example Folder Structure"
+msgstr "Last ned eksempel mappestruktur"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Take Tour"
+msgstr "Ta turen"
+
+msgid "Complex View"
+msgstr "Kompleks utsikt"
+
+msgid "Remote"
+msgstr "Fjernkontroll"
+
+msgid "Actions"
+msgstr "Handlinger"
+
+msgid "Is on Wordpress"
+msgstr "Er på WordPress"
+
+msgid "Not on wordpress"
+msgstr "Ikke på WordPress"
+
+msgid "Update"
+msgstr "Oppdater"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Open in new Tab"
+msgstr "Åpne i ny fane"
+
+msgid "Publish"
+msgstr "publisere"
+
+msgid "Loading"
+msgstr "Lasting"
+
+msgid "Resolver"
+msgstr "Resolver"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Gitdown prøver å finne og forstå artiklene dine i et gitt depot på noen få "
+"forskjellige måter. Denne prosessen kalles \"løsning\" og den innebærer tre "
+"trinn, som du bør følge når du redigerer innstillingene."
+
+msgid "Repository"
+msgstr "Oppbevaringssted"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Før du kan komme i gang må du spesifisere hvor depotet ditt ligger. Som "
+"standard er det et eksempel depot som du kan bruke til å teste og lære "
+"hvordan denne pluginen fungerer."
+
+msgid "Glob Pattern"
+msgstr "Glob mønster"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"Med glob -mønsteret spesifiserer du hvor i depotet ditt er filene. For "
+"eksempel: <code> **/*. Md </code> vil samsvare med hvilken som helst fil som"
+" ender med .md. Bruk <a href=\"https://globster.xyz/\"> globster.xyz </a> "
+"For å lære og teste glob -mønsteret ditt, eller du kan prøve det helt ned "
+"under dette avsnittet."
+
+msgid "Resolver Function"
+msgstr "Resolver -funksjonen"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"Per nå trenger du ikke å bekymre deg for mye om oppløsningsfunksjonen, da "
+"det bare er to: enkel og katalog til kategori. De vil begge se etter "
+"informasjonsinfo i Markdown -filene og fylle ut metainformasjon om innlegget"
+" på denne måten."
+
+msgid "User Interface"
+msgstr "Brukergrensesnitt"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Brukergrensesnittet er ganske rett frem. Gitdown setter inn tre forskjellige"
+" brukergrensesnittelement på siden din du ser beskrivelse av dem nedenfor."
+
+msgid "Article Overview"
+msgstr "Artikkeloversikt"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Det er her du for tiden er. Her ser du alle innleggene i repoen som er "
+"funnet via Glob Pattern and Resolver. Du kan publisere, oppdatere og slette "
+"innlegg her. Husk at innlegg blir identifisert av deres snegle."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Du kan legge inn en kompleks visningsmodus der du ser flere infos om "
+"artiklene som kan være nyttige når du setter opp."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Å slette et innlegg betyr at det vil bli slettet på WordPress ikke i "
+"depotet, så det anbefales å ta en sikkerhetskopi av innleggene dine på "
+"forhånd."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

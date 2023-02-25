@@ -1,0 +1,185 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: ga\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Bain úsáid as an mbreiseán seo chun earraí Markdown a chruthú, a nuashonrú, "
+"a scriosadh agus a bhainistiú arna óstáil ar stór iargúlta."
+
+msgid "Manage Git Articles"
+msgstr "Bainistigh earraí git"
+
+msgid "This plugin was made by"
+msgstr "Rinne an breiseán seo an"
+
+msgid "Update All"
+msgstr "Nuashonraigh gach rud"
+
+msgid "Delete All"
+msgstr "Scrios gach duine"
+
+msgid "Reload"
+msgstr "Athlódáil"
+
+msgid "Download Example Folder Structure"
+msgstr "Íoslódáil Struchtúr Fillteán Sampla"
+
+msgid "Settings"
+msgstr "Socruithe"
+
+msgid "Take Tour"
+msgstr "Take turas"
+
+msgid "Complex View"
+msgstr "Casta"
+
+msgid "Remote"
+msgstr "Iargúlta"
+
+msgid "Actions"
+msgstr "Callán"
+
+msgid "Is on Wordpress"
+msgstr "Ar WordPress"
+
+msgid "Not on wordpress"
+msgstr "Ní ar WordPress"
+
+msgid "Update"
+msgstr "An t -ó nuashonrú a dhéanamh ar"
+
+msgid "Delete"
+msgstr "Scrios amach"
+
+msgid "Open in new Tab"
+msgstr "Oscailte i gCluaisín Nua"
+
+msgid "Publish"
+msgstr "Fhoilsiú"
+
+msgid "Loading"
+msgstr "Lódáil"
+
+msgid "Resolver"
+msgstr "Athdhearbhaitheoir"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Déanann Gitdown iarracht do chuid earraí a aimsiú agus a thuiscint i stór ar"
+" leith ar bhealaí éagsúla. Tugtar \"réiteach\" ar an bpróiseas seo agus is "
+"éard atá i gceist leis ná trí chéim, gur chóir duit a leanúint agus na "
+"suíomhanna á n -eagarthóireacht."
+
+msgid "Repository"
+msgstr "Stór"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Sula féidir leat tosú, caithfidh tú a shonrú áit a bhfuil do stór suite. De "
+"réir réamhshocraithe tá stór sampla ann ar féidir leat a úsáid chun tástáil "
+"agus foghlaim conas a oibríonn an breiseán seo."
+
+msgid "Glob Pattern"
+msgstr "Patrún glob"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"Leis an bpatrún glob, tá tú i do stór i do stór. Mar shampla: beidh <code> "
+"**/*. Md </code> comhoiriúnach le haon chomhad a chríochnaíonn le .md. Bain "
+"úsáid as <a href=\"https://globster.xyz/\"> globster.xyz </a> chun do "
+"phatrún glob a fhoghlaim agus a thástáil nó is féidir leat triail a bhaint "
+"as an gceart síos faoin mír seo."
+
+msgid "Resolver Function"
+msgstr "Feidhm Resolver"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"Amhail anois ní gá duit a bheith buartha faoi fheidhm an resolver mar níl "
+"ach dhá cheann: simplí agus eolaire go catagóir. Beidh an bheirt acu ag lorg"
+" eolas ar ábhar tosaigh laistigh de na comhaid Markdown agus líonfaidh siad "
+"meta -fhaisnéis faoin bpost ar an mbealach seo."
+
+msgid "User Interface"
+msgstr "Comhéadan úsáideora"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Tá an comhéadan úsáideora díreach díreach ar aghaidh. Cuireann Gitdown trí "
+"ghné éagsúla Chomhéadain isteach i do leathanach a fheiceann tú cur síos "
+"orthu thíos."
+
+msgid "Article Overview"
+msgstr "Forbhreathnú Airteagal"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Seo an áit a bhfuil tú faoi láthair. Anseo feiceann tú na poist go léir "
+"laistigh den repo a fuarthas tríd an bpatrún glob agus an resolver. Is "
+"féidir leat poist a fhoilsiú, a nuashonrú agus a scriosadh anseo. Coinnigh i"
+" gcuimhne go n -aithníonn a gcuid seilide poist."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Is féidir leat dul isteach i mód radhairc casta ina bhfeiceann tú níos mó "
+"infos faoi na hearraí a d'fhéadfadh a bheith úsáideach agus iad ag bunú."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Ciallaíonn scriosadh post go scriosfar é ar WordPress ní sa stór, mar sin "
+"moltar duit cúltaca de do phoist a dhéanamh roimh ré."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

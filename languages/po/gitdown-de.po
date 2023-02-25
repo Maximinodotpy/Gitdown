@@ -1,0 +1,186 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Verwenden Sie dieses Plugin, um Markdown -Artikel zu erstellen, zu "
+"aktualisieren, zu löschen und zu verwalten, die in einem Remote -Repository "
+"gehostet werden."
+
+msgid "Manage Git Articles"
+msgstr "GIT -Artikel verwalten"
+
+msgid "This plugin was made by"
+msgstr "Dieses Plugin wurde von gemacht von"
+
+msgid "Update All"
+msgstr "Alle aktualisieren"
+
+msgid "Delete All"
+msgstr "Alles löschen"
+
+msgid "Reload"
+msgstr "Neu laden"
+
+msgid "Download Example Folder Structure"
+msgstr "Beispiel für die Ordnerstruktur herunterladen"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Take Tour"
+msgstr "Tour machen"
+
+msgid "Complex View"
+msgstr "Komplexe Ansicht"
+
+msgid "Remote"
+msgstr "Fernbedienung"
+
+msgid "Actions"
+msgstr "Aktionen"
+
+msgid "Is on Wordpress"
+msgstr "Ist auf WordPress"
+
+msgid "Not on wordpress"
+msgstr "Nicht auf WordPress"
+
+msgid "Update"
+msgstr "Aktualisieren"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Open in new Tab"
+msgstr "In neuer Registerkarte öffnen"
+
+msgid "Publish"
+msgstr "Veröffentlichen"
+
+msgid "Loading"
+msgstr "Wird geladen"
+
+msgid "Resolver"
+msgstr "Resolver"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Gitdown versucht, Ihre Artikel in einem bestimmten Repository auf "
+"verschiedene Arten zu finden und zu verstehen. Dieser Vorgang wird als "
+"\"Lösung\" bezeichnet und beinhaltet drei Schritte, die Sie beim Bearbeiten "
+"der Einstellungen befolgen sollten."
+
+msgid "Repository"
+msgstr "Repository"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Bevor Sie anfangen können, müssen Sie angeben, wo sich Ihr Repository "
+"befindet. Standardmäßig gibt es ein Beispiel -Repository, mit dem Sie testen"
+" und erfahren können, wie dieses Plugin funktioniert."
+
+msgid "Glob Pattern"
+msgstr "Glob -Muster"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"Mit dem Glob -Muster, das Sie spezifiziert haben, wo in Ihrem Repository die"
+" Dateien sind. Zum Beispiel: <Code> **/*. Verwenden Sie <a "
+"href=\"https://globster.xyz/\"> globster.xyz </a> Um Ihr GLOB -Muster zu "
+"lernen und zu testen, oder Sie können es direkt unter diesem Absatz "
+"ausprobieren."
+
+msgid "Resolver Function"
+msgstr "Resolver -Funktion"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"Ab sofort müssen Sie sich nicht zu viel Sorgen um die Resolver -Funktion "
+"machen, da es nur zwei gibt: einfach und Verzeichnis für die Kategorie. "
+"Beide suchen nach Informationen in den Markdown -Dateien und füllen Meta "
+"-Informationen über den Beitrag auf diese Weise aus."
+
+msgid "User Interface"
+msgstr "Benutzeroberfläche"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Die Benutzeroberfläche ist ziemlich einfach. Gitdown fügt drei verschiedene "
+"UI -Elemente in Ihre Seite ein. Sie sehen die Beschreibung von ihnen unten."
+
+msgid "Article Overview"
+msgstr "Artikelübersicht"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Hier sind Sie derzeit. Hier sehen Sie alle Beiträge innerhalb des Repo, die "
+"über das Glob -Muster und den Resolver gefunden wurden. Sie können hier "
+"Beiträge veröffentlichen, aktualisieren und löschen. Denken Sie daran, dass "
+"Beiträge durch ihre Schnecke identifiziert werden."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Sie können einen komplexen Ansichtsmodus eingeben, in dem Sie mehr Infos "
+"über die Artikel sehen, die beim Einrichten nützlich sein können."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Wenn Sie einen Beitrag löschen, wird er auf WordPress nicht im Repository "
+"gelöscht. Daher wird empfohlen, vorab eine Sicherung Ihrer Beiträge zu "
+"erstellen."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

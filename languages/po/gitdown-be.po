@@ -1,0 +1,186 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: be\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Выкарыстоўвайце гэты убудова для стварэння, абнаўлення, выдалення і "
+"кіравання артыкуламі, размешчанымі на аддаленым сховішчы."
+
+msgid "Manage Git Articles"
+msgstr "Кіруйце артыкуламі GIT"
+
+msgid "This plugin was made by"
+msgstr "Гэты убудова быў зроблены"
+
+msgid "Update All"
+msgstr "Абнавіце ўсе"
+
+msgid "Delete All"
+msgstr "Выдаліць усе"
+
+msgid "Reload"
+msgstr "Перапродай"
+
+msgid "Download Example Folder Structure"
+msgstr "Спампаваць прыклад структуры тэчкі"
+
+msgid "Settings"
+msgstr "Налады"
+
+msgid "Take Tour"
+msgstr "Здзейсніць экскурсію"
+
+msgid "Complex View"
+msgstr "Складаны выгляд"
+
+msgid "Remote"
+msgstr "Далёкі"
+
+msgid "Actions"
+msgstr "Дзеянні"
+
+msgid "Is on Wordpress"
+msgstr "Знаходзіцца на WordPress"
+
+msgid "Not on wordpress"
+msgstr "Не на WordPress"
+
+msgid "Update"
+msgstr "Абнаўленне"
+
+msgid "Delete"
+msgstr "Выдаляць"
+
+msgid "Open in new Tab"
+msgstr "Адкрыты ў новай укладцы"
+
+msgid "Publish"
+msgstr "Публікаваць"
+
+msgid "Loading"
+msgstr "Загрузка"
+
+msgid "Resolver"
+msgstr "Дазвол"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Гітдаун спрабуе знайсці і зразумець свае артыкулы ў дадзеным сховішчы "
+"некалькімі рознымі спосабамі. Гэты працэс называецца \"вырашэннем\", і гэта "
+"цягне за сабой тры этапы, якія вы павінны прытрымлівацца пры рэдагаванні "
+"налад."
+
+msgid "Repository"
+msgstr "Сховішча"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Перш чым пачаць, вы павінны вызначыць, дзе знаходзіцца ваш сховішча. Па "
+"змаўчанні ёсць прыклад сховішча, які вы можаце выкарыстоўваць, каб праверыць"
+" і даведацца, як працуе гэты убудова."
+
+msgid "Glob Pattern"
+msgstr "Глобны ўзор"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"З дапамогай шаблону Glob вы ўказваеце, дзе ў вашым рэпазітары ёсць файлы. "
+"Напрыклад: <code> **/*. Md </code> будзе адпавядаць любому файла, які "
+"заканчваецца .md. Выкарыстоўвайце <a href=\"https://globster.xyz/\"> "
+"Globster.xyz </a>, каб даведацца і праверыць свой шаблон Glob, альбо вы "
+"можаце паспрабаваць яго ўніз пад гэтым пунктам."
+
+msgid "Resolver Function"
+msgstr "Функцыя дазволу"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"На сённяшні дзень вам не трэба занадта турбавацца пра функцыю дазволу, бо іх"
+" толькі два: просты і каталог у катэгорыі. Яны абодва будуць шукаць "
+"інфармацыю пра пярэднюю матэрыю ў файлах MarkDown і запоўніць мета "
+"-інфармацыя пра паведамленне такім чынам."
+
+msgid "User Interface"
+msgstr "Карыстацкі інтэрфейс"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Карыстацкі інтэрфейс даволі прама наперад. GitDown Устаўляе тры розныя "
+"элементы карыстацкага інтэрфейсу ў вашу старонку, якую вы бачыце апісанне "
+"ніжэй."
+
+msgid "Article Overview"
+msgstr "Агляд артыкула"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Тут вы зараз знаходзіцеся. Тут вы бачыце ўсе паведамленні ў рамках рэпа, "
+"якія былі знойдзены праз шаблон Glob і разабрацца. Вы можаце апублікаваць, "
+"абнаўляць і выдаляць паведамленні тут. Майце на ўвазе, што паведамленні "
+"ідэнтыфікуюцца іх смоўж."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Вы можаце ўвесці складаны рэжым прагляду, дзе вы бачыце больш інфармацыі пра"
+" артыкулы, якія могуць быць карыснымі пры наладзе."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Выдаленне паведамлення азначае, што ён будзе выдалены на WordPress, які не ў"
+" рэпазітары, таму рэкамендуецца загадзя зрабіць рэзервовую копію вашых "
+"паведамленняў."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""

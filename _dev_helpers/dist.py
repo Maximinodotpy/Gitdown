@@ -34,6 +34,11 @@ ignore = [
     'dist/*',
     'dist/**/*',
 
+    'languages',
+    'languages/',
+    'languages/*',
+    'languages/**/*',
+
     'test-repo',
     'test-repo/',
     'test-repo/*',

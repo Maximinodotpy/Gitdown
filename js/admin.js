@@ -14,42 +14,6 @@ const vueApp = createApp({
     },
 
     async mounted() {
-        console.log('Ruunning tour')
-
-        var queryDict = {}
-        location.search.substr(1).split('&').forEach(function(item) {queryDict[item.split('=')[0]] = item.split('=')[1]})
-        
-        if ('run_tour' in queryDict) {
-            // eslint-disable-next-line no-undef
-            runTour([
-                {
-                    title: 'Introducing: Gitdown',
-                    text: 'Thank you for using gitdown! Lets go over the UI so you can go and create something awesome.',
-                },
-                {
-                    title: 'Global Actions: Updating',
-                    text: 'Will update or publish all articles in your repository.',
-                    element: '#pa',
-                },
-                {
-                    title: 'Global Actions: Deleting',
-                    text: 'Will delete these articles from Wordpress not Github so watch out.',
-                    element: '#da',
-                },
-                {
-                    title: 'Global Actions: Reloading',
-                    text: 'Simpley Reload all articles with this button.',
-                    element: '#sy',
-                },
-                {
-                    title: 'Rows',
-                    text: 'Each row represents a single that was found in your repository.',
-                    element: 'table tr td',
-                },
-            ])
-        }
-
-
         await this.sync()
     },
 

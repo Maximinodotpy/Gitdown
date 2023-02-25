@@ -1,0 +1,182 @@
+# This file was generated from translations.xlsx
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-02-23 13:44+0100\n"
+"Language: sk\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+
+msgid ""
+"Use this Plugin to create, update, delete and manage markdown articles "
+"hosted on a remote repository."
+msgstr ""
+"Pomocou tohto doplnku na vytvorenie, aktualizáciu, odstránenie a správu "
+"článkov Markdown hostených na vzdialenom úložisku."
+
+msgid "Manage Git Articles"
+msgstr "Spravujte články Git"
+
+msgid "This plugin was made by"
+msgstr "Tento doplnok bol vyrobený"
+
+msgid "Update All"
+msgstr "Aktualizovať všetko"
+
+msgid "Delete All"
+msgstr "Vymazať všetko"
+
+msgid "Reload"
+msgstr "Znovu načítať"
+
+msgid "Download Example Folder Structure"
+msgstr "Stiahnite si príklad zložky Štruktúra priečinka"
+
+msgid "Settings"
+msgstr "nastavenie"
+
+msgid "Take Tour"
+msgstr "Vydať sa"
+
+msgid "Complex View"
+msgstr "Zložitý pohľad"
+
+msgid "Remote"
+msgstr "Vzdialený"
+
+msgid "Actions"
+msgstr "Akcie"
+
+msgid "Is on Wordpress"
+msgstr "Je na wordpress"
+
+msgid "Not on wordpress"
+msgstr "Nie na wordpress"
+
+msgid "Update"
+msgstr "Aktualizácia"
+
+msgid "Delete"
+msgstr "Vymazať"
+
+msgid "Open in new Tab"
+msgstr "Otvorte na novej karte"
+
+msgid "Publish"
+msgstr "Publikovať"
+
+msgid "Loading"
+msgstr "Načítava"
+
+msgid "Resolver"
+msgstr "Rozriešiteľ"
+
+msgid ""
+"Gitdown tries to find and understand your articles in a given repository in "
+"a few different ways. This process is called \"Resolving\" and it entails "
+"three steps, that you should follow when editing the settings."
+msgstr ""
+"Gitdown sa snaží nájsť a porozumieť vašim článkom v danom úložisku "
+"niekoľkými rôznymi spôsobmi. Tento proces sa nazýva „Riešenie“ a znamená to "
+"tri kroky, ktoré by ste mali sledovať pri úprave nastavení."
+
+msgid "Repository"
+msgstr "Úložisko"
+
+msgid ""
+"Before you can get started you have to specifiy where your repository is "
+"located. By default there is an example repository that you can use to test "
+"and learn how this plugin works."
+msgstr ""
+"Predtým, ako začnete, musíte špecifikovať, kde sa nachádza vaše úložisko. V "
+"predvolenom nastavení existuje príklad úložiska, ktoré môžete použiť na "
+"testovanie a zistenie, ako tento doplnok funguje."
+
+msgid "Glob Pattern"
+msgstr "Vzorec"
+
+msgid ""
+"With the glob pattern you specifiy where in your repository the files are. "
+"For example: <code>**/*.md</code> will match any file that ends with .md. "
+"Use <a href=\"https://globster.xyz/\">globster.xyz</a> to learn and test "
+"your glob pattern or you can try it out right down below this paragraph."
+msgstr ""
+"So vzorom Glob sa špecifikujete, kde sú vo svojom úložisku súbory. "
+"Napríklad: <code> **/*. Použite <a href=\"https://globster.xyz/\"> "
+"globster.xyz </a>, aby ste sa naučili a otestovali svoj vzorec Glob, alebo "
+"ho môžete vyskúšať priamo pod týmto odsekom."
+
+msgid "Resolver Function"
+msgstr "Funkcia Resolver"
+
+msgid ""
+"As of now you dont have to worry too much about the resolver function as "
+"there are only two: Simple and Directory to Category. They will both look "
+"for Front matter info within the markdown files and fill out meta "
+"information about the post this way."
+msgstr ""
+"Odteraz sa nemusíte príliš obávať funkcie Resolveru, pretože existujú iba "
+"dva: jednoduché a adresár do kategórie. Obaja budú hľadať informácie o "
+"prednej záležitosti v súboroch Markdown a vyplniť meta informácie o "
+"príspevku týmto spôsobom."
+
+msgid "User Interface"
+msgstr "Používateľské rozhranie"
+
+msgid ""
+"The user interface is pretty straight forward. Gitdown inserts three "
+"different UI element into your page you see description of them below."
+msgstr ""
+"Používateľské rozhranie je celkom priame. Gitdown vkladá na vašu stránku tri"
+" rôzne prvky používateľského rozhrania, ktoré ich popis nájdete nižšie."
+
+msgid "Article Overview"
+msgstr "Prehľad článku"
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+"Tu ste v súčasnosti. Tu vidíte všetky príspevky v rámci repo, ktoré boli "
+"nájdené prostredníctvom vzoru Globa a Resolver. Tu môžete publikovať, "
+"aktualizovať a vymazať príspevky. Majte na pamäti, že príspevky sú "
+"identifikované ich slimákom."
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+"Môžete zadať komplexný režim zobrazenia, v ktorom vidíte viac infos o "
+"článkoch, ktoré môžu byť užitočné pri nastavovaní."
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+"Odstránenie príspevku znamená, že bude odstránený na WordPress nie v "
+"úložisku, takže sa odporúča urobiť zálohu vašich príspevkov vopred."
+
+msgid "Posts Overview"
+msgstr ""
+
+msgid ""
+"This is where you currently are. Here you see all the posts within the repo "
+"that have been found via the glob pattern and resolver. You can publish, "
+"update and delete posts here. Keep in mind that posts are identified by "
+"their slug."
+msgstr ""
+
+msgid ""
+"You can enter a complex view mode where you see more infos about the "
+"articles which may be useful when setting up."
+msgstr ""
+
+msgid ""
+"Deleting a post means it will be deleted on Wordpress not in the repository,"
+" so it is advised to make a backup of your posts beforehand."
+msgstr ""
+
+msgid "Posts Overview"
+msgstr ""
