@@ -190,12 +190,20 @@
   align-items: center !important;
 }
 
+.tw-items-baseline {
+  align-items: baseline !important;
+}
+
 .tw-justify-center {
   justify-content: center !important;
 }
 
 .tw-gap-2 {
   gap: 0.5rem !important;
+}
+
+.tw-gap-4 {
+  gap: 1rem !important;
 }
 
 .tw-bg-orange-300 {

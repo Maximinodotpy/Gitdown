@@ -1,7 +1,9 @@
 <div class="wrap gitdown_ui" id="vue_app">
-    <h1><?php _e('Manage Git Articles', 'gitdown')?></h1>
-
-    <p><?php _e('This plugin was made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a>.</p>
+    <div class="tw-flex tw-gap-4 tw-items-baseline">
+        <h1><?php _e('Manage Git Articles', 'gitdown')?></h1>
+    
+        <p><?php _e('This plugin was made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a>.</p>
+    </div>
 
     <div style="display: flow-root;">
         <ul class='subsubsub'>

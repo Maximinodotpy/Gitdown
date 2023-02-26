@@ -27,6 +27,10 @@ function image($image, $caption) {
     <?php
 }
 
+function insertBreak() {
+    echo '<br><br><br>';
+}
+
 $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20-%20My%20First%20Article%2Findex.html%2C%2F00%20-%20My%20First%20Article%2Farticle.md%2C%2F01%20-%20How%20to%20minify%20CSS%20with%20Python%2Fminify.py%2C%2F01%20-%20How%20to%20minify%20CSS%20with%20Python%2Farticle.md%2C%2F02%20-%20How%20to%20setup%20a%20wordpress%20theme%2Farticle.md&embed=1';
 
 `
@@ -54,40 +58,43 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 
         <p>Let's quickly go over how to use this plugin.</p>
 
-        <p>This tutorial is split into two sections: The Setup and Managing Article. The Setup is a little bit harder than the managing so lets get right into it.</p>
+        <p>I split this tutorial into two sections: The Setup and Managing Article. The Setup is a little bit harder than the managing, so let's get right into it.</p>
 
 
         <h2>Setup</h2>
 
-        <p>So you want to publish your markdown articles from a remote repository like github to your wordpress blog. This means that you will have to first define the location of your github repository in the settings. The Gitdown settings are located at <i><a href="<?php echo home_url('/wp-admin/options-reading.php'); ?>" target="_blank">Reading</a></i>.</p>
+        <p>You want to publish your markdown articles from a remote repository like GitHub to your WordPress blog, so you will have to first define the location of your Remote repository in the settings. The Gitdown settings are located at <i><a href="<?php echo home_url('/wp-admin/options-reading.php'); ?>" target="_blank">Reading</a></i>.</p>
 
         
         <?php image(GD_ROOT_URL.'views/how_to/github-copy-repo-url.png', 'Where to find your github repository link.'); ?>
         
 
-        <?php info('By default there is repository there that I have created so you can test out and understand how Gitdown works without having a repo ready yourself.'); ?>
+        <?php info('By default, there is a repository there that I have created so you can test out and understand how Gitdown works without having a repo ready yourself.'); ?>
+
+        
+        <?php warning('Gitdown wont be able to clone and fetch private repositories as of now.') ?>
 
         <p>Now that you have a repository set Gitdown will clone and fetch this repository to your <code>wp-content</code>folder.</p>
 
-        <br><br><br>
+        <?php insertBreak() ?>
 
-        <p class="mt-8">Next up we need to tell gitdown where to find the files that represent the Articles within your repository. We do this with a <a href="https://www.php.net/manual/en/function.glob.php">glob pattern</a>.</p>
+        <p class="mt-8">Next, we need to tell Gitdown where to find the files representing the Articles within your repository. We do this with a <a href="https://www.php.net/manual/en/function.glob.php">glob pattern</a>.</p>
 
-        <p>Glob Patterns are like Regular Expressions but for File Systems, for example <code>*.md</code> means match all files in the current folder ending with <code>.md</code> or <code>**/article.txt</code> means match all files in any direct subfolder of the current directory ending that are called <code>article.txt</code></p>
+        <p>Glob Patterns are like Regular Expressions, but for File Systems, for example <code>*.md</code> means match all files in the current folder that end with <code>.md</code> or <code>**/article.txt</code> means match all files in any direct subfolder of the current directory ending that are called <code>article.txt</code></p>
 
-        <p>Below you see <a href="https://globster.xyz" target="_blank">globster.xyz</a>, an awesome little website that can help you figure out and understand glob patterns. Edit the pattern at the top to see which files light up.</p>
+        <p>Below you see <a href="https://globster.xyz" target="_blank">globster.xyz</a>, a fantastic little website that can help you figure out and understand glob patterns. Edit the pattern at the top to see which files light up.</p>
 
         <iframe style="width: 100%" height="450" src="<?php echo $globsterURL ?>" frameborder="0" sandbox="allow-scripts"></iframe>
 
-        <p>Now that you know how glob patterns work you can use them in the Gitdown settings.</p>
+        <p>Now that you know how glob patterns work, you can use them in the Gitdown settings.</p>
 
         <?php info('You can specifiy multiple glob pattern by seperating them with a comma like this: <code>*.md,*.txt</code>'); ?>            
 
-        <br><br><br>
+        <?php insertBreak() ?>
 
-        <p>We got the hard part out of the way lets also quickly look at the resolver function.</p>
+        <p>We got the hard part out of the way lets also quickly look at the resolver functions.</p>
 
-        <p>In the background every article that was found will be put through a function called a resolver and it will try to find out the meta information of the article this way.</p>
+        <p>In the background every article that was found will be put through a function called a resolver and it will try to find out the meta information of the article.</p>
 
         <p>At the moment there are two resolver functions</p>
 
@@ -105,9 +112,10 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
         <p>Now that you have setup everything you can go to the main admin page of the plugin, where you see all your found posts.</p>
 
         <?php warning('Articles are connected via their slug/post_name which means Gitdown will think an article that was on your Blog before that matches another article in your repo are the same and it will overwrite it so It is advised to make a backup of your articles. This also means that if you change the slug of any article it will no longer match its counterpart on git or wordpress.') ?>
+        <?php info('Gitdown will create the categories that were specified in your frontmatter and it even allows nested categories like this: <code>Vehicles/Cars/Ford</code>'); ?>
         
 
-        <br><br><br>
+        <?php insertBreak() ?>
 
         <p class="mt-8">To Recap, setting up consists of ...</p>
         <ol>
@@ -117,7 +125,7 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
         </ol>
 
 
-        <br><br><br>
+        <?php insertBreak() ?>
         
 
         <h2>Managing Articles</h2>
