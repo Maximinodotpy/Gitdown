@@ -2,15 +2,19 @@
 
 class GD_ArticleCollection {
     public $articles = [];
+    public $reports;
     // Logic is provided by index file
     public $logger;
 
+    // TODO: Add source and glob in the constructor but only fetch the data once it is needed for performance.
     function __construct () {
-
+        $this->reports = (object) array(
+            '' => 'fsd',
+        );
     }
 
     function parseDirectory($source, $glob) {
-        $remote_defaults = [
+        /* $remote_defaults = [
             'name' => null,
             'slug' => null,
             'description' => '',
@@ -20,9 +24,10 @@ class GD_ArticleCollection {
             'category' => [],
             'tags' => [],
             'status' => null,
-        ];
+        ]; */
 
         chdir($source);
+
 
         // Get all Paths
         $paths = [];
@@ -34,13 +39,18 @@ class GD_ArticleCollection {
         // Resolve Articles
         foreach ($paths as $path) {
 
-            $postData = [];
+            // Creating the Std Object
+            $postData = new stdClass();
 
-            $postData[GD_REMOTE_KEY] = $this->resolver($path) ?? [];
+            $postData->remote = $this->resolver($path) ?? [];
+
+
+
+
 
             // Add the name as the slug in case its not defined
-            if (!array_key_exists('slug', $postData[GD_REMOTE_KEY])) {
-                $postData[GD_REMOTE_KEY]['slug'] = gd_stringToSlug($postData[GD_REMOTE_KEY]['name']);
+            if (!property_exists($postData->remote, 'slug')) {
+                $postData->remote->slug = gd_stringToSlug($postData->remote->name);
             }
 
             array_push($this->articles, $postData);
@@ -58,11 +68,11 @@ class GD_ArticleCollection {
         foreach ($this->articles as $key => $article) {
             
             $localArticle = $this->_array_nested_find($localArticles, function($obj) use (&$article) {
-                return $obj->post_name == $article[GD_REMOTE_KEY]['slug'];
+                return $obj->post_name == $article->remote->slug;
             });
 
-            $this->articles[$key][GD_LOCAL_KEY] = json_decode(json_encode($localArticle), true) ?? [];
-            $this->articles[$key]['_is_published'] = !!$localArticle;
+            $this->articles[$key]->local = $localArticle ?? [];
+            $this->articles[$key]->_is_published = !!$localArticle;
         }
 
         chdir(GD_ROOT_PATH);
@@ -99,20 +109,22 @@ class GD_ArticleCollection {
         };
 
 
+        $currentData = '';
         switch (get_option(GD_SETTING_RESOLVER)) {
             case 'simple':
-                return $resolver_simple($document_path);
+                $currentData = $resolver_simple($document_path);
                 break;
 
             case 'dir_cat':
-                return $resolver_dir_cat($document_path);
+                $currentData = $resolver_dir_cat($document_path);
                 break;
 
             default;
-                return $resolver_simple($document_path);
+                $currentData = $resolver_simple($document_path);
                 break;
         }
 
+        return (object) $currentData;
     } 
 
     function _array_nested_find($array, $function) {
@@ -125,22 +137,22 @@ class GD_ArticleCollection {
         return $this->articles;
     }
 
-    function set_all($data) {
+    /* function set_all($data) {
         $this->articles = $data;
-    }
+    } */
 
     function get_by_slug($slug) {
         return $this->_array_nested_find($this->articles, function($obj) use (&$slug) {
-            return $obj[GD_REMOTE_KEY]['slug'] == $slug;
+            return $obj->remote->slug == $slug;
         });
     }
 
     function get_by_id($id) {
         return $this->_array_nested_find($this->articles, function($obj) use (&$id) {
-            return ($obj[GD_LOCAL_KEY]['ID'] ?? -1) == $id;
-        }) ?? [
+            return ($obj->local->ID ?? -1) == $id;
+        }) ?? (object) array(
             '_is_published' => false,
-        ];
+        );
     }
 
     public function updateArticle($slug)
@@ -152,24 +164,24 @@ class GD_ArticleCollection {
         $Parsedown = new Parsedown();
 
         $new_post_data = array(
-            'post_title'    => $post_data[GD_REMOTE_KEY]['name'],
-            'post_name'    => $post_data[GD_REMOTE_KEY]['slug'],
-            'post_excerpt' => $post_data[GD_REMOTE_KEY]['description'] ?? '',
-            'post_content'  => wp_kses_post($Parsedown->text($post_data[GD_REMOTE_KEY]['raw_content'])),
-            'post_status'   => $post_data[GD_REMOTE_KEY]['status'] ?? 'publish',
-            'post_category' => $this->createCategories($post_data[GD_REMOTE_KEY]['category'] ?? []),
+            'post_title'    => $post_data->remote->name,
+            'post_name'    => $post_data->remote->slug,
+            'post_excerpt' => $post_data->remote->description ?? '',
+            'post_content'  => wp_kses_post($Parsedown->text($post_data->remote->raw_content)),
+            'post_status'   => $post_data->remote->status ?? 'publish',
+            'post_category' => $this->createCategories($post_data->remote->category ?? []),
         );
 
         /* Add the ID in case it is already published */
-        if ($post_data['_is_published']) {
-            $new_post_data['ID'] = $post_data[GD_LOCAL_KEY]['ID'];
+        if ($post_data->_is_published) {
+            $new_post_data['ID'] = $post_data->local->ID;
         }
 
         // Insert the post into the database
         $post_id = wp_insert_post($new_post_data);
 
         // Uploading the Image
-        $imagePath = GD_MIRROR_PATH . $post_data[GD_REMOTE_KEY]['featured_image'];
+        $imagePath = GD_MIRROR_PATH . $post_data->remote->featured_image;
 
         if (is_file($imagePath)) {
             $uploadPath = wp_upload_dir()['path'] . '/' . $new_post_data['post_name'] . '.png';
@@ -188,16 +200,6 @@ class GD_ArticleCollection {
 
             $attach_id = wp_insert_attachment($attachment_data, $uploadPath, $post_id);
             set_post_thumbnail($post_id, $attach_id);
-
-            // Regenerate Image Sizes for Thumbnail
-            /* $editor = wp_get_image_editor($uploadPath);
-            $this->logger->info('Editor', $editor);
-
-            foreach (wp_get_registered_image_subsizes() as $key => $size) {
-                $this->logger->info($key, $size);
-            } */
-
-            wp_create_image_subsizes( $uploadPath, $attach_id );
         };
 
         $this->logger->info('Post Updated');
@@ -209,9 +211,9 @@ class GD_ArticleCollection {
     {
         $article = $this->get_by_slug($slug);
 
-        if (!$article['_is_published']) return;
+        if (!$article->_is_published) return;
 
-        $post_id = $article[GD_LOCAL_KEY]['ID'];
+        $post_id = $article->local->ID;
 
         // Remove Thumbnail Image
         wp_delete_attachment(get_post_thumbnail_id($post_id));
@@ -252,8 +254,4 @@ class GD_ArticleCollection {
         }
         return $returned_ids;
     }
-
-    /* public function regenerateThumbnail() {
-
-    } */
 }
