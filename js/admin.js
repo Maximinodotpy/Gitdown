@@ -7,10 +7,11 @@ const vueApp = createApp({
             articles: [],
             search_query: '',
             complex_view: false,
-            metadata: {
-                repo_url: 'https://github.com/Maximinodotpy/articles.git',
-                glob_pattern: '*.md',
-                resolver_function: 'simple',
+            reports: {
+                published_posts: 0,
+                found_posts: 0,
+                valid_posts: 0,
+                coerced_slugs: 0,
             }
         }
     },
@@ -99,11 +100,17 @@ const vueApp = createApp({
 
         async sync() {
             this.articles = []
+            
 
-            this.articles = (await this.callAJAX({
+            const response = (await this.callAJAX({
                 action: 'get_all_articles',
-            })).reverse()
+            }))
+
+            this.articles = response.posts.reverse()
+            this.reports = response.reports
+
             console.log(this.articles)
+            console.log(response.reports)
         }
     }
 })

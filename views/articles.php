@@ -3,6 +3,7 @@
         <h1 class="tw-flex-grow"><?php _e('Manage Git Articles', 'gitdown')?></h1>
     
         <p class=""><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
+        <p><i>Gitdown v<?php echo get_plugin_data(GD_ROOT_PATH.'index.php')['Version'] ?></i></p>
         <div>
             <a href="https://github.com/Maximinodotpy/Gitdown" target="_blank">
                 <img src="<?php echo GD_ROOT_URL.'images/github-mark.svg' ?>" alt="Contribute to Gitdown on Github" class="tw-w-[30px]" title="Contribute to Gitdown on Github">
@@ -10,13 +11,48 @@
         </div>
     </div>
 
-    <div style="display: flow-root;">
-        <ul class='subsubsub'>
-            {{ articles.filter(article => article._is_published).length }}
-            <span style="color: hsl(0, 0%, 60%)"> / </span>
-            {{ articles.length }}
-        </ul>
-    </div>
+
+    <!-- Report -->
+    <!-- <details class="tw-my-4 tw-p-4" open>
+    
+        <summary class="tw-text-xl">Report</summary>
+
+        <div class="tw-mt-6">
+            <div class="tw-grid md:tw-grid-cols-2 tw-gap-28">
+                <div class="tw-grid tw-grid-cols-2 tw-gap-10">
+                    <div>
+                        <div class="tw-text-4xl tw-font-mono">{{ reports.found_posts }}</div>
+                        <div class="tw-text-lg">Found Posts</div>
+                    </div>
+                    <div>
+                        <div class="tw-text-4xl tw-font-mono">{{ reports.published_posts }}</div>
+                        <div class="tw-text-lg">Published Posts</div>
+                    </div>
+                    <div>
+                        <div class="tw-text-4xl tw-font-mono">{{ reports.valid_posts }}</div>
+                        <div class="tw-text-lg">Valid Posts</div>
+                    </div>
+                    <div>
+                        <div class="tw-text-4xl tw-font-mono">{{ reports.coerced_slugs }}</div>
+                        <div class="tw-text-lg">Coerced Slugs</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="tw-text-3xl tw-mb-4">Errors and Warnings</div>
+
+                    <div v-if="reports?.errors?.length != 0">
+                        <div v-for="error in reports.errors">
+                            {{ error }}
+                        </div>
+                    </div>
+                    <div v-else>
+                        Congratulations! You have no Errors 😀.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </details> -->
 
     <br>
 

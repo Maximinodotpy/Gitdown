@@ -3,13 +3,18 @@
 class GD_ArticleCollection {
     public $articles = [];
     public $reports;
+
     // Logic is provided by index file
     public $logger;
 
     // TODO: Add source and glob in the constructor but only fetch the data once it is needed for performance.
     function __construct () {
         $this->reports = (object) array(
-            '' => 'fsd',
+            'published_posts' => 0,
+            'found_posts' => 0,
+            'valid_posts' => 0,
+            'coerced_slugs' => 0,
+            'errors' => array(),
         );
     }
 
@@ -38,22 +43,22 @@ class GD_ArticleCollection {
 
         // Resolve Articles
         foreach ($paths as $path) {
+            $this->reports->found_posts++;
 
             // Creating the Std Object
-            $postData = new stdClass();
+            $post_data = new stdClass();
 
-            $postData->remote = $this->resolver($path) ?? [];
-
-
-
+            $post_data->remote = $this->resolver($path) ?? [];
 
 
             // Add the name as the slug in case its not defined
-            if (!property_exists($postData->remote, 'slug')) {
-                $postData->remote->slug = gd_stringToSlug($postData->remote->name);
+            if (!property_exists($post_data->remote, 'slug')) {
+                $post_data->remote->slug = gd_stringToSlug($post_data->remote->name);
+                $this->reports->coerced_slugs++;
+                array_push($this->reports->errors, 'Warning: Had to coerce slug for '.$post_data->remote->slug);
             }
 
-            array_push($this->articles, $postData);
+            array_push($this->articles, $post_data);
         }
 
 
@@ -73,6 +78,10 @@ class GD_ArticleCollection {
 
             $this->articles[$key]->local = $localArticle ?? [];
             $this->articles[$key]->_is_published = !!$localArticle;
+
+            if (!!$localArticle) {
+                $this->reports->published_posts++;
+            }
         }
 
         chdir(GD_ROOT_PATH);

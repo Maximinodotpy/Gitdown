@@ -283,7 +283,10 @@ class Gitdown
     {
         // Ajax Calls
         add_action("wp_ajax_get_all_articles", function () {
-            echo json_encode($this->articleCollection->get_all());
+            echo json_encode(array(
+                'posts' => $this->articleCollection->get_all(),
+                'reports' => $this->articleCollection->reports
+            ));
             die();
         });
         add_action("wp_ajax_update_article", function () {
