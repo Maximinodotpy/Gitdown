@@ -1,8 +1,13 @@
 <div class="wrap gitdown_ui" id="vue_app">
-    <div class="tw-flex tw-gap-4 tw-items-baseline">
-        <h1><?php _e('Manage Git Articles', 'gitdown')?></h1>
+    <div class="tw-flex tw-gap-4 tw-items-center">
+        <h1 class="tw-flex-grow"><?php _e('Manage Git Articles', 'gitdown')?></h1>
     
-        <p><?php _e('This plugin was made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a>.</p>
+        <p class=""><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
+        <div>
+            <a href="https://github.com/Maximinodotpy/Gitdown" target="_blank">
+                <img src="<?php echo GD_ROOT_URL.'images/github-mark.svg' ?>" alt="Contribute to Gitdown on Github" class="tw-w-[30px]" title="Contribute to Gitdown on Github">
+            </a>
+        </div>
     </div>
 
     <div style="display: flow-root;">
@@ -36,8 +41,8 @@
                 </span>
             </span>
 
-            <label class="screen-reader-text" for="post-search-input"><?php _e('Search Posts')?>:</label>
-            <input type="search" id="post-search-input" v-model="search_query" placeholder="<?php _e('Search')?>" />
+            <!-- <label class="screen-reader-text" for="post-search-input"><?php _e('Search Posts')?>:</label>
+            <input type="search" id="post-search-input" v-model="search_query" placeholder="<?php _e('Search')?>" /> -->
         </p>
     </div>
 
@@ -69,56 +74,56 @@
         </thead>
         <tbody>
             <tr v-for="item in articles" class="tw-relative tw-box-border">
-                    <td>
-                        <p class="row-title" title="Post Name">{{ item.remote.name }}
-                            <span class="tw-text-neutral-400">— {{ item.remote.status ?? 'publish' }}</span>
-                        </p>
+                <td>
+                    <p class="row-title" title="Post Name">{{ item.remote.name }}
+                        <span class="tw-text-neutral-400">— {{ item.remote.status ?? 'publish' }}</span>
+                    </p>
+
+                    <div v-if="complex_view">
+                        <p title="Post Slug">{{ item.remote.slug }}</p>
+                        <p title="description">{{ item.remote.description }}</p>
+                        <p title="Category">{{ item.remote.category }}</p>
+                    </div>
+                </td>
+                <td>
+                    <template v-if="item._is_published">
+                        <div class="row-title tw-mb-3">✅ <?php _e('Is on Wordpress', 'gitdown')?></div>
 
                         <div v-if="complex_view">
-                            <p title="Post Slug">{{ item.remote.slug }}</p>
-                            <p title="description">{{ item.remote.description }}</p>
-                            <p title="Category">{{ item.remote.category }}</p>
-                        </div>
-                    </td>
-                    <td>
-                        <template v-if="item._is_published">
-                            <div class="row-title tw-mb-3">✅ <?php _e('Is on Wordpress', 'gitdown')?></div>
+                            <div>ID: <code>{{ item.local.ID }}</code></div>
+                            <div>Slug: <code>{{ item.local.post_name }}</code></div>
+                            <div>Excerpt: <code>{{ item.local.post_excerpt }}</code></div>
+                            <div>Status: <code>{{ item.local.post_status }}</code></div>
+                        <div>
+                    </template>
 
-                            <div v-if="complex_view">
-                                <div>ID: <code>{{ item.local.ID }}</code></div>
-                                <div>Slug: <code>{{ item.local.post_name }}</code></div>
-                                <div>Excerpt: <code>{{ item.local.post_excerpt }}</code></div>
-                                <div>Status: <code>{{ item.local.post_status }}</code></div>
-                            <div>
-                        </template>
+                    <template v-else>
+                        ❌ <?php _e('Not on wordpress', 'gitdown')?>
+                    </template>
+                </td>
+                <td class="tw-relative tw-box-border">
+                    <div v-if="item._is_published">
+                        <button class="button action button-primary tw-mr-2 tw-mb-2 tw-inline-block" @click="updateArticle(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
+                        <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="deleteArticle(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
 
-                        <template v-else>
-                            ❌ <?php _e('Not on wordpress', 'gitdown')?>
-                        </template>
-                    </td>
-                    <td class="tw-relative tw-box-border">
-                        <div v-if="item._is_published">
-                            <button class="button action button-primary tw-mr-2 tw-mb-2 tw-inline-block" @click="updateArticle(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
-                            <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="deleteArticle(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
+                        <a target="_blank" class="button action tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
+                    </div>
 
-                            <a target="_blank" class="button action tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
-                        </div>
+                    <div v-else>
+                        <button class="button action" @click="updateArticle(item.remote.slug)"><?php _e('Publish', 'gitdown')?></button>
+                    </div>
 
-                        <div v-else>
-                            <button class="button action" @click="updateArticle(item.remote.slug)"><?php _e('Publish', 'gitdown')?></button>
-                        </div>
-
-                        <br>
-                    </td>
-                    
-                    <td :ref="item.remote.slug" style="visibility: hidden" 
-                        class="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-backdrop-blur-[4px]">
-                        <div class="tw-text-xl tw-font-semibold tw-flex tw-items-center tw-gap-2 drop-shadow-2xl">
-                            <img src="<?php echo GD_ROOT_URL . 'images/loader.svg' ?>" alt="Loader" style="width: 40px">
-                            <span class="tw-select-none"><?php _e('Loading', 'gitdown')?></span>
-                        </div>
-                    </td>
-                </tr>
+                    <br>
+                </td>
+                
+                <td :ref="item.remote.slug" style="visibility: hidden" 
+                    class="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-backdrop-blur-[4px]">
+                    <div class="tw-text-xl tw-font-semibold tw-flex tw-items-center tw-gap-2 drop-shadow-2xl">
+                        <img src="<?php echo GD_ROOT_URL . 'images/loader.svg' ?>" alt="Loader" style="width: 40px">
+                        <span class="tw-select-none"><?php _e('Loading', 'gitdown')?></span>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

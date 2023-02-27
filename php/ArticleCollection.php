@@ -24,25 +24,32 @@ class GD_ArticleCollection {
 
         chdir($source);
 
+        // Get all Paths
         $paths = [];
-
         foreach (explode(',', $glob) as $single_glob) {
             $paths = array_merge($paths, glob($single_glob));
         }
 
+
+        // Resolve Articles
         foreach ($paths as $path) {
 
             $postData = [];
 
-            $postData[GD_REMOTE_KEY] = array_merge($remote_defaults, $this->resolver($path) ?? []);
+            $postData[GD_REMOTE_KEY] = $this->resolver($path) ?? [];
 
-            if (!array_key_exists('slug', $postData)) {
-                $postData['slug'] = gd_stringToSlug($postData['name']);
+            // Add the name as the slug in case its not defined
+            if (!array_key_exists('slug', $postData[GD_REMOTE_KEY])) {
+                $postData[GD_REMOTE_KEY]['slug'] = gd_stringToSlug($postData[GD_REMOTE_KEY]['name']);
             }
 
             array_push($this->articles, $postData);
         }
 
+
+        // Merge Remote Articles with local articles if applicable
+
+        // TODO Search for the article by slug immediately
         $localArticles = get_posts([
             'numberposts' => -1,
             'post_status' => 'any',
