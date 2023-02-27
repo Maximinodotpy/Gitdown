@@ -36,6 +36,10 @@ class GD_ArticleCollection {
 
             $postData[GD_REMOTE_KEY] = array_merge($remote_defaults, $this->resolver($path) ?? []);
 
+            if (!array_key_exists('slug', $postData)) {
+                $postData['slug'] = gd_stringToSlug($postData['name']);
+            }
+
             array_push($this->articles, $postData);
         }
 
@@ -74,10 +78,6 @@ class GD_ArticleCollection {
             $postData['raw_content'] = $document->getContent();
             $postData['featured_image'] = dirname($path) . '/preview.png';
 
-            if (!array_key_exists('slug', $postData)) {
-                $postData['slug'] = gd_stringToSlug($postData['name']);
-            }
-
             return $postData;
         };
 
@@ -86,6 +86,7 @@ class GD_ArticleCollection {
             $post_data = $resolver_simple($path);
 
             $post_data['category'] = [dirname($path)];
+            $post_data['name'] = [basename($path, '.md')];
 
             return $post_data;
         };

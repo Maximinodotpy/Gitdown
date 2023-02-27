@@ -9,6 +9,7 @@ module.exports = {
     important: true,
     content: [
         'views/*.php',
+        'views/**/*.php',
         'js/tour.js',
     ],
     theme: {

@@ -1,12 +1,24 @@
 <?php
 
-function warning($message) {
-    ?>
-    <div class="tw-px-4 tw-py-2 tw-bg-orange-300 tw-text-orange-800 tw-flex tw-items-center tw-mb-3">
-        <p class="tw-m-0 tw-font-bold tw-mr-4 tw-text-3xl tw-bg-orange-600 tw-aspect-square tw-px-4 tw-text-orange-200">!</p>
-        <p class="tw-p-0 tw-m-0"><?php echo $message; ?></p>
-    </div>
-    <?php
+function warning($message, $extended = '') {
+    if ($extended == '') {
+        ?>
+        <div class="tw-px-4 tw-py-2 tw-bg-orange-300 tw-text-orange-800 tw-flex tw-items-center tw-mb-3">
+            <p class="tw-m-0 tw-font-bold tw-mr-4 tw-text-3xl tw-bg-orange-600 tw-aspect-square tw-px-4 tw-text-orange-200">!</p>
+            <p class="tw-p-0 tw-m-0"><?php echo $message; ?></p>
+        </div>
+        <?php
+    } else {
+        ?>
+        <details class="tw-px-4 tw-py-2 tw-bg-orange-300 tw-text-orange-800 tw-mb-3" title="Click me to get more Info.">
+            <summary class="tw-flex tw-items-center">
+                <p class="tw-m-0 tw-font-bold tw-mr-4 tw-text-3xl tw-bg-orange-600 tw-aspect-square tw-px-4 tw-text-orange-200">!</p>
+                <p class="tw-p-0 tw-m-0"><?php echo $message; ?></p>
+            </summary>
+            <p><?php echo $extended ?></p>
+        </details>
+        <?php
+    }
 }
 
 function info($message) {
@@ -21,7 +33,7 @@ function info($message) {
 function image($image, $caption) {
     ?>
         <div class="tw-mt-4 tw-flex tw-flex-col tw-items-center">
-            <img src="<?php echo $image ?>" alt="<?php echo $caption ?>" class="tw-w-full">
+            <img src="<?php echo $image ?>" alt="<?php echo $caption ?>" class="tw-w-full tw-shadow-md">
             <p class="tw-max-w-xl tw-inline-block"><i><?php echo $caption ?></i></p>
         </div>
     <?php
@@ -107,10 +119,56 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
             </li>
         </ul>
 
+        
         <p>You will most likely be fine with the simple resolver.</p>
+        
+        <p>Below you see an example of valid file.</p>
+
+        <!-- <table class="tw-w-full tw-text-left">
+            <thead>
+                <tr>
+                    <th class="tw-w-1/3">Frontmatter</th>
+                    <th class="tw-w-1/3">Wordpress</th>
+                    <th class="tw-w-1/3">Is it Mandatory?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>name</td>
+                    <td>title</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>slug</td>
+                    <td>post_name</td>
+                    <td>no, will be coerced from <code>name</code>, but defining it is good practice.</td>
+                </tr>
+                <tr>
+                    <td>status</td>
+                    <td>status</td>
+                    <td>no, default is <code>publish<code></td>
+                </tr>
+                <tr>
+                    <td>category</td>
+                    <td>category</td>
+                    <td>no</td>
+                </tr>
+            </tbody>
+        </table> -->
+
+        <pre class="tw-p-3 tw-font-semibold tw-bg-neutral-300">---
+<span class="tw-text-blue-500">name</span><span class="tw-text-neutral-500">:</span> <span class="tw-text-neutral-500">'</span>My Cool Post<span class="tw-text-neutral-500">'</span>
+<span class="tw-text-blue-500">slug</span><span class="tw-text-neutral-500">:</span> <span class="tw-text-neutral-500">'</span>my-cool-post<span class="tw-text-neutral-500">'</span>
+<span class="tw-text-blue-500">description</span><span class="tw-text-neutral-500">:</span> <span class="tw-text-neutral-500">'</span>This is my first and cool post ...<span class="tw-text-neutral-500">'</span>
+<span class="tw-text-blue-500">category</span><span class="tw-text-neutral-500">:</span> [<span class="tw-text-neutral-500">'</span>Posts/Cool<span class="tw-text-neutral-500">'</span>, <span class="tw-text-neutral-500">'</span>Memories<span class="tw-text-neutral-500">'</span>]
+<span class="tw-text-blue-500">status</span><span class="tw-text-neutral-500">:</span> <span class="tw-text-neutral-500">'</span>draft<span class="tw-text-neutral-500">'</span>
+---
+Article content in the normal markdown format.
+
+...</pre>
 
         <p>Now that you have setup everything you can go to the main admin page of the plugin, where you see all your found posts.</p>
-
+        
         <?php warning('Articles are connected via their slug/post_name which means Gitdown will think an article that was on your Blog before that matches another article in your repo are the same and it will overwrite it so It is advised to make a backup of your articles. This also means that if you change the slug of any article it will no longer match its counterpart on git or wordpress.') ?>
         <?php info('Gitdown will create the categories that were specified in your frontmatter and it even allows nested categories like this: <code>Vehicles/Cars/Ford</code>'); ?>
         
@@ -138,7 +196,7 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 
         <p>Thats it have fun writing and publishing with Gitdown! 😀</p>
         
-        <?php warning('Since Gitdown adds and overwrittes articles, you should not edit these articles yourself since you could lose content that you made.'); ?>
+        <?php warning('You should never edit posts on wordpress that originate from a repository since Gitdown will overwrite your changes the next time you click on update.', 'Gitdown Actually prohibits you from quick editing synced posts and it shows a warning message in the Block Editor. So you should always edit posts in the repository.'); ?>
 
         <?php warning('Gitdown will not resize your images to the sizes that Wordpress and your theme have defined so it is advised to use another plugin to do that.'); ?>
 

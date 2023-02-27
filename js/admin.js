@@ -8,7 +8,9 @@ const vueApp = createApp({
             search_query: '',
             complex_view: false,
             metadata: {
-                repo_url: 'https://github.com/Maximinodotpy/articles.git'
+                repo_url: 'https://github.com/Maximinodotpy/articles.git',
+                glob_pattern: '*.md',
+                resolver_function: 'simple',
             }
         }
     },
