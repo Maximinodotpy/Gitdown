@@ -1,4 +1,7 @@
 <?php
+namespace WP\Plugin\Gitdown;
+use Parsedown as GDParsedown;
+use Mni\FrontYAML as GDFrontYaml;
 
 class GD_ArticleCollection {
     public $articles = [];
@@ -7,8 +10,11 @@ class GD_ArticleCollection {
     // Logic is provided by index file
     public $logger;
 
+    public $source;
+    public $glob;
+
     // TODO: Add source and glob in the constructor but only fetch the data once it is needed for performance.
-    function __construct () {
+    function __construct ($source, $glob) {
         $this->reports = (object) array(
             'published_posts' => 0,
             'found_posts' => 0,
@@ -16,6 +22,9 @@ class GD_ArticleCollection {
             'coerced_slugs' => 0,
             'errors' => array(),
         );
+
+        $this->source = $source;        
+        $this->glob = $glob;        
     }
 
     function parseDirectory($source, $glob) {
@@ -46,7 +55,7 @@ class GD_ArticleCollection {
             $this->reports->found_posts++;
 
             // Creating the Std Object
-            $post_data = new stdClass();
+            $post_data = new \stdClass();
 
             $post_data->remote = $this->resolver($path) ?? [];
 
@@ -95,7 +104,7 @@ class GD_ArticleCollection {
 
             $fileContent = file_get_contents($path);
 
-            $parser = new Mni\FrontYAML\Parser;
+            $parser = new GDFrontYaml\Parser;
             $postData = [];
             $document = $parser->parse($fileContent, false);
 
@@ -170,7 +179,7 @@ class GD_ArticleCollection {
 
         $post_data = $this->get_by_slug($slug);
 
-        $Parsedown = new Parsedown();
+        $Parsedown = new GDParsedown();
 
         $new_post_data = array(
             'post_title'    => $post_data->remote->name,

@@ -8,6 +8,8 @@ Version:      0.2
 Text Domain:  gitdown
 */
 
+namespace WP\Plugin\Gitdown;
+
 /* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
 /* maximmaeder */
 /* fjöalsjfölasjfsjö*ç */
@@ -97,7 +99,7 @@ class Gitdown
             exec('git pull', $out);
         }
 
-        $this->articleCollection = new GD_ArticleCollection();
+        $this->articleCollection = new GD_ArticleCollection(GD_MIRROR_PATH, get_option(GD_SETTING_GLOB));
         $this->articleCollection->logger = $this->logger;
 
         $this->articleCollection->parseDirectory(GD_MIRROR_PATH, get_option(GD_SETTING_GLOB));

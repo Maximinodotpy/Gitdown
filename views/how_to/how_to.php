@@ -5,7 +5,7 @@ function warning($message, $extended = '') {
         ?>
         <div class="tw-px-4 tw-py-2 tw-bg-orange-300 tw-text-orange-800 tw-flex tw-items-center tw-mb-3">
             <p class="tw-m-0 tw-font-bold tw-mr-4 tw-text-3xl tw-bg-orange-600 tw-aspect-square tw-px-4 tw-text-orange-200">!</p>
-            <p class="tw-p-0 tw-m-0"><?php echo $message; ?></p>
+            <p class="tw-p-0 tw-m-0"><?php echo esc_html($message); ?></p>
         </div>
         <?php
     } else {
@@ -13,9 +13,9 @@ function warning($message, $extended = '') {
         <details class="tw-px-4 tw-py-2 tw-bg-orange-300 tw-text-orange-800 tw-mb-3" title="Click me to get more Info.">
             <summary class="tw-flex tw-items-center">
                 <p class="tw-m-0 tw-font-bold tw-mr-4 tw-text-3xl tw-bg-orange-600 tw-aspect-square tw-px-4 tw-text-orange-200">!</p>
-                <p class="tw-p-0 tw-m-0"><?php echo $message; ?></p>
+                <p class="tw-p-0 tw-m-0"><?php echo esc_html($message); ?></p>
             </summary>
-            <p><?php echo $extended ?></p>
+            <p><?php echo esc_html($extended) ?></p>
         </details>
         <?php
     }
@@ -25,7 +25,7 @@ function info($message) {
     ?>
     <div class="tw-px-4 tw-py-2 tw-flex tw-items-center tw-mb-3">
         <p class="tw-m-0 tw-font-bold tw-mr-2 tw-text-4xl tw-aspect-square tw-p-1 tw-px-2 tw-flex tw-items-center">💡</p>
-        <p class="tw-p-0 tw-m-0"><?php echo $message; ?></p>
+        <p class="tw-p-0 tw-m-0"><?php echo esc_html($message); ?></p>
     </div>
     <?php
 }
@@ -33,8 +33,8 @@ function info($message) {
 function image($image, $caption) {
     ?>
         <div class="tw-mt-4 tw-flex tw-flex-col tw-items-center">
-            <img src="<?php echo $image ?>" alt="<?php echo $caption ?>" class="tw-w-full tw-shadow-md">
-            <p class="tw-max-w-xl tw-inline-block"><i><?php echo $caption ?></i></p>
+            <img src="<?php echo esc_url($image) ?>" alt="<?php echo esc_html($caption) ?>" class="tw-w-full tw-shadow-md">
+            <p class="tw-max-w-xl tw-inline-block"><i><?php echo esc_html($caption) ?></i></p>
         </div>
     <?php
 }
@@ -100,7 +100,7 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 
         <p>Now that you know how glob patterns work, you can use them in the Gitdown settings.</p>
 
-        <?php info('You can specifiy multiple glob pattern by seperating them with a comma like this: <code>*.md,*.txt</code>'); ?>            
+        <?php info('You can specifiy multiple glob pattern by seperating them with a comma like this: *.md,*.txt'); ?>
 
         <?php insertBreak() ?>
 
@@ -170,9 +170,8 @@ Article content in the normal markdown format.
         <p>Now that you have setup everything you can go to the main admin page of the plugin, where you see all your found posts.</p>
         
         <?php warning('Articles are connected via their slug/post_name which means Gitdown will think an article that was on your Blog before that matches another article in your repo are the same and it will overwrite it so It is advised to make a backup of your articles. This also means that if you change the slug of any article it will no longer match its counterpart on git or wordpress.') ?>
-        <?php info('Gitdown will create the categories that were specified in your frontmatter and it even allows nested categories like this: <code>Vehicles/Cars/Ford</code>'); ?>
+        <?php info('Gitdown will create the categories that were specified in your frontmatter and it even allows nested categories like this: Vehicles/Cars/Ford'); ?>
         
-
         <?php insertBreak() ?>
 
         <p class="mt-8">To Recap, setting up consists of ...</p>

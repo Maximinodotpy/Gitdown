@@ -1,4 +1,5 @@
 <?php
+namespace WP\Plugin\Gitdown;
 
 class GD_Logger {
     private $outputPath;
