@@ -49,8 +49,13 @@ class Gitdown
         define('MGD_SETTINGS_PAGE',  'reading');
 
         // Where the current Repository is located depends on the repo url.
-        define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . MGD_stringToSlug(get_option(MGD_SETTING_REPO)) . '/');
-        define('MGD_MIRROR_URL', WP_CONTENT_URL . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . MGD_stringToSlug(get_option(MGD_SETTING_REPO)) . '/');
+        $repo_nice_name = 
+            MGD_stringToSlug(basename(dirname(get_option(MGD_SETTING_REPO))))
+            .'-'.
+            MGD_stringToSlug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
+            
+        define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
+        define('MGD_MIRROR_URL', WP_CONTENT_URL . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
 
         define('MGD_REMOTE_IS_CLONED', is_dir(MGD_MIRROR_PATH . '.git'));
 
@@ -70,7 +75,13 @@ class Gitdown
         if (!MGD_REMOTE_IS_CLONED) {
             exec('git clone ' . get_option(MGD_SETTING_REPO) . ' .', $out);
         } else {
-            exec('git pull', $out);
+            $out = [];
+            exec('git diff origin/master', $out);
+            
+            if (count($out) > 0) {
+                exec('git pull', $out);
+            }
+
         }
 
         $this->articleCollection = new MGD_ArticleCollection(MGD_MIRROR_PATH, get_option(MGD_SETTING_GLOB));

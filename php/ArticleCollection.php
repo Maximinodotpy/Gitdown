@@ -10,7 +10,7 @@ class MGD_ArticleCollection {
     public $source;
     public $glob;
 
-    function __construct ($source, $glob) {
+    function __construct (string $source, string $glob) {
         $this->reports = (object) array(
             'published_posts' => 0,
             'found_posts' => 0,
@@ -99,7 +99,7 @@ class MGD_ArticleCollection {
         chdir(MGD_ROOT_PATH);
     }
 
-    private function resolver($document_path) {
+    private function resolver(string $document_path) {
 
         $resolver_simple = function ($path) {
 
@@ -160,7 +160,7 @@ class MGD_ArticleCollection {
         return $this->articles;
     }
 
-    function get_by_slug($slug) {
+    function get_by_slug(string $slug) {
         $this->check_if_parsed();
 
         return $this->_array_nested_find($this->articles, function($obj) use (&$slug) {
@@ -168,7 +168,7 @@ class MGD_ArticleCollection {
         });
     }
 
-    function get_by_id($id) {
+    function get_by_id(int $id) {
         $this->check_if_parsed();
 
         return $this->_array_nested_find($this->articles, function($obj) use (&$id) {
@@ -178,7 +178,7 @@ class MGD_ArticleCollection {
         );
     }
 
-    public function updateArticle($slug)
+    public function updateArticle(string $slug)
     {
         $this->check_if_parsed();
 
@@ -228,7 +228,7 @@ class MGD_ArticleCollection {
         return get_post($post_id);
     }
 
-    public function deleteArticle($slug)
+    public function deleteArticle(string $slug)
     {
         $this->check_if_parsed();
 
