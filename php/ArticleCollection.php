@@ -62,7 +62,7 @@ class MGD_ArticleCollection {
 
             // Check if Post is valid
             if (!property_exists($post_data->remote, 'name')) {
-                array_push($this->reports->errors, 'Error: Post at path '.$path.' has no name');
+                $this->pushReportError('Missing Name', $path, 'the Front matter of this post shows now name property which is crucial for it to be published.');
                 continue;
             }
 
@@ -72,7 +72,8 @@ class MGD_ArticleCollection {
             if (!property_exists($post_data->remote, 'slug')) {
                 $post_data->remote->slug = MGD_stringToSlug($post_data->remote->name);
                 $this->reports->coerced_slugs++;
-                array_push($this->reports->errors, 'Warning: Had to coerce slug for '.$post_data->remote->slug);
+
+                $this->pushReportError('Coerced Slug', $path, 'This post does not define a slug so the name was turned into a slug. This is not advised.');
             }
 
             array_push($this->articles, $post_data);
@@ -148,19 +149,19 @@ class MGD_ArticleCollection {
         return (object) $currentData;
     } 
 
-    function _array_nested_find($array, $function) {
+    private function _array_nested_find($array, $function) {
         foreach ($array as $value) {
             if ($function($value)) return $value;
         }
     }
 
-    function get_all() {
+    public function get_all() {
         $this->check_if_parsed();
 
         return $this->articles;
     }
 
-    function get_by_slug($slug) {
+    public function get_by_slug($slug) {
         $this->check_if_parsed();
 
         return $this->_array_nested_find($this->articles, function($obj) use (&$slug) {
@@ -168,7 +169,7 @@ class MGD_ArticleCollection {
         });
     }
 
-    function get_by_id($id) {
+    public function get_by_id($id) {
         $this->check_if_parsed();
 
         return $this->_array_nested_find($this->articles, function($obj) use (&$id) {
@@ -248,7 +249,7 @@ class MGD_ArticleCollection {
         return !!$result;
     }
 
-    public function createCategories($name_paths) {
+    private function createCategories($name_paths) {
         $returned_ids = [];
 
         $name_paths = is_array($name_paths) ? $name_paths : array($name_paths);
@@ -269,5 +270,13 @@ class MGD_ArticleCollection {
             array_push($returned_ids, $current_last_id);
         }
         return $returned_ids;
+    }
+
+    private function pushReportError($type, $location, $description) {
+        array_push($this->reports->errors, (object) [
+            'type' => $type,
+            'location' => $location,
+            'description' => $description,
+        ]);
     }
 }

@@ -13,7 +13,7 @@
 
 
     <!-- Report -->
-    <!-- <details class="tw-my-4" open>
+    <details class="tw-my-4" open>
         <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">Report</summary>
 
         <div class="tw-p-8 tw-max-h-[400px] tw-overflow-y-auto tw-overflow-x-visible">
@@ -42,15 +42,15 @@
                     <div v-if="reports?.errors?.length != 0" class="tw-flex tw-flex-col tw-gap-4">
                         <div v-for="error in reports.errors">
                             <div class="tw-p-2 hover:tw-scale-[1.01] tw-transition-all hover:tw-shadow-lg tw-bg-[#f0f0f1]">
-                            <div class="tw-font-mono tw-font-semibold tw-gap-3 tw-flex">
-                                <span class="tw-bg-orange-300 tw-text-orange-700 tw-p-1">Warning : Missing Property</span>
+                            <div class="tw-font-mono tw-font-semibold tw-gap-3 tw-flex tw-flex-col">
+                                <span class="tw-bg-orange-300 tw-text-orange-700 tw-p-1">{{ error.type }}</span>
                                 <span class="tw-bg-blue-300 tw-text-blue-700 tw-flex">
                                     <span class="tw-p-1 tw-bg-blue-900 tw-text-blue-200">@</span>
-                                    <span class="tw-p-1">how-to-spend-time</span>
+                                    <span class="tw-p-1">{{ error.location }}</span>
                                 </span>                                
                             </div>
                             <div class="tw-text-lg">
-                                {{ error }}
+                                {{ error.description }}
                             </div>
                         </div>
                         </div>
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-    </details> -->
+    </details>
 
     <br>
 
