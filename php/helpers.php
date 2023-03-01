@@ -1,6 +1,6 @@
 <?php
 
-function gd_stringToSlug($string) {
+function MGD_stringToSlug($string) {
     $string = str_replace(' ', '-', $string);
     $string = str_replace('.', '', $string);
     $string = str_replace(',', '', $string);
@@ -14,14 +14,14 @@ function gd_stringToSlug($string) {
     return $string;
 }
 
-function gd_truncateString($string, $max, $after = ' ...') {
+function MGD_truncateString($string, $max, $after = ' ...') {
     if (strlen($string) >= $max) {
         return substr($string, 0, $max - strlen($after)).$after;
     }
     return $string;
 }
 
-function gd_dumpJSON($json) {
+function MGD_dumpJSON($json) {
     $truncationLength = 100;
 
     echo '<ul class="rawlist">';
@@ -36,7 +36,7 @@ function gd_dumpJSON($json) {
             echo '<details><summary>';
             echo esc_html($key);
             echo '</summary>';
-            gd_dumpJSON($value);
+            MGD_dumpJSON($value);
             echo '</details>';
         }
         else {
@@ -45,7 +45,7 @@ function gd_dumpJSON($json) {
 
                 echo esc_html($key).': ';
                 echo '<details class="inline-block"><summary class="inline-block">';
-                echo gd_truncateString(esc_html($value), $truncationLength, false);
+                echo MGD_truncateString(esc_html($value), $truncationLength, false);
                 echo '</summary>';
                 echo substr(esc_html($value), $truncationLength);
                 echo '</details>';

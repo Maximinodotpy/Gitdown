@@ -3,12 +3,9 @@ namespace WP\Plugin\Gitdown;
 use Parsedown as GDParsedown;
 use Mni\FrontYAML as GDFrontYaml;
 
-class GD_ArticleCollection {
+class MGD_ArticleCollection {
     public $articles = [];
     public $reports;
-
-    // Logic is provided by index file
-    public $logger;
 
     public $source;
     public $glob;
@@ -73,7 +70,7 @@ class GD_ArticleCollection {
 
             // Add the name as the slug in case its not defined
             if (!property_exists($post_data->remote, 'slug')) {
-                $post_data->remote->slug = gd_stringToSlug($post_data->remote->name);
+                $post_data->remote->slug = MGD_stringToSlug($post_data->remote->name);
                 $this->reports->coerced_slugs++;
                 array_push($this->reports->errors, 'Warning: Had to coerce slug for '.$post_data->remote->slug);
             }
@@ -99,7 +96,7 @@ class GD_ArticleCollection {
             }
         }
 
-        chdir(GD_ROOT_PATH);
+        chdir(MGD_ROOT_PATH);
     }
 
     private function resolver($document_path) {
@@ -134,7 +131,7 @@ class GD_ArticleCollection {
 
 
         $currentData = '';
-        switch (get_option(GD_SETTING_RESOLVER)) {
+        switch (get_option(MGD_SETTING_RESOLVER)) {
             case 'simple':
                 $currentData = $resolver_simple($document_path);
                 break;
@@ -163,10 +160,6 @@ class GD_ArticleCollection {
         return $this->articles;
     }
 
-    /* function set_all($data) {
-        $this->articles = $data;
-    } */
-
     function get_by_slug($slug) {
         $this->check_if_parsed();
 
@@ -188,8 +181,6 @@ class GD_ArticleCollection {
     public function updateArticle($slug)
     {
         $this->check_if_parsed();
-
-        $this->logger->info('Updating Post ...');
 
         $post_data = $this->get_by_slug($slug);
 
@@ -213,7 +204,7 @@ class GD_ArticleCollection {
         $post_id = wp_insert_post($new_post_data);
 
         // Uploading the Image
-        $imagePath = GD_MIRROR_PATH . $post_data->remote->featured_image;
+        $imagePath = MGD_MIRROR_PATH . $post_data->remote->featured_image;
 
         if (is_file($imagePath)) {
             $uploadPath = wp_upload_dir()['path'] . '/' . $new_post_data['post_name'] . '.png';
@@ -234,8 +225,6 @@ class GD_ArticleCollection {
             set_post_thumbnail($post_id, $attach_id);
         };
 
-        $this->logger->info('Post Updated');
-
         return get_post($post_id);
     }
 
@@ -255,18 +244,11 @@ class GD_ArticleCollection {
         // Remove the Post itself
         $result = wp_delete_post($post_id, true);
 
-        $this->logger->info('Post Deleted', $result);
-
         // Returning the result so The Frontend knows it
         return !!$result;
     }
 
     public function createCategories($name_paths) {
-        $this->logger->info(
-            'Creating Categories: '.print_r($name_paths, true),
-            $name_paths,
-        );
-
         $returned_ids = [];
 
         $name_paths = is_array($name_paths) ? $name_paths : array($name_paths);

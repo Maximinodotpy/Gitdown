@@ -1,7 +1,7 @@
 <?php
 namespace WP\Plugin\Gitdown;
 
-class GD_Logger {
+class MGD_Logger {
     private $outputPath;
     private $startTime;
     private $log;
@@ -24,7 +24,7 @@ class GD_Logger {
     }
 
     function saveLog() {
-        if (!GD_DEBUG) return;
+        if (!MGD_DEBUG) return;
         if (!file_exists(dirname($this->outputPath))) mkdir(dirname($this->outputPath), 0777, true);
         file_put_contents($this->outputPath, json_encode($this->log, JSON_PRETTY_PRINT));
     }
@@ -41,7 +41,7 @@ class GD_Logger {
 
     private function insertLog($handle, $description = '', $type = 'info') {
 
-        if (!GD_DEBUG) return;
+        if (!MGD_DEBUG) return;
 
         $currentTime = round(microtime(true) * 1000);
 

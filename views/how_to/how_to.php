@@ -57,9 +57,9 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 ?>
 
 <div class="mt-8 tw-leading-relaxed tw-flex tw-justify-center">
-    <div class="tw-max-w-2xl" id="gd_how_to">
+    <div class="tw-max-w-2xl" id="MGD_how_to">
         <style>
-            #gd_how_to, #gd_how_to :is(p, li) {
+            #MGD_how_to, #MGD_how_to :is(p, li) {
                 font-size: 1.2em;
             }
         </style>
@@ -78,7 +78,7 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
         <p>You want to publish your markdown articles from a remote repository like GitHub to your WordPress blog, so you will have to first define the location of your Remote repository in the settings. The Gitdown settings are located at <i><a href="<?php echo home_url('/wp-admin/options-reading.php'); ?>" target="_blank">Reading</a></i>.</p>
 
         
-        <?php image(GD_ROOT_URL.'views/how_to/github-copy-repo-url.png', 'Where to find your github repository link.'); ?>
+        <?php image(MGD_ROOT_URL.'views/how_to/github-copy-repo-url.png', 'Where to find your github repository link.'); ?>
         
 
         <?php info('By default, there is a repository there that I have created so you can test out and understand how Gitdown works without having a repo ready yourself.'); ?>
@@ -187,7 +187,7 @@ Article content in the normal markdown format.
 
         <h2>Managing Articles</h2>
 
-        <?php image(GD_ROOT_URL.'views/how_to/managing.png', 'Gitdown\'s User Interface'); ?>
+        <?php image(MGD_ROOT_URL.'views/how_to/managing.png', 'Gitdown\'s User Interface'); ?>
 
         <p>Gitdown's User Interface is pretty straight forward, it consist of some buttons at the top to update / publish / delete all posts. These buttons are also individually available for each article.</p>
 

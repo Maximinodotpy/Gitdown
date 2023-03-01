@@ -3,17 +3,17 @@
         <h1 class="tw-flex-grow"><?php _e('Manage Git Posts', 'gitdown')?></h1>
     
         <p class=""><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
-        <p><i>Gitdown v<?php echo get_plugin_data(GD_ROOT_PATH.'index.php')['Version'] ?></i></p>
+        <p><i>Gitdown v<?php echo get_plugin_data(MGD_ROOT_PATH.'gitdown.php')['Version'] ?></i></p>
         <div>
             <a href="https://github.com/Maximinodotpy/Gitdown" target="_blank">
-                <img src="<?php echo GD_ROOT_URL.'images/github-mark.svg' ?>" alt="Contribute to Gitdown on Github" class="tw-w-[30px]" title="Contribute to Gitdown on Github">
+                <img src="<?php echo MGD_ROOT_URL.'images/github-mark.svg' ?>" alt="Contribute to Gitdown on Github" class="tw-w-[30px]" title="Contribute to Gitdown on Github">
             </a>
         </div>
     </div>
 
 
     <!-- Report -->
-    <details class="tw-my-4" open>
+    <!-- <details class="tw-my-4" open>
         <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">Report</summary>
 
         <div class="tw-p-8 tw-max-h-[400px] tw-overflow-y-auto tw-overflow-x-visible">
@@ -41,9 +41,9 @@
 
                     <div v-if="reports?.errors?.length != 0" class="tw-flex tw-flex-col tw-gap-4">
                         <div v-for="error in reports.errors">
-                            <div class="tw-p-2 hover:tw-cursor-pointer hover:tw-scale-[1.01] tw-transition-all hover:tw-shadow-lg tw-bg-[#f0f0f1]">
+                            <div class="tw-p-2 hover:tw-scale-[1.01] tw-transition-all hover:tw-shadow-lg tw-bg-[#f0f0f1]">
                             <div class="tw-font-mono tw-font-semibold tw-gap-3 tw-flex">
-                                <span class="tw-bg-orange-300 tw-text-orange-700 tw-p-1">Warning</span>
+                                <span class="tw-bg-orange-300 tw-text-orange-700 tw-p-1">Warning : Missing Property</span>
                                 <span class="tw-bg-blue-300 tw-text-blue-700 tw-flex">
                                     <span class="tw-p-1 tw-bg-blue-900 tw-text-blue-200">@</span>
                                     <span class="tw-p-1">how-to-spend-time</span>
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-    </details>
+    </details> -->
 
     <br>
 
@@ -104,12 +104,12 @@
                     </span>
                     
                     <span class="tw-block">
-                        <a href="<?php echo get_option(GD_SETTING_REPO) ?>" target="_blank">
-                            <code class=""><?php echo basename(get_option(GD_SETTING_REPO)) ?></code>
+                        <a href="<?php echo get_option(MGD_SETTING_REPO) ?>" target="_blank">
+                            <code class=""><?php echo basename(get_option(MGD_SETTING_REPO)) ?></code>
                         </a>
                         →
                         <code class="">
-                            <?php echo get_option(GD_SETTING_GLOB) ?>
+                            <?php echo get_option(MGD_SETTING_GLOB) ?>
                         </code>
                         ↓
                     </span>
@@ -166,7 +166,7 @@
                 <td :ref="item.remote.slug" style="visibility: hidden" 
                     class="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-backdrop-blur-[4px]">
                     <div class="tw-text-xl tw-font-semibold tw-flex tw-items-center tw-gap-2 drop-shadow-2xl">
-                        <img src="<?php echo GD_ROOT_URL . 'images/loader.svg' ?>" alt="Loader" style="width: 40px">
+                        <img src="<?php echo MGD_ROOT_URL . 'images/loader.svg' ?>" alt="Loader" style="width: 40px">
                         <span class="tw-select-none"><?php _e('Loading', 'gitdown')?></span>
                     </div>
                 </td>
