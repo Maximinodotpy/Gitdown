@@ -101,8 +101,6 @@ class Gitdown
 
         $this->articleCollection = new GD_ArticleCollection(GD_MIRROR_PATH, get_option(GD_SETTING_GLOB));
         $this->articleCollection->logger = $this->logger;
-
-        $this->articleCollection->parseDirectory(GD_MIRROR_PATH, get_option(GD_SETTING_GLOB));
         $this->logger->info('Populating Article Collection', 'Count: ' . count($this->articleCollection->get_all()));
 
         // Setting up the Action Hooks

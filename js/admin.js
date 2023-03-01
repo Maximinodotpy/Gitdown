@@ -98,10 +98,7 @@ const vueApp = createApp({
             })
         },
 
-        async sync() {
-            this.articles = []
-            
-
+        async sync() {            
             const response = (await this.callAJAX({
                 action: 'get_all_articles',
             }))

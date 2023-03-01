@@ -1,6 +1,6 @@
 <div class="wrap gitdown_ui" id="vue_app">
     <div class="tw-flex tw-gap-4 tw-items-center">
-        <h1 class="tw-flex-grow"><?php _e('Manage Git Articles', 'gitdown')?></h1>
+        <h1 class="tw-flex-grow"><?php _e('Manage Git Posts', 'gitdown')?></h1>
     
         <p class=""><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
         <p><i>Gitdown v<?php echo get_plugin_data(GD_ROOT_PATH.'index.php')['Version'] ?></i></p>
@@ -13,13 +13,12 @@
 
 
     <!-- Report -->
-    <!-- <details class="tw-my-4 tw-p-4" open>
-    
-        <summary class="tw-text-xl">Report</summary>
+    <details class="tw-my-4" open>
+        <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">Report</summary>
 
-        <div class="tw-mt-6">
+        <div class="tw-p-8 tw-max-h-[400px] tw-overflow-y-auto tw-overflow-x-visible">
             <div class="tw-grid md:tw-grid-cols-2 tw-gap-28">
-                <div class="tw-grid tw-grid-cols-2 tw-gap-10">
+                <div class="tw-grid tw-grid-cols-2 tw-gap-10 tw-pr-8">
                     <div>
                         <div class="tw-text-4xl tw-font-mono">{{ reports.found_posts }}</div>
                         <div class="tw-text-lg">Found Posts</div>
@@ -40,10 +39,22 @@
                 <div>
                     <div class="tw-text-3xl tw-mb-4">Errors and Warnings</div>
 
-                    <div v-if="reports?.errors?.length != 0">
+                    <div v-if="reports?.errors?.length != 0" class="tw-flex tw-flex-col tw-gap-4">
                         <div v-for="error in reports.errors">
-                            {{ error }}
+                            <div class="tw-p-2 hover:tw-cursor-pointer hover:tw-scale-[1.01] tw-transition-all hover:tw-shadow-lg tw-bg-[#f0f0f1]">
+                            <div class="tw-font-mono tw-font-semibold tw-gap-3 tw-flex">
+                                <span class="tw-bg-orange-300 tw-text-orange-700 tw-p-1">Warning</span>
+                                <span class="tw-bg-blue-300 tw-text-blue-700 tw-flex">
+                                    <span class="tw-p-1 tw-bg-blue-900 tw-text-blue-200">@</span>
+                                    <span class="tw-p-1">how-to-spend-time</span>
+                                </span>                                
+                            </div>
+                            <div class="tw-text-lg">
+                                {{ error }}
+                            </div>
                         </div>
+                        </div>
+                        
                     </div>
                     <div v-else>
                         Congratulations! You have no Errors 😀.
@@ -52,7 +63,7 @@
             </div>
         </div>
 
-    </details> -->
+    </details>
 
     <br>
 

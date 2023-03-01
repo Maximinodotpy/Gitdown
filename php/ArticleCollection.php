@@ -13,7 +13,6 @@ class GD_ArticleCollection {
     public $source;
     public $glob;
 
-    // TODO: Add source and glob in the constructor but only fetch the data once it is needed for performance.
     function __construct ($source, $glob) {
         $this->reports = (object) array(
             'published_posts' => 0,
@@ -23,11 +22,16 @@ class GD_ArticleCollection {
             'errors' => array(),
         );
 
-        $this->source = $source;        
-        $this->glob = $glob;        
+        $this->source = $source;
+        $this->glob = $glob;
     }
 
-    function parseDirectory($source, $glob) {
+    // This function checks if the articles have been parsed and if not does that.
+    private function check_if_parsed() {
+        if ($this->articles == []) $this->parse();
+    }
+
+    private function parse() {
         /* $remote_defaults = [
             'name' => null,
             'slug' => null,
@@ -40,12 +44,12 @@ class GD_ArticleCollection {
             'status' => null,
         ]; */
 
-        chdir($source);
+        chdir($this->source);
 
 
         // Get all Paths
         $paths = [];
-        foreach (explode(',', $glob) as $single_glob) {
+        foreach (explode(',', $this->glob) as $single_glob) {
             $paths = array_merge($paths, glob($single_glob));
         }
 
@@ -59,6 +63,13 @@ class GD_ArticleCollection {
 
             $post_data->remote = $this->resolver($path) ?? [];
 
+            // Check if Post is valid
+            if (!property_exists($post_data->remote, 'name')) {
+                array_push($this->reports->errors, 'Error: Post at path '.$path.' has no name');
+                continue;
+            }
+
+            $this->reports->valid_posts++;
 
             // Add the name as the slug in case its not defined
             if (!property_exists($post_data->remote, 'slug')) {
@@ -72,18 +83,13 @@ class GD_ArticleCollection {
 
 
         // Merge Remote Articles with local articles if applicable
-
-        // TODO Search for the article by slug immediately
-        $localArticles = get_posts([
-            'numberposts' => -1,
-            'post_status' => 'any',
-        ]);
-
         foreach ($this->articles as $key => $article) {
-            
-            $localArticle = $this->_array_nested_find($localArticles, function($obj) use (&$article) {
-                return $obj->post_name == $article->remote->slug;
-            });
+
+            $localArticle = get_posts(array(
+                'name'           => $article->remote->slug,
+                'post_status' => 'any',
+                'posts_per_page' => 1
+            ))[0];
 
             $this->articles[$key]->local = $localArticle ?? [];
             $this->articles[$key]->_is_published = !!$localArticle;
@@ -152,6 +158,8 @@ class GD_ArticleCollection {
     }
 
     function get_all() {
+        $this->check_if_parsed();
+
         return $this->articles;
     }
 
@@ -160,12 +168,16 @@ class GD_ArticleCollection {
     } */
 
     function get_by_slug($slug) {
+        $this->check_if_parsed();
+
         return $this->_array_nested_find($this->articles, function($obj) use (&$slug) {
             return $obj->remote->slug == $slug;
         });
     }
 
     function get_by_id($id) {
+        $this->check_if_parsed();
+
         return $this->_array_nested_find($this->articles, function($obj) use (&$id) {
             return ($obj->local->ID ?? -1) == $id;
         }) ?? (object) array(
@@ -175,6 +187,8 @@ class GD_ArticleCollection {
 
     public function updateArticle($slug)
     {
+        $this->check_if_parsed();
+
         $this->logger->info('Updating Post ...');
 
         $post_data = $this->get_by_slug($slug);
@@ -227,6 +241,8 @@ class GD_ArticleCollection {
 
     public function deleteArticle($slug)
     {
+        $this->check_if_parsed();
+
         $article = $this->get_by_slug($slug);
 
         if (!$article->_is_published) return;
