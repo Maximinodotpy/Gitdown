@@ -242,9 +242,7 @@ class Gitdown
 
         add_action('admin_notices', function () {
             if (!empty($_REQUEST['MGD_notice'])) {
-                $notification_text = $_REQUEST['MGD_notice'];
-
-                echo '<div id="message" class="updated notice is-dismissable"><p>' . esc_html($notification_text) . '</p></div>';
+                echo '<div id="message" class="updated notice is-dismissable"><p>' . esc_html($_REQUEST['MGD_notice']) . '</p></div>';
             }
         });
     }

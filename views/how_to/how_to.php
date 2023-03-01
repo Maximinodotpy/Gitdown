@@ -75,7 +75,7 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 
         <h2>Setup</h2>
 
-        <p>You want to publish your markdown articles from a remote repository like GitHub to your WordPress blog, so you will have to first define the location of your Remote repository in the settings. The Gitdown settings are located at <i><a href="<?php echo home_url('/wp-admin/options-reading.php'); ?>" target="_blank">Reading</a></i>.</p>
+        <p>You want to publish your markdown articles from a remote repository like GitHub to your WordPress blog, so you will have to first define the location of your Remote repository in the settings. The Gitdown settings are located at <i><a href="<?php echo esc_url(home_url('/wp-admin/options-reading.php')) ?>" target="_blank">Reading</a></i>.</p>
 
         
         <?php image(MGD_ROOT_URL.'views/how_to/github-copy-repo-url.png', 'Where to find your github repository link.'); ?>
@@ -96,7 +96,7 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 
         <p>Below you see <a href="https://globster.xyz" target="_blank">globster.xyz</a>, a fantastic little website that can help you figure out and understand glob patterns. Edit the pattern at the top to see which files light up.</p>
 
-        <iframe style="width: 100%" height="450" src="<?php echo $globsterURL ?>" frameborder="0" sandbox="allow-scripts"></iframe>
+        <iframe style="width: 100%" height="450" src="<?php echo esc_url($globsterURL) ?>" frameborder="0" sandbox="allow-scripts"></iframe>
 
         <p>Now that you know how glob patterns work, you can use them in the Gitdown settings.</p>
 
@@ -123,38 +123,6 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
         <p>You will most likely be fine with the simple resolver.</p>
         
         <p>Below you see an example of valid file.</p>
-
-        <!-- <table class="tw-w-full tw-text-left">
-            <thead>
-                <tr>
-                    <th class="tw-w-1/3">Frontmatter</th>
-                    <th class="tw-w-1/3">Wordpress</th>
-                    <th class="tw-w-1/3">Is it Mandatory?</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>name</td>
-                    <td>title</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <td>slug</td>
-                    <td>post_name</td>
-                    <td>no, will be coerced from <code>name</code>, but defining it is good practice.</td>
-                </tr>
-                <tr>
-                    <td>status</td>
-                    <td>status</td>
-                    <td>no, default is <code>publish<code></td>
-                </tr>
-                <tr>
-                    <td>category</td>
-                    <td>category</td>
-                    <td>no</td>
-                </tr>
-            </tbody>
-        </table> -->
 
         <pre class="tw-p-3 tw-font-semibold tw-bg-neutral-300">---
 <span class="tw-text-blue-500">name</span><span class="tw-text-neutral-500">:</span> <span class="tw-text-neutral-500">'</span>My Cool Post<span class="tw-text-neutral-500">'</span>
