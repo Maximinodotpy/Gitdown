@@ -192,7 +192,7 @@ class Gitdown
         
         add_action('admin_enqueue_scripts', function ($hook) {
             if ('post.php' != $hook) return;
-            if (!$this->articleCollection->get_by_id($_GET['post'])['_is_published']) return;
+            if (!$this->articleCollection->get_by_id($_GET['post'])->_is_published) return;
             
             wp_enqueue_script('edit-warning', MGD_ROOT_URL . 'js/edit-warning.js');
         });
