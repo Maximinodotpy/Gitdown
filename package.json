@@ -4,7 +4,7 @@
 	"description": "Wordpress Plugin to get Articles from a Git Repo and Publish them on Wordpress.",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"tailwind": "npx tailwindcss -i ./css/input.css -o ./css/gitdown.css --watch",
+		"tailwind": "npx tailwindcss -i ./css/input.css -o ./css/gitdown.css --watch --minify",
 		"build": "python \"_dev_helpers/dist.py\"",
 		"extract_langs": "python \"_dev_helpers/lang.py\""
 	},

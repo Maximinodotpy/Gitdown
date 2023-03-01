@@ -25,45 +25,17 @@ print('Clearing ...')
 clearFolder(distFolderPATH)
 
 ignore = [
+    # Folders
     '.git',
-    '.git/*',
-    '.git/**/*',
-
     'dist',
-    'dist/',
-    'dist/*',
-    'dist/**/*',
-
     'languages',
-    'languages/',
-    'languages/*',
-    'languages/**/*',
-
     'test-repo',
-    'test-repo/',
-    'test-repo/*',
-    'test-repo/**/*',
-    
     'logs',
-    'logs/',
-    'logs/*',
-    'logs/**/*',
-
     '_dev_helpers',
-    '_dev_helpers/',
-    '_dev_helpers/*',
-    '_dev_helpers/**/*',
-
     'node_modules',
-    'node_modules/',
-    'node_modules/*',
-    'node_modules/**/*',
-
     '_releasing',
-    '_releasing/',
-    '_releasing/*',
-    '_releasing/**/*',
 
+    # Files
     '.eslintrc.json',
     'eslintrc.json',
     'package.json',
@@ -71,10 +43,12 @@ ignore = [
     'todo.md',
     'tailwind.config.js',
     'readme.md',
-    'php/composer.lock',
-    'php/composer.json',
-    'css/input.css',
+    'overview.md',
     '.gitignore',
+    'gitdown-video.mp4',
+    'input.css',
+
+    '*.ai',
 ]
 
 print('Copying ...')
@@ -85,7 +59,7 @@ print('Zipping ...')
 shutil.make_archive(os.path.join(distFolderPATH, 'gitdown'), "zip", os.path.join(distFolderPATH, 'temp_gitdown'))
 
 print('Clearing ...')
-clearFolder(os.path.join(distFolderPATH, 'temp_gitdown'))
+""" clearFolder(os.path.join(distFolderPATH, 'temp_gitdown')) """
 try:
     os.remove(os.path.join(distFolderPATH, 'temp_gitdown'))
 except:
