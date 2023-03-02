@@ -54,13 +54,13 @@ class MGD_ArticleCollection {
         // Resolve Articles
         foreach ($paths as $path) {
             $this->reports->found_posts++;
-
+            
             // Creating the Std Object
             $post_data = new \stdClass();
-
+            
             $post_data->remote = $this->resolver($path) ?? [];
-
-            if (!!$post_data) continue;
+            
+            if (!$post_data) continue;
 
             // Check if Post is valid
             if (!property_exists($post_data->remote, 'name')) {
@@ -116,6 +116,7 @@ class MGD_ArticleCollection {
             try {
                 $document = $parser->parse($fileContent, false);
             } catch (\Exception $e) {
+                $this->pushReportError('YAML Error', $path, $e);
                 return false;
             }
 
