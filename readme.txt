@@ -1,4 +1,4 @@
-=== Gitdown: Turn a repository into a Blog ===
+=== Gitdown: Git Repository to Blog Posts ===
 Contributors: maximmaeder
 Donate link: https://maximmaeder.com
 Tags: markdown, github, posts, cms
@@ -30,6 +30,8 @@ This plugin uses the following third Party Services and Programs
     - [Homepage](https://github.com/mnapoli/FrontYAML)
 - *Parsedown*: Is used to parse the markdown content and turn it into HTMl.
     - [Homepage](https://parsedown.org/)
+- *git-php*: Is used to clone and fetch git repositories.
+    - [Homepage](https://github.com/czproject/git-php)
 
 == Frequently Asked Questions ==
 

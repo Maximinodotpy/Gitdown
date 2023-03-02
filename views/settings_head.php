@@ -1,1 +1,1 @@
-Edit the Git to <?php echo  MGD_PLUGIN_NAME ?> settings here.
+Edit the Gitdown settings here.

@@ -108,6 +108,17 @@ const vueApp = createApp({
 
             console.log(this.articles)
             console.log(response.reports)
+        },
+        async pull() {
+            const response = (await this.callAJAX({
+                action: 'pull_remote',
+            }))
+
+            this.articles = response.posts.reverse()
+            this.reports = response.reports
+
+            console.log(this.articles)
+            console.log(response.reports)
         }
     }
 })

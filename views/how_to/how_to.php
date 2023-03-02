@@ -159,6 +159,8 @@ Article content in the normal markdown format.
 
         <p>Gitdown's User Interface is pretty straight forward, it consist of some buttons at the top to update / publish / delete all posts. These buttons are also individually available for each article.</p>
 
+        <?php warning('Press on the button that says "Pull Repository" anytime you make a change or want to clone the repository.') ?>
+
         <p>The second column will show you wether the post is on wordpress, which as stated earlier means that gitdown found a post with the same slug.</p>
 
         <p>Thats it have fun writing and publishing with Gitdown! 😀</p>

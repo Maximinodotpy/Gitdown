@@ -72,24 +72,6 @@ class Gitdown
             mkdir(MGD_MIRROR_PATH, 0777, true);
         }
 
-        chdir(MGD_MIRROR_PATH);
-        if (!MGD_REMOTE_IS_CLONED) {
-            exec('git clone ' . get_option(MGD_SETTING_REPO) . ' .', $out);
-        } else {
-            $git = new MGD_GIT;
-            $repo = $git->open('.');
-            
-            $out = [];
-            /* exec('git fetch --dry-run --verbose', $out); */
-            /* exec('cd', $out); */
-
-            /* throw new \Exception((string) $git); */
-            
-            if (count($out) > 0) {
-                exec('git pull', $out);
-            }
-        }
-
         $this->articleCollection = new MGD_ArticleCollection(MGD_MIRROR_PATH, get_option(MGD_SETTING_GLOB));
 
         // Setting up the Action Hooks
@@ -282,12 +264,23 @@ class Gitdown
             echo json_encode($this->articleCollection->deleteArticle($_REQUEST['slug']));
             die();
         });
+        add_action("wp_ajax_pull_remote", function () {
+            chdir(MGD_MIRROR_PATH);
+            $git = new MGD_GIT;
+            if (!MGD_REMOTE_IS_CLONED) {
+                $repo = $git->cloneRepository(get_option(MGD_SETTING_REPO), '.');
+            } else {
+                $repo = $git->open('.');
+                $repo->pull('origin');
+            }
+            do_action("wp_ajax_get_all_articles");
+        });
     }
 
     public function activate()
     {
         add_option(MGD_SETTING_RESOLVER, 'simple');
-        add_option(MGD_SETTING_GLOB, '**/*.md');
+        add_option(MGD_SETTING_GLOB, 'simple/*.md');
         add_option(MGD_SETTING_REPO, 'https://github.com/Maximinodotpy/gitdown-test-repository.git');
         add_option(MGD_SETTING_DEBUG, '0');
 

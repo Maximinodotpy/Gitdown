@@ -69,10 +69,11 @@
 
     <div>
         <button id="pa" @click="updateAllArticles()" class="tw-mr-2 button button-primary"><?php _e('Update All', 'gitdown')?></button>
-
+        
+        <button id="sy" @click="pull()" class="button button-primary tw-mr-2"><?php _e('Pull Repository', 'gitdown')?></button>
+        
         <button id="da" @click="deleteAll()" class="button tw-mr-2"><?php _e('Delete All', 'gitdown')?></button>
 
-        <button id="sy" @click="sync()" class="button tw-mr-2"><?php _e('Reload', 'gitdown')?></button>
 
         <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button tw-mr-2"><?php _e('Download Example Folder Structure', 'gitdown')?></a>
 
