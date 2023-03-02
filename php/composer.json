@@ -1,6 +1,7 @@
 {
     "require": {
         "mnapoli/front-yaml": "^2.0",
-        "erusev/parsedown": "^1.7"
+        "erusev/parsedown": "^1.7",
+        "czproject/git-php": "^4.1"
     }
 }

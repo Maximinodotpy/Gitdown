@@ -60,6 +60,8 @@ class MGD_ArticleCollection {
 
             $post_data->remote = $this->resolver($path) ?? [];
 
+            if (!!$post_data) continue;
+
             // Check if Post is valid
             if (!property_exists($post_data->remote, 'name')) {
                 array_push($this->reports->errors, 'Error: Post at path '.$path.' has no name');
@@ -109,7 +111,12 @@ class MGD_ArticleCollection {
 
             $parser = new GDFrontYaml\Parser;
             $postData = [];
-            $document = $parser->parse($fileContent, false);
+
+            try {
+                $document = $parser->parse($fileContent, false);
+            } catch (\Exception $e) {
+                return false;
+            }
 
             $postData = $document->getYAML() ?? [];
 

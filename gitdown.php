@@ -10,6 +10,7 @@ Text Domain:  gitdown
 */
 
 namespace WP\Plugin\Gitdown;
+use CzProject\GitPhp\Git as MGD_GIT;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
@@ -75,13 +76,18 @@ class Gitdown
         if (!MGD_REMOTE_IS_CLONED) {
             exec('git clone ' . get_option(MGD_SETTING_REPO) . ' .', $out);
         } else {
+            $git = new MGD_GIT;
+            $repo = $git->open('.');
+            
             $out = [];
-            exec('git diff origin/master', $out);
+            /* exec('git fetch --dry-run --verbose', $out); */
+            /* exec('cd', $out); */
+
+            /* throw new \Exception((string) $git); */
             
             if (count($out) > 0) {
                 exec('git pull', $out);
             }
-
         }
 
         $this->articleCollection = new MGD_ArticleCollection(MGD_MIRROR_PATH, get_option(MGD_SETTING_GLOB));
