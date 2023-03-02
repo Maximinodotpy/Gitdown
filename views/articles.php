@@ -11,6 +11,60 @@
         </div>
     </div>
 
+
+    <!-- Report -->
+    <details class="tw-my-4" open>
+        <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">Report</summary>
+
+        <div class="tw-p-8 tw-max-h-[400px] tw-overflow-y-auto tw-overflow-x-visible">
+            <div class="tw-grid md:tw-grid-cols-2 tw-gap-28">
+                <div class="tw-grid tw-grid-cols-2 tw-gap-10 tw-pr-8">
+                    <div>
+                        <div class="tw-text-4xl tw-font-mono">{{ reports.found_posts }}</div>
+                        <div class="tw-text-lg">Found Posts</div>
+                    </div>
+                    <div>
+                        <div class="tw-text-4xl tw-font-mono">{{ reports.published_posts }}</div>
+                        <div class="tw-text-lg">Published Posts</div>
+                    </div>
+                    <div>
+                        <div class="tw-text-4xl tw-font-mono">{{ reports.valid_posts }}</div>
+                        <div class="tw-text-lg">Valid Posts</div>
+                    </div>
+                    <div>
+                        <div class="tw-text-4xl tw-font-mono">{{ reports.coerced_slugs }}</div>
+                        <div class="tw-text-lg">Coerced Slugs</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="tw-text-3xl tw-mb-4">Errors and Warnings</div>
+
+                    <div v-if="reports?.errors?.length != 0" class="tw-flex tw-flex-col tw-gap-4">
+                        <div v-for="error in reports.errors">
+                            <div class="tw-p-2 hover:tw-scale-[1.01] tw-transition-all hover:tw-shadow-lg tw-bg-[#f0f0f1]">
+                            <div class="tw-font-mono tw-font-semibold tw-gap-3 tw-flex tw-flex-col">
+                                <span class="tw-bg-orange-300 tw-text-orange-700 tw-p-1">{{ error.type }}</span>
+                                <span class="tw-bg-blue-300 tw-text-blue-700 tw-flex">
+                                    <span class="tw-p-1 tw-bg-blue-900 tw-text-blue-200">@</span>
+                                    <span class="tw-p-1">{{ error.location }}</span>
+                                </span>                                
+                            </div>
+                            <div class="tw-text-lg">
+                                {{ error.description }}
+                            </div>
+                        </div>
+                        </div>
+                        
+                    </div>
+                    <div v-else>
+                        Congratulations! You have no Errors 😀.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </details>
+
     <br>
 
     <div>
