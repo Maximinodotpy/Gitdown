@@ -3,4 +3,4 @@
 
 Gitdown enables you to connect a Remote Repository to your Website and upload markdown articles from there to your wordpress blog.
 
-![](https://raw.githubusercontent.com/Maximinodotpy/Gitdown/master/images/gitdown.png)
+![](https://raw.githubusercontent.com/Maximinodotpy/Gitdown/master/assets/banner-1544x500.png)
