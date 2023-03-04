@@ -2,6 +2,7 @@
 namespace WP\Plugin\Gitdown;
 use Parsedown as GDParsedown;
 use Mni\FrontYAML as GDFrontYaml;
+use CzProject\GitPhp\Git as MGD_GIT;
 
 class MGD_ArticleCollection {
     public $articles = [];
@@ -29,27 +30,40 @@ class MGD_ArticleCollection {
     }
 
     private function parse() {
-        /* $remote_defaults = [
-            'name' => null,
-            'slug' => null,
-            'description' => '',
-            'thumbnail' => null,
-            'content' => null,
-            'raw_content' => null,
-            'category' => [],
-            'tags' => [],
-            'status' => null,
-        ]; */
 
-        chdir($this->source);
+        if (get_option(MGD_SETTING_GLOB) == '') {
+            $this->pushReportError('No Glob specified', '.', 'You did not specify a glob pattern');
+            return;
+        } else if (get_option(MGD_SETTING_REPO) == '') {
+            $this->pushReportError('No Repository URL', '.', 'You did not specify a repository url');
+            return;
+        }
 
+        chdir(MGD_MIRROR_PATH);
+
+        $git = new MGD_GIT;
+        if (!MGD_REMOTE_IS_CLONED) {
+            $repo = $git->cloneRepository(get_option(MGD_SETTING_REPO), '.');
+        }
+        else {
+            // Try to pull the repository multiple times if they fail.
+            $pull_success = false;
+
+            while (!$pull_success) {
+                try {
+                    $repo = $git->open('.');
+                    $repo->pull('origin');
+
+                    $pull_success = true;
+                } catch (\Throwable $th) {}
+            }
+        }
 
         // Get all Paths
         $paths = [];
         foreach (explode(',', $this->glob) as $single_glob) {
             $paths = array_merge($paths, glob($single_glob));
         }
-
 
         // Resolve Articles
         foreach ($paths as $path) {
@@ -81,13 +95,12 @@ class MGD_ArticleCollection {
             array_push($this->articles, $post_data);
         }
 
-
         // Merge Remote Articles with local articles if applicable
         foreach ($this->articles as $key => $article) {
 
             $localArticle = get_posts(array(
                 'name'           => $article->remote->slug,
-                'post_status' => 'any',
+                'post_status' => ['draft', 'publish', 'trash'],
                 'posts_per_page' => 1
             ))[0];
 

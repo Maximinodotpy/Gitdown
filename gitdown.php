@@ -3,14 +3,13 @@
 Plugin Name:  Gitdown
 Plugin URI:   https://github.com/Maximinodotpy/Gitdown
 Description:  Use this Plugin to create, update, delete and manage markdown articles hosted on a remote repository.
-Version:      1.0.0
+Version:      1.0.1
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
 Text Domain:  gitdown
 */
 
 namespace WP\Plugin\Gitdown;
-use CzProject\GitPhp\Git as MGD_GIT;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
@@ -24,9 +23,9 @@ class Gitdown
 
     public function __construct()
     {
-        require_once 'php/vendor/autoload.php';
-        require_once 'php/helpers.php';
-        require_once 'php/ArticleCollection.php';
+        require_once 'inc/vendor/autoload.php';
+        require_once 'inc/helpers.php';
+        require_once 'inc/ArticleCollection.php';
 
         // The Root path of this Plugin Directory
         define('MGD_ROOT_PATH', __DIR__ . '/');
@@ -263,17 +262,6 @@ class Gitdown
         add_action("wp_ajax_delete_article", function () {
             echo json_encode($this->articleCollection->deleteArticle($_REQUEST['slug']));
             die();
-        });
-        add_action("wp_ajax_pull_remote", function () {
-            chdir(MGD_MIRROR_PATH);
-            $git = new MGD_GIT;
-            if (!MGD_REMOTE_IS_CLONED) {
-                $repo = $git->cloneRepository(get_option(MGD_SETTING_REPO), '.');
-            } else {
-                $repo = $git->open('.');
-                $repo->pull('origin');
-            }
-            do_action("wp_ajax_get_all_articles");
         });
     }
 
