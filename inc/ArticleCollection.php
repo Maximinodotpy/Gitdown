@@ -82,6 +82,10 @@ class MGD_ArticleCollection {
                 $this->pushReportError('Missing Name', $path, 'the Front matter of this post shows now name property which is crucial for it to be published.');
                 continue;
             }
+            
+            if (!property_exists($post_data->remote, 'raw_content')) {
+                $this->pushReportError('No Content', $path, 'It seems like this post has no content.');
+            }
 
             $this->reports->valid_posts++;
 

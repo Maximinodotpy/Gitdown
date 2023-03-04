@@ -15,10 +15,6 @@ use MGD_Helpers;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
-/* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
-/* maximmaeder */
-/* fjöalsjfölasjfsjö*ç */
-
 class Gitdown
 {
     private $articleCollection;
@@ -64,9 +60,6 @@ class Gitdown
         // Key names for each article object later on.
         define('MGD_REMOTE_KEY', 'remote');
         define('MGD_LOCAL_KEY', 'local');
-
-        // Debug Mode
-        define('MGD_DEBUG', boolval(get_option(MGD_SETTING_DEBUG)));
 
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(MGD_MIRROR_PATH)) {
@@ -129,16 +122,6 @@ class Gitdown
                 'Repository Location',
                 function () {
                     $this->view(MGD_ROOT_PATH . 'views/settings_repo.php');
-                },
-                MGD_SETTINGS_PAGE,
-                MGD_SETTINGS_SECTION
-            );
-
-            add_settings_field(
-                MGD_SETTING_DEBUG,
-                'Debug Mode',
-                function () {
-                    $this->view(MGD_ROOT_PATH . 'views/settings_debug.php');
                 },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
@@ -295,5 +278,5 @@ class Gitdown
 
 
 if (is_admin()) {
-    $gtw = new Gitdown();
+    $MGDFASDFASDFASDFASDT = new Gitdown();
 }
