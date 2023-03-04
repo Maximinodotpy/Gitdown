@@ -52,3 +52,7 @@ Yes it does! Something like Animals/Cats, will create these two classes in a nes
 4. Gitdown Reading Settings
 
 == Changelog ==
+
+= 1.0.1 =
+- Small Bugfixes
+- Removed Pull Repo Button
