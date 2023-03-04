@@ -43,6 +43,10 @@ Yes you can! Simply seperate them by commas.
 
 Yes it does! Something like Animals/Cats, will create these two classes in a nested fashion and add the last one as the category.
 
+= Does Gitdown read tags =
+
+As of now (1.0.2) it does not.
+
 
 == Screenshots ==
 

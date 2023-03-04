@@ -10,7 +10,6 @@ Text Domain:  gitdown
 */
 
 namespace WP\Plugin\Gitdown;
-
 use MGD_Helpers;
 
 defined('ABSPATH') or die('No direct script access allowed.');
