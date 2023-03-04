@@ -11,6 +11,8 @@ Text Domain:  gitdown
 
 namespace WP\Plugin\Gitdown;
 
+use MGD_Helpers;
+
 defined('ABSPATH') or die('No direct script access allowed.');
 
 /* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
@@ -50,9 +52,9 @@ class Gitdown
 
         // Where the current Repository is located depends on the repo url.
         $repo_nice_name = 
-            MGD_stringToSlug(basename(dirname(get_option(MGD_SETTING_REPO))))
+            MGD_Helpers::string_to_slug(basename(dirname(get_option(MGD_SETTING_REPO))))
             .'-'.
-            MGD_stringToSlug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
+            MGD_Helpers::string_to_slug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
             
         define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
         define('MGD_MIRROR_URL', WP_CONTENT_URL . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');

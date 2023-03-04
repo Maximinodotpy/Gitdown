@@ -3,6 +3,7 @@ namespace WP\Plugin\Gitdown;
 use Parsedown as GDParsedown;
 use Mni\FrontYAML as GDFrontYaml;
 use CzProject\GitPhp\Git as MGD_GIT;
+use MGD_Helpers;
 
 class MGD_ArticleCollection {
     public $articles = [];
@@ -86,7 +87,7 @@ class MGD_ArticleCollection {
 
             // Add the name as the slug in case its not defined
             if (!property_exists($post_data->remote, 'slug')) {
-                $post_data->remote->slug = MGD_stringToSlug($post_data->remote->name);
+                $post_data->remote->slug = MGD_Helpers::string_to_slug($post_data->remote->name);
                 $this->reports->coerced_slugs++;
 
                 $this->pushReportError('Coerced Slug', $path, 'This post does not define a slug so the name was turned into a slug. This is not advised.');
@@ -214,7 +215,7 @@ class MGD_ArticleCollection {
             'post_excerpt' => $post_data->remote->description ?? '',
             'post_content'  => wp_kses_post($Parsedown->text($post_data->remote->raw_content)),
             'post_status'   => $post_data->remote->status ?? 'publish',
-            'post_category' => $this->createCategories($post_data->remote->category ?? []),
+            'post_category' => MGD_Helpers::create_categories($post_data->remote->category),
         );
 
         /* Add the ID in case it is already published */
@@ -268,29 +269,6 @@ class MGD_ArticleCollection {
 
         // Returning the result so The Frontend knows it
         return !!$result;
-    }
-
-    private function createCategories($name_paths) {
-        $returned_ids = [];
-
-        $name_paths = is_array($name_paths) ? $name_paths : array($name_paths);
-
-        foreach ($name_paths as $name_path) {
-            $current_last_id = 0;
-
-            foreach (explode('/', $name_path) as $single_cat) {
-                if (!get_category_by_slug($single_cat)) {
-                    $current_last_id = wp_insert_term($single_cat, 'category', [
-                        'parent' => $current_last_id,
-                    ])['term_id'];
-                } else {
-                    $current_last_id = get_category_by_slug($single_cat)->term_id;
-                }
-            }
-
-            array_push($returned_ids, $current_last_id);
-        }
-        return $returned_ids;
     }
 
     private function pushReportError($type, $location, $description) {
