@@ -81,7 +81,6 @@ class Gitdown
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, function () { $this->activate(); });
         register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
-        wp_enqueue_style(MGD_PLUGIN_PREFIX . '_styles', MGD_ROOT_URL . 'css/gitdown.css');
         
         add_action('admin_init', function () {
 
@@ -158,6 +157,7 @@ class Gitdown
                 add_action('admin_enqueue_scripts', function () {
                     wp_enqueue_script('MGD_vuejs', MGD_ROOT_URL . 'js/vue.js');
                     wp_enqueue_script('MGD_adminjs', MGD_ROOT_URL . 'js/admin.js');
+                    wp_enqueue_style(MGD_PLUGIN_PREFIX . '_styles', MGD_ROOT_URL . 'css/gitdown.css');
                 });
             }
         );

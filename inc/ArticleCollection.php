@@ -107,9 +107,9 @@ class MGD_ArticleCollection {
                 'name'           => $article->remote->slug,
                 'post_status' => ['draft', 'publish', 'trash'],
                 'posts_per_page' => 1
-            ))[0];
+            ))[0] ?? [];
 
-            $this->articles[$key]->local = $localArticle ?? [];
+            $this->articles[$key]->local = $localArticle;
             $this->articles[$key]->_is_published = !!$localArticle;
 
             if (!!$localArticle) {
