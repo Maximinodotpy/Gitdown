@@ -11,11 +11,9 @@ Text Domain:  gitdown
 
 namespace WP\Plugin\Gitdown;
 
-defined('ABSPATH') or die('No direct script access allowed.');
+use MGD_Helpers;
 
-/* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
-/* maximmaeder */
-/* fjöalsjfölasjfsjö*ç */
+defined('ABSPATH') or die('No direct script access allowed.');
 
 class Gitdown
 {
@@ -50,9 +48,9 @@ class Gitdown
 
         // Where the current Repository is located depends on the repo url.
         $repo_nice_name = 
-            MGD_stringToSlug(basename(dirname(get_option(MGD_SETTING_REPO))))
+            MGD_Helpers::string_to_slug(basename(dirname(get_option(MGD_SETTING_REPO))))
             .'-'.
-            MGD_stringToSlug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
+            MGD_Helpers::string_to_slug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
             
         define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
         define('MGD_MIRROR_URL', WP_CONTENT_URL . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
@@ -62,9 +60,6 @@ class Gitdown
         // Key names for each article object later on.
         define('MGD_REMOTE_KEY', 'remote');
         define('MGD_LOCAL_KEY', 'local');
-
-        // Debug Mode
-        define('MGD_DEBUG', boolval(get_option(MGD_SETTING_DEBUG)));
 
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(MGD_MIRROR_PATH)) {
@@ -86,7 +81,6 @@ class Gitdown
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, function () { $this->activate(); });
         register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
-        wp_enqueue_style(MGD_PLUGIN_PREFIX . '_styles', MGD_ROOT_URL . 'css/gitdown.css');
         
         add_action('admin_init', function () {
 
@@ -133,16 +127,6 @@ class Gitdown
             );
 
             add_settings_field(
-                MGD_SETTING_DEBUG,
-                'Debug Mode',
-                function () {
-                    $this->view(MGD_ROOT_PATH . 'views/settings_debug.php');
-                },
-                MGD_SETTINGS_PAGE,
-                MGD_SETTINGS_SECTION
-            );
-
-            add_settings_field(
                 MGD_SETTING_RESOLVER,
                 'Resolver',
                 function () {
@@ -173,6 +157,7 @@ class Gitdown
                 add_action('admin_enqueue_scripts', function () {
                     wp_enqueue_script('MGD_vuejs', MGD_ROOT_URL . 'js/vue.js');
                     wp_enqueue_script('MGD_adminjs', MGD_ROOT_URL . 'js/admin.js');
+                    wp_enqueue_style(MGD_PLUGIN_PREFIX . '_styles', MGD_ROOT_URL . 'css/gitdown.css');
                 });
             }
         );
@@ -293,5 +278,5 @@ class Gitdown
 
 
 if (is_admin()) {
-    $gtw = new Gitdown();
+    $MGDFASDFASDFASDFASDT = new Gitdown();
 }

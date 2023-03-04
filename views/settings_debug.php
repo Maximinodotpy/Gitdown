@@ -1,2 +1,0 @@
-<input type="checkbox" name="<?php echo esc_html(MGD_SETTING_DEBUG)?>" <?php echo (get_option(esc_html(MGD_SETTING_DEBUG)) == '1') ? 'checked' : '' ?> value="1" id="<?php echo esc_html(MGD_SETTING_DEBUG)?>">
-<label class="description" for="<?php echo esc_html(MGD_SETTING_DEBUG)?>">Enable debugging ...</label>

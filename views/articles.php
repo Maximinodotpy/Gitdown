@@ -106,8 +106,7 @@
                         →
                         <code class="">
                             <?php echo get_option(MGD_SETTING_GLOB) ?>
-                        </code>
-                        ↓
+                        </code> ↓
                     </span>
                 </th>
                 <th>Wordpress</th>
