@@ -12,8 +12,6 @@ Text Domain:  gitdown
 namespace WP\Plugin\Gitdown;
 use MGD_Helpers;
 
-use MGD_Helpers;
-
 defined('ABSPATH') or die('No direct script access allowed.');
 
 /* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
