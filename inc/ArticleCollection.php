@@ -250,7 +250,10 @@ class MGD_ArticleCollection {
 
             $attach_id = wp_insert_attachment($attachment_data, $uploadPath, $post_id);
             set_post_thumbnail($post_id, $attach_id);
+
+            wp_create_image_subsizes($uploadPath, $attach_id);
         };
+
 
         return get_post($post_id);
     }
