@@ -44,4 +44,8 @@ class MGD_Helpers {
         }
         return $returned_ids;
     }
+
+    public static function coerce_to_array($input) {
+        return (is_array($input) ? $input : array($input));
+    }
 }
