@@ -220,6 +220,7 @@ class MGD_ArticleCollection {
             'post_content'  => wp_kses_post($Parsedown->text($post_data->remote->raw_content)),
             'post_status'   => $post_data->remote->status ?? 'publish',
             'post_category' => MGD_Helpers::create_categories($post_data->remote->category),
+            'tags_input' => MGD_Helpers::coerce_to_array($post_data->remote->tags),
         );
 
         /* Add the ID in case it is already published */
@@ -229,6 +230,8 @@ class MGD_ArticleCollection {
 
         // Insert the post into the database
         $post_id = wp_insert_post($new_post_data);
+
+
 
         // Uploading the Image
         $imagePath = MGD_MIRROR_PATH . $post_data->remote->featured_image;
@@ -240,6 +243,8 @@ class MGD_ArticleCollection {
 
             $thumbnailId = get_post_thumbnail_id($post_id);
 
+            require_once(ABSPATH . 'wp-admin/includes/image.php');
+
             $attachment_data = array(
                 'ID' => $thumbnailId,
                 'post_mime_type' => wp_check_filetype($uploadPath, null)['type'],
@@ -250,8 +255,11 @@ class MGD_ArticleCollection {
 
             $attach_id = wp_insert_attachment($attachment_data, $uploadPath, $post_id);
             set_post_thumbnail($post_id, $attach_id);
+
+            wp_generate_attachment_metadata($attach_id, $uploadPath);
         };
 
+        // Return Post data so the frontend can process it
         return get_post($post_id);
     }
 
