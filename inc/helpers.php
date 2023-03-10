@@ -10,13 +10,37 @@ class MGD_Helpers {
 
     public static function string_to_slug($string) {
         $string = str_replace(' ', '-', $string);
-        $string = str_replace('.', '', $string);
-        $string = str_replace(',', '', $string);
-        $string = str_replace('(', '', $string);
-        $string = str_replace(')', '', $string);
-        $string = str_replace('/', '', $string);
-        $string = str_replace("'", '', $string);
-        $string = str_replace(":", '', $string);
+
+        $black_list = [
+            '.',
+            ',',
+            '(',
+            ')',
+            '/',
+            "'",
+            ':',
+            '{',
+            '}',
+            '[',
+            ']',
+            '^',
+            '`',
+            '^',
+            '"',
+            '!',
+            '$',
+            '¨',
+            '|',
+            '¬',
+            '#',
+            '@',
+            '%',
+        ];
+
+        foreach ($black_list as $char) {
+            $string = str_replace($char, '', $string);
+        }
+
         $string = strtolower($string);
     
         return $string;
