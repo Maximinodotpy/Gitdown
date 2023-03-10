@@ -62,5 +62,5 @@ As of now (1.0.2) it does not.
 - Removed Pull Repo Button
 
 = 1.0.4 =
-- tags
-- wp_generate_attachment_metadata()
+- Added Tag Insertion
+- wp_generate_attachment_metadata() -> thumbnails will get regenerated if Image Editor is available.
