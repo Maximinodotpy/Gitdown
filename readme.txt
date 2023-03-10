@@ -1,4 +1,4 @@
-=== Gitdown: Git Repository to Blog Posts ===
+=== Gitdown: Git Repository to WordPress Blog Posts ===
 Contributors: maximmaeder
 Donate link: https://maximmaeder.com
 Tags: markdown, github, posts, cms
@@ -33,6 +33,7 @@ This plugin uses the following third Party Services and Programs
 - *git-php*: Is used to clone and fetch git repositories.
     - [Homepage](https://github.com/czproject/git-php)
 
+
 == Frequently Asked Questions ==
 
 = Can I supply multiple glob patterns? =
@@ -45,7 +46,11 @@ Yes it does! Something like Animals/Cats, will create these two classes in a nes
 
 = Does Gitdown read tags =
 
-As of now (1.0.2) it does not.
+Yes It does!
+
+= Does Gitdown support thumbnails? =
+
+Yes It does! You simply have to provide a file called 'preview.png' in the same folder as your article and it will be added as the thumbnail. This means that you should have a folder for each article.
 
 
 == Screenshots ==
