@@ -259,6 +259,7 @@ class MGD_ArticleCollection {
             wp_generate_attachment_metadata($attach_id, $uploadPath);
         };
 
+
         // Return Post data so the frontend can process it
         return get_post($post_id);
     }

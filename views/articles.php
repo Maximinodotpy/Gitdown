@@ -109,7 +109,7 @@
                         </code> ↓
                     </span>
                 </th>
-                <th>Wordpress</th>
+                <th>WordPress</th>
                 <th><?php _e('Actions', 'gitdown')?></th>
                 <th class="tw-w-0"><!-- This row is used for the Loader --></th>
             </tr>
@@ -129,7 +129,7 @@
                 </td>
                 <td>
                     <template v-if="item._is_published">
-                        <div class="row-title tw-mb-3">✅ <?php _e('Is on Wordpress', 'gitdown')?></div>
+                        <div class="row-title tw-mb-3">✅ <?php _e('Is on WordPress', 'gitdown')?></div>
 
                         <div v-if="complex_view">
                             <div>ID: <code>{{ item.local.ID }}</code></div>
@@ -140,7 +140,7 @@
                     </template>
 
                     <template v-else>
-                        ❌ <?php _e('Not on wordpress', 'gitdown')?>
+                        ❌ <?php _e('Not on WordPress', 'gitdown')?>
                     </template>
                 </td>
                 <td class="tw-relative tw-box-border">

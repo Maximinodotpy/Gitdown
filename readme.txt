@@ -4,7 +4,7 @@ Donate link: https://maximmaeder.com
 Tags: markdown, github, posts, cms
 Requires at least: 6.1.1
 Tested up to: 6.1.1
-Stable tag: 1.0.1
+Stable tag: 1.0.4
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -43,6 +43,10 @@ Yes you can! Simply seperate them by commas.
 
 Yes it does! Something like Animals/Cats, will create these two classes in a nested fashion and add the last one as the category.
 
+= Does Gitdown read tags =
+
+As of now (1.0.2) it does not.
+
 
 == Screenshots ==
 
@@ -56,3 +60,7 @@ Yes it does! Something like Animals/Cats, will create these two classes in a nes
 = 1.0.1 =
 - Small Bugfixes
 - Removed Pull Repo Button
+
+= 1.0.4 =
+- tags
+- wp_generate_attachment_metadata()
