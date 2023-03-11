@@ -3,7 +3,7 @@
 	"version": "1.0.5",
 	"description": "Wordpress Plugin to get Articles from a Git Repo and Publish them on Wordpress.",
 	"scripts": {
-		"watch": "start npx tailwindcss -i ./css/input.css -o ./css/gitdown.css --watch --minify & start npx tsc -w",
+		"watch": "start npx tailwindcss -i ./css/input.css -o ./css/gitdown.css --watch --minify",
 		"publish": "python \"_dev_helpers/dist.py\"",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -19,11 +19,8 @@
 	},
 	"homepage": "https://github.com/Maximinodotpy/Gitdown#readme",
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^5.54.1",
-		"@typescript-eslint/parser": "^5.54.1",
 		"eslint": "^8.36.0",
 		"eslint-plugin-vue": "^9.9.0",
-		"tailwindcss": "^3.2.7",
-		"typescript": "^4.9.5"
+		"tailwindcss": "^3.2.7"
 	}
 }
