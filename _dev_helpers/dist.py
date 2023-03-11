@@ -2,6 +2,7 @@
 import shutil
 import os
 from pathlib import Path
+import svn.remote as svn_remote
 import json
 import argparse
 
