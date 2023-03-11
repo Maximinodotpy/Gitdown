@@ -272,10 +272,7 @@ class Gitdown
                 add_action('wp_print_scripts', function() use($all_articles) { 
                     ?>
                     <script>
-                        (async () => {
-                            console.log('Masjdélfkajsédlfkjaséldk');
-                            console.log(ajaxurl);
-    
+                        (async () => {    
                             const all_articles = <?php echo json_encode($all_articles) ?>
     
                             console.log(all_articles);
