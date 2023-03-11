@@ -2,7 +2,6 @@
 import shutil
 import os
 from pathlib import Path
-import svn.remote as svn_remote
 import json
 import argparse
 
@@ -124,4 +123,4 @@ elif (ARGS.version_mode == 'major'):
 copy_folder(trunk_folder, tags_folder / Path(new_version))
 
 
-print('\nDont forget to now bump of the version number in your readme.txt and to commit the changes via a SVN Client.')
+print(f'\nDont forget to now bump of the version number to "{new_version}" in your readme.txt/gitdown.php and to commit the changes via a SVN Client.')
