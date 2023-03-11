@@ -48,4 +48,17 @@ class MGD_Helpers {
     public static function coerce_to_array($input) {
         return (is_array($input) ? $input : array($input));
     }
+
+    
+    public static function write_log($log) {
+        if (!function_exists('write_log')) {
+            if (true === WP_DEBUG) {
+                if (is_array($log) || is_object($log)) {
+                    error_log(print_r($log, true));
+                } else {
+                    error_log($log);
+                }
+            }
+        }
+    }
 }

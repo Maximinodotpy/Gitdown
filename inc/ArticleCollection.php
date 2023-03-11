@@ -96,6 +96,11 @@ class MGD_ArticleCollection {
 
                 $this->pushReportError('Coerced Slug', $path, 'This post does not define a slug so the name was turned into a slug. This is not advised.');
             }
+            if (!property_exists($post_data->remote, 'tags')) {
+                $post_data->remote->tags = [];
+
+                $this->pushReportError('No Tags found', $path, 'This post does not define tags ...');
+            }
 
             array_push($this->articles, $post_data);
         }
@@ -229,8 +234,12 @@ class MGD_ArticleCollection {
         }
 
         // Insert the post into the database
-        $post_id = wp_insert_post($new_post_data);
-
+        try {
+            $post_id = wp_insert_post($new_post_data);
+        } catch (\Throwable $th) {
+            MGD_Helpers::write_log($th);
+            return;
+        }
 
 
         // Uploading the Image

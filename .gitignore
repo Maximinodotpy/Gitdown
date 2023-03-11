@@ -3,3 +3,4 @@ logs
 test-repo
 dist
 _svn
+.vscode

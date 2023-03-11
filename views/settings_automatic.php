@@ -1,0 +1,2 @@
+<input class="regular-text code" type="checkbox" name="<?php echo esc_html(MGD_SETTING_CRON)?>" <?php echo ((bool)get_option(MGD_SETTING_CRON)) ? 'checked' : '' ?>> Enable Automatic Hourly Updates
+<p class="description">Do you want that gitdown automatically updates your posts every hour?</p>

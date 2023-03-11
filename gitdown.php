@@ -43,6 +43,7 @@ class Gitdown
         define('MGD_SETTING_REPO', MGD_PLUGIN_PREFIX . '_repo_setting');
         define('MGD_SETTING_DEBUG', MGD_PLUGIN_PREFIX . '_debug_setting');
         define('MGD_SETTING_RESOLVER', MGD_PLUGIN_PREFIX . '_resolver_setting');
+        define('MGD_SETTING_CRON', MGD_PLUGIN_PREFIX . '_cron_setting');
 
         // Admin Menu Slugs
         define('MGD_ARTICLES_SLUG', MGD_PLUGIN_PREFIX . '-article-manager');
@@ -73,7 +74,6 @@ class Gitdown
 
         // Setting up the Action Hooks
         $this->setupActions();
-        $this->setupCustomAction();
     }
 
     /**
@@ -98,6 +98,7 @@ class Gitdown
             register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_REPO);
             register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_RESOLVER);
             register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_DEBUG);
+            register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_CRON);
 
             add_settings_section(
                 MGD_SETTINGS_SECTION,
@@ -134,6 +135,16 @@ class Gitdown
                 'Resolver',
                 function () {
                     $this->view(MGD_ROOT_PATH . 'views/settings_resolver.php');
+                },
+                MGD_SETTINGS_PAGE,
+                MGD_SETTINGS_SECTION
+            );
+
+            add_settings_field(
+                MGD_SETTING_CRON,
+                'Automatic Updating',
+                function () {
+                    $this->view(MGD_ROOT_PATH . 'views/settings_automatic.php');
                 },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
@@ -231,10 +242,8 @@ class Gitdown
                 echo '<div id="message" class="updated notice is-dismissable"><p>' . esc_html($_REQUEST['MGD_notice']) . '</p></div>';
             }
         });
-    }
 
-    private function setupCustomAction()
-    {
+        
         // Ajax Calls
         add_action("wp_ajax_get_all_articles", function () {
             echo json_encode(array(
@@ -251,6 +260,65 @@ class Gitdown
             echo json_encode($this->articleCollection->deleteArticle($_REQUEST['slug']));
             die();
         });
+
+        
+        if (((bool)get_option(MGD_SETTING_CRON))) {
+            MGD_Helpers::write_log('Cron Stuff ...');
+    
+            add_action('mgd_cron_update_all_posts', function() {
+                MGD_Helpers::write_log('Publishing all articlies through cron ...');
+                $all_articles = $this->articleCollection->get_all();
+                
+                add_action('wp_print_scripts', function() use($all_articles) { 
+                    ?>
+                    <script>
+                        (async () => {
+                            console.log('Masjdélfkajsédlfkjaséldk');
+                            console.log(ajaxurl);
+    
+                            const all_articles = <?php echo json_encode($all_articles) ?>
+    
+                            console.log(all_articles);
+    
+                            for (const article of all_articles) {
+                                console.log(article.remote.slug);
+                                
+                                const form_data = new FormData()
+        
+                                form_data.append('action', 'update_article')
+                                form_data.append('slug', article.remote.slug)
+    
+                                const re = fetch(ajaxurl, {
+                                    method: 'POST',
+                                    body: form_data,
+                                })
+                                console.log(re);
+                            }
+                        })()
+                    </script>
+                    <?php
+                });
+            });
+        
+            add_action('init', function() {
+                MGD_Helpers::write_log('wp_next_scheduled:'.wp_next_scheduled( 'mgd_cron_update_all_posts'));
+    
+                if ( ! wp_next_scheduled( 'mgd_cron_update_all_posts' ) ) {
+                    MGD_Helpers::write_log('Running Schedule');
+                    
+                    wp_schedule_event( time(), 'hourly', 'mgd_cron_update_all_posts' );
+                }
+            });
+        } else {
+            MGD_Helpers::write_log('No Cron Stuff, stopping events if there are any ...');
+
+            $timestamp = wp_next_scheduled( 'mgd_cron_update_all_posts' );
+            wp_unschedule_event( $timestamp, 'mgd_cron_update_all_posts' );
+        }
+
+        /* add_action('init', function() {
+            do_action('mgd_cron_update_all_posts');
+        }); */
     }
 
     public function activate()
@@ -259,16 +327,21 @@ class Gitdown
         add_option(MGD_SETTING_GLOB, 'simple/*.md');
         add_option(MGD_SETTING_REPO, 'https://github.com/Maximinodotpy/gitdown-test-repository.git');
         add_option(MGD_SETTING_DEBUG, '0');
-
+        add_option(MGD_SETTING_CRON, false);
+        
         add_option('MGD_do_activation_redirect', true);
     }
-
+    
     public function deactivate()
     {
         delete_option(MGD_SETTING_RESOLVER);
         delete_option(MGD_SETTING_GLOB);
         delete_option(MGD_SETTING_REPO);
         delete_option(MGD_SETTING_DEBUG);
+        delete_option(MGD_SETTING_CRON);
+
+        $timestamp = wp_next_scheduled( 'mgd_cron_update_all_posts' );
+        wp_unschedule_event( $timestamp, 'mgd_cron_update_all_posts' );
     }
 
     private function view($path, $input = [])
