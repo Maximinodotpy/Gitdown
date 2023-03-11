@@ -312,10 +312,6 @@ class Gitdown
             $timestamp = wp_next_scheduled( 'mgd_cron_update_all_posts' );
             wp_unschedule_event( $timestamp, 'mgd_cron_update_all_posts' );
         }
-
-        /* add_action('init', function() {
-            do_action('mgd_cron_update_all_posts');
-        }); */
     }
 
     public function activate()
