@@ -69,3 +69,6 @@ Yes It does! You simply have to provide a file called 'preview.png' in the same 
 = 1.0.4 =
 - Added Tag Insertion
 - wp_generate_attachment_metadata() -> thumbnails will get regenerated if Image Editor is available.
+
+= 1.0.5 =
+- Added Auto Update Feature
