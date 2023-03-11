@@ -9,20 +9,14 @@ class MGD_ArticleCollection {
     public $articles = [];
     public $reports;
 
-    public $source;
-    public $glob;
-
-    function __construct (string $source, string $glob) {
+    function __construct () {
         $this->reports = (object) array(
-            'published_posts' => 0,
-            'found_posts' => 0,
-            'valid_posts' => 0,
-            'coerced_slugs' => 0,
-            'errors' => array(),
+            'published_posts'  => 0,
+            'found_posts'      => 0,
+            'valid_posts'      => 0,
+            'coerced_slugs'    => 0,
+            'errors'           => array(),
         );
-
-        $this->source = $source;
-        $this->glob = $glob;
     }
 
     // This function checks if the articles have been parsed and if not does that.
@@ -62,7 +56,7 @@ class MGD_ArticleCollection {
 
         // Get all Paths
         $paths = [];
-        foreach (explode(',', $this->glob) as $single_glob) {
+        foreach (explode(',', get_option(MGD_SETTING_GLOB)) as $single_glob) {
             $paths = array_merge($paths, glob($single_glob));
         }
 
@@ -109,9 +103,9 @@ class MGD_ArticleCollection {
         foreach ($this->articles as $key => $article) {
 
             $localArticle = get_posts(array(
-                'name'           => $article->remote->slug,
-                'post_status' => ['draft', 'publish', 'trash'],
-                'posts_per_page' => 1
+                'name'            =>  $article->remote->slug,
+                'post_status'     =>  ['draft', 'publish', 'trash'],
+                'posts_per_page'  =>  1
             ))[0] ?? [];
 
             $this->articles[$key]->local = $localArticle;
@@ -181,7 +175,7 @@ class MGD_ArticleCollection {
         }
 
         return (object) $currentData;
-    }
+    }   
 
     public function get_all() {
         $this->check_if_parsed();
@@ -197,7 +191,7 @@ class MGD_ArticleCollection {
         });
     }
 
-    public function get_by_id($id) {
+    public function get_by_id(int $id) {
         $this->check_if_parsed();
 
         return MGD_Helpers::array_nested_find($this->articles, function($obj) use (&$id) {
@@ -205,6 +199,16 @@ class MGD_ArticleCollection {
         }) ?? (object) array(
             '_is_published' => false,
         );
+    }
+
+    public function get_oldest(int $count = 1) {
+        $all_posts = $this->get_all();
+
+        usort($all_posts, function($a, $b){
+            return $a->last_updated <=> $b->last_updated;
+        });
+
+        return array_slice($all_posts, 0, $count);
     }
 
     public function update_post(string $slug)
@@ -216,13 +220,13 @@ class MGD_ArticleCollection {
         $Parsedown = new GDParsedown();
 
         $new_post_data = array(
-            'post_title'    => $post_data->remote->name,
-            'post_name'    => $post_data->remote->slug,
-            'post_excerpt' => $post_data->remote->description ?? '',
-            'post_content'  => wp_kses_post($Parsedown->text($post_data->remote->raw_content)),
-            'post_status'   => $post_data->remote->status ?? 'publish',
-            'post_category' => MGD_Helpers::create_categories($post_data->remote->category),
-            'tags_input' => MGD_Helpers::coerce_to_array($post_data->remote->tags),
+            'post_title'     =>  $post_data->remote->name,
+            'post_name'      =>  $post_data->remote->slug,
+            'post_excerpt'   =>  $post_data->remote->description ?? '',
+            'post_content'   =>  wp_kses_post($Parsedown->text($post_data->remote->raw_content)),
+            'post_status'    =>  $post_data->remote->status ?? 'publish',
+            'post_category'  =>  MGD_Helpers::create_categories($post_data->remote->category),
+            'tags_input'     =>  MGD_Helpers::coerce_to_array($post_data->remote->tags),
         );
 
         /* Add the ID in case it is already published */

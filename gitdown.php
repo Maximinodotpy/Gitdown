@@ -261,58 +261,17 @@ class Gitdown
             die();
         });
 
-        // Cron
-        if (((bool)get_option(MGD_SETTING_CRON))) {
-            MGD_Helpers::write_log('Cron Stuff ...');
-    
-            add_action('mgd_cron_update_all_posts', function() {
-                MGD_Helpers::write_log('Publishing all articles through cron ...');
 
-                $all_articles = $this->articleCollection->get_all();
-                
-                add_action('wp_print_scripts', function() use($all_articles) { 
-                    ?>
-                    <script>
-                        (async () => {    
-                            const all_articles = <?php echo json_encode($all_articles) ?>
-    
-                            console.log(all_articles);
-    
-                            for (const article of all_articles) {
-                                console.log(article.remote.slug);
-                                
-                                const form_data = new FormData()
-        
-                                form_data.append('action', 'update_article')
-                                form_data.append('slug', article.remote.slug)
-    
-                                const re = fetch(ajaxurl, {
-                                    method: 'POST',
-                                    body: form_data,
-                                })
-                                console.log(re);
-                            }
-                        })()
-                    </script>
-                    <?php
-                });
-            });
-        
-            add_action('init', function() {
-                MGD_Helpers::write_log('wp_next_scheduled:'.wp_next_scheduled( 'mgd_cron_update_all_posts'));
-    
-                if ( ! wp_next_scheduled( 'mgd_cron_update_all_posts' ) ) {
-                    MGD_Helpers::write_log('Running Schedule');
-                    
-                    wp_schedule_event( time(), 'hourly', 'mgd_cron_update_all_posts' );
-                }
-            });
-        } else {
-            MGD_Helpers::write_log('No Cron Stuff, stopping events if there are any ...');
+        add_action('init', function() {
+            if (wp_doing_ajax()) return;
+            if (! (bool) get_option(MGD_SETTING_CRON) ) return;
 
-            $timestamp = wp_next_scheduled( 'mgd_cron_update_all_posts' );
-            wp_unschedule_event( $timestamp, 'mgd_cron_update_all_posts' );
-        }
+            $oldest_article = $this->articleCollection->get_oldest()[0];
+    
+            MGD_Helpers::write_log(sprintf('Updating oldest: %s ', $oldest_article->remote->slug));
+    
+            $this->articleCollection->update_post($oldest_article->remote->slug);
+        });
     }
 
     public function activate()
@@ -333,9 +292,6 @@ class Gitdown
         delete_option(MGD_SETTING_REPO);
         delete_option(MGD_SETTING_DEBUG);
         delete_option(MGD_SETTING_CRON);
-
-        $timestamp = wp_next_scheduled( 'mgd_cron_update_all_posts' );
-        wp_unschedule_event( $timestamp, 'mgd_cron_update_all_posts' );
     }
 
     private function view($path, $input = [])
