@@ -38,7 +38,7 @@ if (window.Vue) {
                 return await re.json()
             },
     
-            async updateArticle(slug) {
+            async update_post(slug) {
                 const loaderElement = this.$refs[slug][0]
                 loaderElement.style.visibility = 'visible'
     
@@ -52,15 +52,18 @@ if (window.Vue) {
     
                 this.articles.find(article => {
                     if (article.remote.slug == slug) {
-                        article.local = newData
+                        article.local = newData.new_post
                         article._is_published = true
+                        article.last_updated = newData.last_updated
                     }
                 })
+
+                console.log(newData)
     
                 loaderElement.style.visibility = 'hidden'
             },
     
-            async deleteArticle(slug) {
+            async delete_post(slug) {
                 const loaderElement = this.$refs[slug][0]
                 loaderElement.style.visibility = 'visible'
     
@@ -87,7 +90,7 @@ if (window.Vue) {
                 console.log('Updating All')
     
                 this.articles.forEach(article => {
-                    this.updateArticle(article.remote.slug)
+                    this.update_post(article.remote.slug)
                 })
             },
     
@@ -95,7 +98,7 @@ if (window.Vue) {
                 console.log('Deleting all articles')
     
                 this.articles.forEach(article => {
-                    this.deleteArticle(article.remote.slug)
+                    this.delete_post(article.remote.slug)
                 })
             },
     

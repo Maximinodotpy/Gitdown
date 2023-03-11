@@ -49,7 +49,6 @@ class MGD_Helpers {
         return (is_array($input) ? $input : array($input));
     }
 
-    
     public static function write_log($log) {
         if (!function_exists('write_log')) {
             if (true === WP_DEBUG) {
@@ -59,6 +58,12 @@ class MGD_Helpers {
                     error_log($log);
                 }
             }
+        }
+    }
+
+    public static function array_nested_find($array, $function) {
+        foreach ($array as $value) {
+            if ($function($value)) return $value;
         }
     }
 }

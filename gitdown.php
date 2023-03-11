@@ -225,7 +225,7 @@ class Gitdown
 
                     if ($postData->_is_published) {
                         $count++;
-                        $this->articleCollection->updateArticle($postData->remote->slug);
+                        $this->articleCollection->update_post($postData->remote->slug);
                     };
                 }
 
@@ -253,20 +253,21 @@ class Gitdown
             die();
         });
         add_action("wp_ajax_update_article", function () {
-            echo json_encode($this->articleCollection->updateArticle($_REQUEST['slug']));
+            echo json_encode($this->articleCollection->update_post($_REQUEST['slug']));
             die();
         });
         add_action("wp_ajax_delete_article", function () {
-            echo json_encode($this->articleCollection->deleteArticle($_REQUEST['slug']));
+            echo json_encode($this->articleCollection->delete_post($_REQUEST['slug']));
             die();
         });
 
-        
+        // Cron
         if (((bool)get_option(MGD_SETTING_CRON))) {
             MGD_Helpers::write_log('Cron Stuff ...');
     
             add_action('mgd_cron_update_all_posts', function() {
-                MGD_Helpers::write_log('Publishing all articlies through cron ...');
+                MGD_Helpers::write_log('Publishing all articles through cron ...');
+
                 $all_articles = $this->articleCollection->get_all();
                 
                 add_action('wp_print_scripts', function() use($all_articles) { 

@@ -130,6 +130,10 @@
                 <td>
                     <template v-if="item._is_published">
                         <div class="row-title tw-mb-3">✅ <?php _e('Is on WordPress', 'gitdown')?></div>
+                        <div>
+                            <b>Last updated: </b>
+                            {{ new Date(item.last_updated*1000).toLocaleString() }}
+                        </div>
 
                         <div v-if="complex_view">
                             <div>ID: <code>{{ item.local.ID }}</code></div>
@@ -145,14 +149,14 @@
                 </td>
                 <td class="tw-relative tw-box-border">
                     <div v-if="item._is_published">
-                        <button class="button action button-primary tw-mr-2 tw-mb-2 tw-inline-block" @click="updateArticle(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
-                        <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="deleteArticle(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
+                        <button class="button action button-primary tw-mr-2 tw-mb-2 tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
+                        <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="delete_post(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
 
                         <a target="_blank" class="button action tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
                     </div>
 
                     <div v-else>
-                        <button class="button action" @click="updateArticle(item.remote.slug)"><?php _e('Publish', 'gitdown')?></button>
+                        <button class="button action" @click="update_post(item.remote.slug)"><?php _e('Publish', 'gitdown')?></button>
                     </div>
 
                     <br>

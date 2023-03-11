@@ -116,6 +116,9 @@ class MGD_ArticleCollection {
 
             $this->articles[$key]->local = $localArticle;
             $this->articles[$key]->_is_published = !!$localArticle;
+            $this->articles[$key]->last_updated = 0;
+            
+            if (!!$localArticle) $this->articles[$key]->last_updated = (int) get_post_meta($localArticle->ID, 'mgd_last_updated', true);
 
             if (!!$localArticle) {
                 $this->reports->published_posts++;
@@ -178,12 +181,6 @@ class MGD_ArticleCollection {
         }
 
         return (object) $currentData;
-    } 
-
-    private function _array_nested_find($array, $function) {
-        foreach ($array as $value) {
-            if ($function($value)) return $value;
-        }
     }
 
     public function get_all() {
@@ -195,7 +192,7 @@ class MGD_ArticleCollection {
     function get_by_slug(string $slug) {
         $this->check_if_parsed();
 
-        return $this->_array_nested_find($this->articles, function($obj) use (&$slug) {
+        return MGD_Helpers::array_nested_find($this->articles, function($obj) use (&$slug) {
             return $obj->remote->slug == $slug;
         });
     }
@@ -203,14 +200,14 @@ class MGD_ArticleCollection {
     public function get_by_id($id) {
         $this->check_if_parsed();
 
-        return $this->_array_nested_find($this->articles, function($obj) use (&$id) {
+        return MGD_Helpers::array_nested_find($this->articles, function($obj) use (&$id) {
             return ($obj->local->ID ?? -1) == $id;
         }) ?? (object) array(
             '_is_published' => false,
         );
     }
 
-    public function updateArticle(string $slug)
+    public function update_post(string $slug)
     {
         $this->check_if_parsed();
 
@@ -236,6 +233,7 @@ class MGD_ArticleCollection {
         // Insert the post into the database
         try {
             $post_id = wp_insert_post($new_post_data);
+            update_post_meta($post_id, 'mgd_last_updated', time());
         } catch (\Throwable $th) {
             MGD_Helpers::write_log($th);
             return;
@@ -270,10 +268,13 @@ class MGD_ArticleCollection {
 
 
         // Return Post data so the frontend can process it
-        return get_post($post_id);
+        return [
+            'new_post' => get_post($post_id),
+            'last_updated' => (int) get_post_meta($post_id, 'mgd_last_updated', true),
+        ];
     }
 
-    public function deleteArticle(string $slug)
+    public function delete_post(string $slug)
     {
         $this->check_if_parsed();
 
