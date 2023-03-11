@@ -217,6 +217,8 @@ class MGD_ArticleCollection {
 
         $post_data = $this->get_by_slug($slug);
 
+        MGD_Helpers::write_log(sprintf('Updating: %s', $post_data->remote->name));
+
         $Parsedown = new GDParsedown();
 
         $new_post_data = array(

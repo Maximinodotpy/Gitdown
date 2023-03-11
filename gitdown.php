@@ -266,11 +266,32 @@ class Gitdown
             if (wp_doing_ajax()) return;
             if (! (bool) get_option(MGD_SETTING_CRON) ) return;
 
-            $oldest_article = $this->articleCollection->get_oldest()[0];
+            $oldest_articles = $this->articleCollection->get_oldest(3);
     
-            MGD_Helpers::write_log(sprintf('Updating oldest: %s ', $oldest_article->remote->slug));
+            MGD_Helpers::write_log(sprintf('Auto Updating: %s', $oldest_articles[0]->remote->name));
+
+            add_action('wp_print_scripts', function() use($oldest_articles) { 
+                ?>
+                <script>
+                    (async () => {    
+                        const all_articles = <?php echo json_encode($oldest_articles) ?>
+
+                        for (const article of all_articles) {
+                            
+                            const form_data = new FormData()
     
-            $this->articleCollection->update_post($oldest_article->remote->slug);
+                            form_data.append('action', 'update_article')
+                            form_data.append('slug', article.remote.slug)
+
+                            const re = fetch(ajaxurl, {
+                                method: 'POST',
+                                body: form_data,
+                            })
+                        }
+                    })()
+                </script>
+                <?php
+            });
         });
     }
 
