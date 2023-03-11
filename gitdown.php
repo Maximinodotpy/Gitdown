@@ -3,7 +3,7 @@
 Plugin Name:  Gitdown
 Plugin URI:   https://github.com/Maximinodotpy/Gitdown
 Description:  Use this Plugin to create, update, delete and manage markdown articles hosted on a remote repository.
-Version:      1.0.4
+Version:      1.0.5
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
 Text Domain:  gitdown
@@ -212,9 +212,9 @@ class Gitdown
                 foreach ($post_ids as $post_id) {
                     $postData = $this->articleCollection->get_by_id($post_id);
 
-                    if ($postData['_is_published']) {
+                    if ($postData->_is_published) {
                         $count++;
-                        $this->articleCollection->updateArticle($postData[MGD_REMOTE_KEY]['slug']);
+                        $this->articleCollection->updateArticle($postData->remote->slug);
                     };
                 }
 
