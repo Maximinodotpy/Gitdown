@@ -14,13 +14,9 @@ use MGD_Helpers;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
-/* http://localhost/git-to-wordpress/wordpress/wp-admin/admin.php */
-/* maximmaeder */
-/* fjöalsjfölasjfsjö*ç */
-
 class Gitdown
 {
-    private $articleCollection;
+    private $article_collection;
 
     public function __construct()
     {
@@ -70,7 +66,7 @@ class Gitdown
             mkdir(MGD_MIRROR_PATH, 0777, true);
         }
 
-        $this->articleCollection = new MGD_ArticleCollection(MGD_MIRROR_PATH, get_option(MGD_SETTING_GLOB));
+        $this->article_collection = new MGD_ArticleCollection(MGD_MIRROR_PATH, get_option(MGD_SETTING_GLOB));
 
         // Setting up the Action Hooks
         $this->setupActions();
@@ -178,7 +174,7 @@ class Gitdown
         
         add_action('admin_enqueue_scripts', function ($hook) {
             if ('post.php' != $hook) return;
-            if (!$this->articleCollection->get_by_id($_GET['post'])->_is_published) return;
+            if (!$this->article_collection->get_by_id($_GET['post'])->_is_published) return;
             
             wp_enqueue_script('edit-warning', MGD_ROOT_URL . 'js/edit-warning.js');
         });
@@ -188,7 +184,7 @@ class Gitdown
         });
         add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
             if ($column_key == 'MGD_status') {
-                    $post_data = $this->articleCollection->get_by_id($post_id);
+                    $post_data = $this->article_collection->get_by_id($post_id);
                     
                     if ($post_data->_is_published) {
                         echo '<div class="tw-font-semibold" >✅ Originates from <br/> Repository</div>';
@@ -200,7 +196,7 @@ class Gitdown
         }, 10, 2);
 
         add_filter( 'post_row_actions', function ( $actions, $post ) {
-            $postData = $this->articleCollection->get_by_id($post->ID);
+            $postData = $this->article_collection->get_by_id($post->ID);
 
             if ($postData->_is_published) {
                 unset( $actions['inline hide-if-no-js'] );
@@ -221,11 +217,11 @@ class Gitdown
                 $count = 0;
 
                 foreach ($post_ids as $post_id) {
-                    $postData = $this->articleCollection->get_by_id($post_id);
+                    $postData = $this->article_collection->get_by_id($post_id);
 
                     if ($postData->_is_published) {
                         $count++;
-                        $this->articleCollection->update_post($postData->remote->slug);
+                        $this->article_collection->update_post($postData->remote->slug);
                     };
                 }
 
@@ -247,17 +243,17 @@ class Gitdown
         // Ajax Calls
         add_action("wp_ajax_get_all_articles", function () {
             echo json_encode(array(
-                'posts' => $this->articleCollection->get_all(),
-                'reports' => $this->articleCollection->reports
+                'posts' => $this->article_collection->get_all(),
+                'reports' => $this->article_collection->reports
             ));
             die();
         });
         add_action("wp_ajax_update_article", function () {
-            echo json_encode($this->articleCollection->update_post($_REQUEST['slug']));
+            echo json_encode($this->article_collection->update_post($_REQUEST['slug']));
             die();
         });
         add_action("wp_ajax_delete_article", function () {
-            echo json_encode($this->articleCollection->delete_post($_REQUEST['slug']));
+            echo json_encode($this->article_collection->delete_post($_REQUEST['slug']));
             die();
         });
 
@@ -266,7 +262,7 @@ class Gitdown
             if (wp_doing_ajax()) return;
             if (! (bool) get_option(MGD_SETTING_CRON) ) return;
 
-            $oldest_articles = $this->articleCollection->get_oldest(3);
+            $oldest_articles = $this->article_collection->get_oldest(3);
     
             MGD_Helpers::write_log(sprintf('Auto Updating: %s', $oldest_articles[0]->remote->name));
 
@@ -325,5 +321,5 @@ class Gitdown
 
 
 if (is_admin()) {
-    $MGDFASDFASDFASDFASDT = new Gitdown();
+    $b8cc4bfd_b866_4956_89db_2f0eeb671e61 = new Gitdown();
 }

@@ -13,7 +13,7 @@
 
 
     <!-- Report -->
-    <details class="tw-my-4" open>
+    <details class="tw-my-4">
         <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">Report</summary>
 
         <div class="tw-p-8 tw-max-h-[400px] tw-overflow-y-auto tw-overflow-x-visible">
@@ -62,7 +62,6 @@
                 </div>
             </div>
         </div>
-
     </details>
 
     <br>
