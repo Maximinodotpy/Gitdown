@@ -4,3 +4,6 @@ test-repo
 dist
 _svn
 .vscode
+node_modules
+node_modules/
+node_modules/**
