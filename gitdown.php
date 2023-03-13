@@ -47,11 +47,11 @@ class Gitdown
         define('MGD_SETTINGS_PAGE',  'reading');
 
         // Where the current Repository is located depends on the repo url.
-        $repo_nice_name = 
+        $repo_nice_name =
             MGD_Helpers::string_to_slug(basename(dirname(get_option(MGD_SETTING_REPO))))
             .'-'.
             MGD_Helpers::string_to_slug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
-            
+
         define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
         define('MGD_MIRROR_URL', WP_CONTENT_URL . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
 
@@ -80,13 +80,13 @@ class Gitdown
         // Activation and Deactivation Hook
         register_activation_hook(__FILE__, function () { $this->activate(); });
         register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
-        
+
         add_action('admin_init', function () {
 
             // Redirect if the plugin has been activated.
             if (get_option('MGD_do_activation_redirect', false)) {
                 delete_option('MGD_do_activation_redirect');
-                
+
                 wp_redirect(home_url('/wp-admin/admin.php?page=gd-article-manager&how_to'));
             }
 
@@ -156,14 +156,14 @@ class Gitdown
                     MGD_PLUGIN_NAME,
                     'manage_options',
                     MGD_ARTICLES_SLUG,
-                    function () { 
+                    function () {
                         if (isset($_GET['how_to'])) include(MGD_ROOT_PATH . 'views/how_to/how_to.php');
                         else include(MGD_ROOT_PATH . 'views/articles.php');
                     },
                     'data:image/svg+xml;base64,' . base64_encode(file_get_contents(MGD_ROOT_PATH . 'images/icon.svg')),
                     20,
                 );
-                
+
                 add_action('admin_enqueue_scripts', function () {
                     wp_enqueue_script('MGD_vuejs', MGD_ROOT_URL . 'js/vue.js');
                     wp_enqueue_script('MGD_adminjs', MGD_ROOT_URL . 'js/admin.js');
@@ -171,21 +171,21 @@ class Gitdown
                 });
             }
         );
-        
+
         add_action('admin_enqueue_scripts', function ($hook) {
             if ('post.php' != $hook) return;
             if (!$this->article_collection->get_by_id($_GET['post'])->_is_published) return;
-            
+
             wp_enqueue_script('edit-warning', MGD_ROOT_URL . 'js/edit-warning.js');
         });
-        
+
         add_filter('manage_post_posts_columns', function($columns) {
             return array_merge($columns, ['MGD_status' => 'Gitdown Status']);
         });
         add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
             if ($column_key == 'MGD_status') {
                     $post_data = $this->article_collection->get_by_id($post_id);
-                    
+
                     if ($post_data->_is_published) {
                         echo '<div class="tw-font-semibold" >✅ Originates from <br/> Repository</div>';
                     } else {
@@ -201,10 +201,10 @@ class Gitdown
             if ($postData->_is_published) {
                 unset( $actions['inline hide-if-no-js'] );
             }
-            
+
             return $actions;
         }, 10, 2 );
-        
+
         // Custom Action for Post List Bulk Actions
         add_filter('bulk_actions-edit-post', function ($bulk_actions) {
             $bulk_actions['MGD_update'] = 'Gitdown: Update';
@@ -239,7 +239,7 @@ class Gitdown
             }
         });
 
-        
+
         // Ajax Calls
         add_action("wp_ajax_get_all_articles", function () {
             echo json_encode(array(
@@ -256,33 +256,39 @@ class Gitdown
             echo json_encode($this->article_collection->delete_post($_REQUEST['slug']));
             die();
         });
+        add_action("wp_ajax_update_oldest", function () {
+            if (! (bool) get_option(MGD_SETTING_CRON) ) return;
+
+            $oldest_article = $this->article_collection->get_oldest()[0];
+
+            MGD_Helpers::write_log(sprintf('Auto Updating: %s', $oldest_article->remote->name));
+
+            echo json_encode($this->article_collection->update_post($oldest_article->remote->slug));
+
+            die();
+        });
 
 
         add_action('init', function() {
             if (wp_doing_ajax()) return;
             if (! (bool) get_option(MGD_SETTING_CRON) ) return;
 
-            $oldest_articles = $this->article_collection->get_oldest(3);
-    
-            MGD_Helpers::write_log(sprintf('Auto Updating: %s', $oldest_articles[0]->remote->name));
-
-            add_action('wp_print_scripts', function() use($oldest_articles) { 
+            add_action('wp_print_scripts', function() {
                 ?>
                 <script>
-                    (async () => {    
-                        const all_articles = <?php echo json_encode($oldest_articles) ?>
+                    (async () => {
+                        while (true) {
+                            console.log('MGD Autoupdate Request ...');
 
-                        for (const article of all_articles) {
-                            
                             const form_data = new FormData()
-    
-                            form_data.append('action', 'update_article')
-                            form_data.append('slug', article.remote.slug)
+                            form_data.append('action', 'update_oldest')
 
-                            const re = fetch(ajaxurl, {
+                            const re = await fetch(ajaxurl, {
                                 method: 'POST',
                                 body: form_data,
                             })
+
+                            console.log((await re.json()));
                         }
                     })()
                 </script>
@@ -298,10 +304,10 @@ class Gitdown
         add_option(MGD_SETTING_REPO, 'https://github.com/Maximinodotpy/gitdown-test-repository.git');
         add_option(MGD_SETTING_DEBUG, '0');
         add_option(MGD_SETTING_CRON, false);
-        
+
         add_option('MGD_do_activation_redirect', true);
     }
-    
+
     public function deactivate()
     {
         delete_option(MGD_SETTING_RESOLVER);
