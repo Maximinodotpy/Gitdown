@@ -288,7 +288,11 @@ class Gitdown
                                 body: form_data,
                             })
 
-                            console.log((await re.json()));
+                            try {
+                                console.log((await re.json()));
+                            } catch (error) {
+                                console.log(error);
+                            }
                         }
                     })()
                 </script>
