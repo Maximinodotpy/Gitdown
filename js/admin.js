@@ -43,24 +43,24 @@ if (window.Vue) {
                 loaderElement.style.visibility = 'visible'
     
                 console.log('Updating: '+slug)
-    
-    
-                const newData = await this.callAJAX({
+
+                this.callAJAX({
                     action: 'update_article',
                     slug: slug,
+                }).then(newData => {
+                    this.articles.find(article => {
+                        if (article.remote.slug == slug) {
+                            article.local = newData.new_post
+                            article._is_published = true
+                            article.last_updated = newData.last_updated
+                        }
+                    })
+                }).catch(error => {
+                    console.log(error)
+                    this.sync()
+                }).finally(() => {
+                    loaderElement.style.visibility = 'hidden'
                 })
-    
-                this.articles.find(article => {
-                    if (article.remote.slug == slug) {
-                        article.local = newData.new_post
-                        article._is_published = true
-                        article.last_updated = newData.last_updated
-                    }
-                })
-
-                console.log(newData)
-    
-                loaderElement.style.visibility = 'hidden'
             },
     
             async delete_post(slug) {
@@ -69,21 +69,21 @@ if (window.Vue) {
     
                 console.log('Deleting: '+slug)
     
-                const newData = await this.callAJAX({
+                this.callAJAX({
                     action: 'delete_article',
                     slug: slug,
-                })
-    
-                if (newData) {
+                }).then(newData => {
                     this.articles.forEach(article => {
                         if (article.remote.slug == slug) {
                             article._is_published = false
                             article.local = {}
                         }
                     })
-                }
-    
-                loaderElement.style.visibility = 'hidden'
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+                    loaderElement.style.visibility = 'hidden'
+                })
             },
     
             updateAllArticles() {
@@ -109,21 +109,7 @@ if (window.Vue) {
     
                 this.articles = response.posts.reverse()
                 this.reports = response.reports
-    
-                console.log(this.articles)
-                console.log(response.reports)
             },
-            async pull() {
-                const response = (await this.callAJAX({
-                    action: 'pull_remote',
-                }))
-    
-                this.articles = response.posts.reverse()
-                this.reports = response.reports
-    
-                console.log(this.articles)
-                console.log(response.reports)
-            }
         }
     })
     

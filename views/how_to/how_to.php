@@ -163,11 +163,7 @@ Article content in the normal markdown format.
 
         <p>Thats it have fun writing and publishing with Gitdown! 😀</p>
         
-        <?php warning('You should never edit posts on wordpress that originate from a repository since Gitdown will overwrite your changes the next time you click on update.', 'Gitdown Actually prohibits you from quick editing synced posts and it shows a warning message in the Block Editor. So you should always edit posts in the repository.'); ?>
-
-        <?php warning('Gitdown will not resize your images to the sizes that Wordpress and your theme have defined so it is advised to use another plugin to do that.'); ?>
-
-        <?php warning('Gitdown will (for now) not get the tags from your frontmatter info and insert them into the wordpress post.'); ?>
+        <?php warning('You should never edit posts on wordpress that originate from a repository since Gitdown will overwrite your changes the next time you click on update.', 'Gitdown Actually prohibits you from quick editing synced posts and it shows a warning message in the Block Editor. So you should always edit posts in the repository and then update the article via the ui or enable auto updates.'); ?>
 
     </div>
 </div>

@@ -278,8 +278,9 @@ class Gitdown
                 <script>
                     console.log('MGD Autoupdate starting ...');
 
+                    let i = 0;
                     (async () => {
-                        while (true) {
+                        do {
                             console.log('MGD Autoupdate Request ...');
 
                             const form_data = new FormData()
@@ -295,7 +296,9 @@ class Gitdown
                             } catch (error) {
                                 console.log(error);
                             }
-                        }
+
+                            i++
+                        } while (<?php echo is_admin() ? 'true' : 'i < 5' ?>)
                     })()
                 </script>
                 <?php
@@ -331,7 +334,4 @@ class Gitdown
     }
 };
 
-
-if (is_admin()) {
-    $b8cc4bfd_b866_4956_89db_2f0eeb671e61 = new Gitdown();
-}
+$b8cc4bfd_b866_4956_89db_2f0eeb671e61 = new Gitdown();

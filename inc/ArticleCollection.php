@@ -27,10 +27,10 @@ class MGD_ArticleCollection {
     private function parse() {
 
         if (get_option(MGD_SETTING_GLOB) == '') {
-            $this->pushReportError('No Glob specified', '.', 'You did not specify a glob pattern');
+            $this->push_report_error('No Glob specified', '.', 'You did not specify a glob pattern');
             return;
         } else if (get_option(MGD_SETTING_REPO) == '') {
-            $this->pushReportError('No Repository URL', '.', 'You did not specify a repository url');
+            $this->push_report_error('No Repository URL', '.', 'You did not specify a repository url');
             return;
         }
 
@@ -38,7 +38,11 @@ class MGD_ArticleCollection {
 
         $git = new MGD_GIT;
         if (!MGD_REMOTE_IS_CLONED) {
-            $repo = $git->cloneRepository(get_option(MGD_SETTING_REPO), '.');
+            try {
+                $repo = $git->cloneRepository(get_option(MGD_SETTING_REPO), '.');
+            } catch (\Throwable $th) {
+                $this->push_report_error('Repository Error', get_option(MGD_SETTING_REPO), 'There is something wrong with your repository. Maybe the link is wrong or it is a private repository.');
+            }
         }
         else {
             // Try to pull the repository multiple times if they fail.
@@ -73,12 +77,12 @@ class MGD_ArticleCollection {
 
             // Check if Post is valid
             if (!property_exists($post_data->remote, 'name')) {
-                $this->pushReportError('Missing Name', $path, 'the Front matter of this post shows now name property which is crucial for it to be published.');
+                $this->push_report_error('Missing Name', $path, 'the Front matter of this post shows now name property which is crucial for it to be published.');
                 continue;
             }
             
             if (!property_exists($post_data->remote, 'raw_content')) {
-                $this->pushReportError('No Content', $path, 'It seems like this post has no content.');
+                $this->push_report_error('No Content', $path, 'It seems like this post has no content.');
             }
 
             $this->reports->valid_posts++;
@@ -88,12 +92,12 @@ class MGD_ArticleCollection {
                 $post_data->remote->slug = MGD_Helpers::string_to_slug($post_data->remote->name);
                 $this->reports->coerced_slugs++;
 
-                $this->pushReportError('Coerced Slug', $path, 'This post does not define a slug so the name was turned into a slug. This is not advised.');
+                $this->push_report_error('Coerced Slug', $path, 'This post does not define a slug so the name was turned into a slug. This is not advised.');
             }
             if (!property_exists($post_data->remote, 'tags')) {
                 $post_data->remote->tags = [];
 
-                $this->pushReportError('No Tags found', $path, 'This post does not define tags ...');
+                $this->push_report_error('No Tags found', $path, 'This post does not define tags ...');
             }
 
             array_push($this->articles, $post_data);
@@ -136,7 +140,7 @@ class MGD_ArticleCollection {
             try {
                 $document = $parser->parse($fileContent, false);
             } catch (\Exception $e) {
-                $this->pushReportError('YAML Error', $path, $e);
+                $this->push_report_error('YAML Error', $path, $e);
                 return false;
             }
 
@@ -300,7 +304,7 @@ class MGD_ArticleCollection {
         return !!$result;
     }
 
-    private function pushReportError($type, $location, $description) {
+    private function push_report_error($type, $location, $description) {
         array_push($this->reports->errors, (object) [
             'type' => $type,
             'location' => $location,
