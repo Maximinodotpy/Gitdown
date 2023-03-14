@@ -72,7 +72,7 @@ if (window.Vue) {
                 this.callAJAX({
                     action: 'delete_article',
                     slug: slug,
-                }).then(newData => {
+                }).then(() => {
                     this.articles.forEach(article => {
                         if (article.remote.slug == slug) {
                             article._is_published = false
