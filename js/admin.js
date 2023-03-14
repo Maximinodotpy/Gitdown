@@ -87,7 +87,7 @@ if (window.Vue) {
             },
     
             updateAllArticles() {
-                console.log('Updating All')
+                console.log('Updating All ...')
     
                 this.articles.forEach(article => {
                     this.update_post(article.remote.slug)
@@ -95,7 +95,7 @@ if (window.Vue) {
             },
     
             deleteAll() {
-                console.log('Deleting all articles')
+                console.log('Deleting All articles ...')
     
                 this.articles.forEach(article => {
                     this.delete_post(article.remote.slug)
@@ -103,12 +103,15 @@ if (window.Vue) {
             },
     
             async sync() {            
-                const response = (await this.callAJAX({
+                this.callAJAX({
                     action: 'get_all_articles',
-                }))
-    
-                this.articles = response.posts.reverse()
-                this.reports = response.reports
+                }).then(response => {
+                    this.articles = response.posts.reverse()
+                    this.reports = response.reports
+                }).catch(error => {
+                    console.log(error)
+                    this.sync()
+                })
             },
         }
     })
@@ -117,7 +120,9 @@ if (window.Vue) {
     
     document.addEventListener('DOMContentLoaded', () => {
         const appNode = document.querySelector('#vue_app')
+        
         console.log(appNode)
+
         if (appNode) {
             vueApp.mount(appNode)
         }
