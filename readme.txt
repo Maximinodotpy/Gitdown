@@ -69,3 +69,9 @@ Yes It does! You simply have to provide a file called 'preview.png' in the same 
 = 1.0.4 =
 - Added Tag Insertion
 - wp_generate_attachment_metadata() -> thumbnails will get regenerated if Image Editor is available.
+
+= 1.0.5 = 
+- Added automated updating and posting of posts (Experimental)
+
+= 1.0.6 =
+- Fix: Error when trying to clone a private repository
