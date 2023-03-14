@@ -1,3 +1,5 @@
+
+
 if (window.Vue) {
     // eslint-disable-next-line no-undef
     const { createApp } = Vue
@@ -42,7 +44,7 @@ if (window.Vue) {
                 const loaderElement = this.$refs[slug][0]
                 loaderElement.style.visibility = 'visible'
     
-                console.log('Updating: '+slug)
+                console.log(`%cUpdating Post: %c${slug}`, 'font-weight: bold', 'font-weight: unset')
 
                 this.callAJAX({
                     action: 'update_article',
@@ -67,7 +69,7 @@ if (window.Vue) {
                 const loaderElement = this.$refs[slug][0]
                 loaderElement.style.visibility = 'visible'
     
-                console.log('Deleting: '+slug)
+                console.log(`%cDeleting: %c${slug}`, 'font-weight: bold', 'font-weight: unset')
     
                 this.callAJAX({
                     action: 'delete_article',
@@ -120,8 +122,6 @@ if (window.Vue) {
     
     document.addEventListener('DOMContentLoaded', () => {
         const appNode = document.querySelector('#vue_app')
-        
-        console.log(appNode)
 
         if (appNode) {
             vueApp.mount(appNode)

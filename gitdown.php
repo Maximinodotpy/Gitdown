@@ -28,9 +28,6 @@ class Gitdown
         define('MGD_ROOT_PATH', __DIR__ . '/');
         define('MGD_ROOT_URL', plugins_url('', __FILE__) . '/');
 
-        // The Plugin name is used sometimes when the name appears somewhere.
-        define('MGD_PLUGIN_NAME', 'Gitdown');
-
         // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
         define('MGD_PLUGIN_PREFIX', 'gd');
 
@@ -56,10 +53,6 @@ class Gitdown
         define('MGD_MIRROR_URL', WP_CONTENT_URL . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
 
         define('MGD_REMOTE_IS_CLONED', is_dir(MGD_MIRROR_PATH . '.git'));
-
-        // Key names for each article object later on.
-        define('MGD_REMOTE_KEY', 'remote');
-        define('MGD_LOCAL_KEY', 'local');
 
         // Create the Directory where the files are stored in case it does not exist.
         if (!is_dir(MGD_MIRROR_PATH)) {
@@ -98,10 +91,8 @@ class Gitdown
 
             add_settings_section(
                 MGD_SETTINGS_SECTION,
-                MGD_PLUGIN_NAME . ' Settings',
-                function () {
-                    $this->view(MGD_ROOT_PATH . 'views/settings_head.php');
-                },
+                ' Settings',
+                function () { include(MGD_ROOT_PATH . 'views/settings_head.php'); },
                 MGD_SETTINGS_PAGE
             );
 
@@ -109,9 +100,7 @@ class Gitdown
             add_settings_field(
                 MGD_SETTING_GLOB,
                 'Glob Pattern',
-                function () {
-                    $this->view(MGD_ROOT_PATH . 'views/settings_glob.php');
-                },
+                function () { include(MGD_ROOT_PATH . 'views/settings_glob.php'); },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
@@ -119,9 +108,7 @@ class Gitdown
             add_settings_field(
                 MGD_SETTING_REPO,
                 'Repository Location',
-                function () {
-                    $this->view(MGD_ROOT_PATH . 'views/settings_repo.php');
-                },
+                function () { include(MGD_ROOT_PATH . 'views/settings_repo.php'); },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
@@ -129,9 +116,7 @@ class Gitdown
             add_settings_field(
                 MGD_SETTING_RESOLVER,
                 'Resolver',
-                function () {
-                    $this->view(MGD_ROOT_PATH . 'views/settings_resolver.php');
-                },
+                function () { include(MGD_ROOT_PATH . 'views/settings_resolver.php'); },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
@@ -139,9 +124,7 @@ class Gitdown
             add_settings_field(
                 MGD_SETTING_CRON,
                 'Automatic Updating',
-                function () {
-                    $this->view(MGD_ROOT_PATH . 'views/settings_automatic.php');
-                },
+                function () { include(MGD_ROOT_PATH . 'views/settings_automatic.php'); },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
@@ -152,8 +135,8 @@ class Gitdown
             'admin_menu',
             function () {
                 add_menu_page(
-                    MGD_PLUGIN_NAME,
-                    MGD_PLUGIN_NAME,
+                    'Gitdown',
+                    'Gitdown',
                     'manage_options',
                     MGD_ARTICLES_SLUG,
                     function () {
@@ -324,13 +307,6 @@ class Gitdown
         delete_option(MGD_SETTING_REPO);
         delete_option(MGD_SETTING_DEBUG);
         delete_option(MGD_SETTING_CRON);
-    }
-
-    private function view($path, $input = [])
-    {
-        $gtw_data = $input;
-
-        include($path);
     }
 };
 

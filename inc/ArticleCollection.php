@@ -62,7 +62,8 @@ class MGD_ArticleCollection {
         $paths = [];
         foreach (explode(',', get_option(MGD_SETTING_GLOB)) as $single_glob) {
             $paths = array_merge($paths, glob($single_glob));
-        }        
+        }
+
 
         // Resolve Articles
         foreach ($paths as $path) {
@@ -76,26 +77,31 @@ class MGD_ArticleCollection {
             if ( !$post_data->remote ) continue;
             
             if (!property_exists($post_data->remote, 'name')) {
-                $this->push_report_error('Missing Name', $path, 'It seems like this post has no name.');
+                $this->push_report_error('Missing Name', $path, __('It seems like this post has no name.'));
             }
 
             if (!property_exists($post_data->remote, 'raw_content')) {
-                $this->push_report_error('No Content', $path, 'It seems like this post has no content.');
+                $this->push_report_error('Missing Content', $path, __('It seems like this post has no content.'));
             }
 
             $this->reports->valid_posts++;
 
             // Add the name as the slug in case its not defined
             if (!property_exists($post_data->remote, 'slug')) {
-                $post_data->remote->slug = MGD_Helpers::string_to_slug($post_data->remote->name);
                 $this->reports->coerced_slugs++;
+                $post_data->remote->slug = MGD_Helpers::string_to_slug($post_data->remote->name);
 
-                $this->push_report_error('Coerced Slug', $path, 'This post does not define a slug so the name was turned into a slug. This is not advised.');
+                $this->push_report_error('Coerced Slug', $path, __('This post does not define a slug so the name was turned into a slug. This is not advised.'));
             }
             if (!property_exists($post_data->remote, 'tags')) {
                 $post_data->remote->tags = [];
 
-                $this->push_report_error('No Tags found', $path, 'This post does not define tags ...');
+                $this->push_report_error('Missing Tags', $path, __('This post does not define tags, which is not crucial but recommended either way.'));
+            }
+            if (!property_exists($post_data->remote, 'category')) {
+                $post_data->remote->category = [];
+
+                $this->push_report_error('Missing Category', $path, __('This post does not define categories, which is not crucial but recommended either way.'));
             }
 
             array_push($this->articles, $post_data);
@@ -174,13 +180,13 @@ class MGD_ArticleCollection {
         return $currentData;
     }   
 
-    public function get_all() {
+    public function get_all(): array {
         $this->check_if_parsed();
 
         return $this->articles;
     }
 
-    function get_by_slug(string $slug) {
+    function get_by_slug(string $slug): object {
         $this->check_if_parsed();
 
         return MGD_Helpers::array_nested_find($this->articles, function($obj) use (&$slug) {
@@ -188,7 +194,7 @@ class MGD_ArticleCollection {
         });
     }
 
-    public function get_by_id(int $id) {
+    public function get_by_id(int $id): object {
         $this->check_if_parsed();
 
         return MGD_Helpers::array_nested_find($this->articles, function($obj) use (&$id) {
@@ -198,7 +204,7 @@ class MGD_ArticleCollection {
         );
     }
 
-    public function get_oldest(int $count = 1) {
+    public function get_oldest(int $count = 1): array {
         $all_posts = $this->get_all();
 
         usort($all_posts, function($a, $b){
@@ -208,8 +214,7 @@ class MGD_ArticleCollection {
         return array_slice($all_posts, 0, $count);
     }
 
-    public function update_post(string $slug)
-    {
+    public function update_post(string $slug) {
         $this->check_if_parsed();
 
         $post_data = $this->get_by_slug($slug);
@@ -228,7 +233,7 @@ class MGD_ArticleCollection {
             'tags_input'     =>  MGD_Helpers::coerce_to_array($post_data->remote->tags),
         );
 
-        /* Add the ID in case it is already published */
+        // Add the ID in case it is already published
         if ($post_data->_is_published) {
             $new_post_data['ID'] = $post_data->local->ID;
         }
