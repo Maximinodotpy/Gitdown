@@ -1,7 +1,6 @@
 <?php
 namespace WP\Plugin\Gitdown;
 use Parsedown as GDParsedown;
-use Mni\FrontYAML as GDFrontYaml;
 use CzProject\GitPhp\Git as MGD_GIT;
 use MGD_Helpers;
 
@@ -58,11 +57,12 @@ class MGD_ArticleCollection {
             }
         }
 
+        
         // Get all Paths
         $paths = [];
         foreach (explode(',', get_option(MGD_SETTING_GLOB)) as $single_glob) {
             $paths = array_merge($paths, glob($single_glob));
-        }
+        }        
 
         // Resolve Articles
         foreach ($paths as $path) {
@@ -71,16 +71,14 @@ class MGD_ArticleCollection {
             // Creating the Std Object
             $post_data = new \stdClass();
             
-            $post_data->remote = $this->resolver($path) ?? [];
+            $post_data->remote = $this->resolver($path);
             
-            if (!$post_data) continue;
-
-            // Check if Post is valid
+            if ( !$post_data->remote ) continue;
+            
             if (!property_exists($post_data->remote, 'name')) {
-                $this->push_report_error('Missing Name', $path, 'the Front matter of this post shows now name property which is crucial for it to be published.');
-                continue;
+                $this->push_report_error('Missing Name', $path, 'It seems like this post has no name.');
             }
-            
+
             if (!property_exists($post_data->remote, 'raw_content')) {
                 $this->push_report_error('No Content', $path, 'It seems like this post has no content.');
             }
@@ -129,41 +127,36 @@ class MGD_ArticleCollection {
     private function resolver(string $document_path) {
 
         $resolver_simple = function ($path) {
-
-            if (!file_exists($path)) return;
+            if (!file_exists($path)) return false;
 
             $fileContent = file_get_contents($path);
 
-            $parser = new GDFrontYaml\Parser;
-            $postData = [];
-
-            try {
-                $document = $parser->parse($fileContent, false);
-            } catch (\Exception $e) {
-                $this->push_report_error('YAML Error', $path, $e);
+            if (!$fileContent) {
+                $this->push_report_error('Empty File', $path, 'This file is empty but still matches the glob pattern.');
                 return false;
             }
 
-            $postData = $document->getYAML() ?? [];
+            $parsed = MGD_Helpers::parse_markdown_with_frontmatter($fileContent);
 
-            $postData['raw_content'] = $document->getContent();
-            $postData['featured_image'] = dirname($path) . '/preview.png';
+            $post_data = $parsed->frontmatter;
+            $post_data->raw_content = $parsed->content;
+            $post_data->featured_image = dirname($path) . '/preview.png';
 
-            return $postData;
+            return $post_data;
         };
 
         
         $resolver_dir_cat = function ($path) use ($resolver_simple) {
             $post_data = $resolver_simple($path);
 
-            $post_data['category'] = [dirname($path)];
-            $post_data['name'] = [basename($path, '.md')];
+            $post_data->category = [dirname($path)];
+            $post_data->name = [basename($path, '.md')];
 
             return $post_data;
         };
 
 
-        $currentData = '';
+        $currentData = new \stdClass;
         switch (get_option(MGD_SETTING_RESOLVER)) {
             case 'simple':
                 $currentData = $resolver_simple($document_path);
@@ -178,7 +171,7 @@ class MGD_ArticleCollection {
                 break;
         }
 
-        return (object) $currentData;
+        return $currentData;
     }   
 
     public function get_all() {

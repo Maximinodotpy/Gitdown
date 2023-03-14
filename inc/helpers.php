@@ -1,4 +1,5 @@
 <?php
+use Mni\FrontYAML as GDFrontYaml;
 
 class MGD_Helpers {
     public static function truncate_string($string, $max, $after = ' ...') {
@@ -65,5 +66,16 @@ class MGD_Helpers {
         foreach ($array as $value) {
             if ($function($value)) return $value;
         }
+    }
+
+    public static function parse_markdown_with_frontmatter($content): object {
+        $parser = new GDFrontYaml\Parser;
+
+        $parsed_document = $parser->parse($content, false);
+
+        return (object) [
+            "frontmatter" => (object) $parsed_document->getYAML(),
+            "content" => $parsed_document->getContent(),
+        ];
     }
 }
