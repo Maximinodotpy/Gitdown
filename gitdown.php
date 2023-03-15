@@ -23,6 +23,7 @@ class Gitdown
         require_once 'inc/vendor/autoload.php';
         require_once 'inc/helpers.php';
         require_once 'inc/ArticleCollection.php';
+        require_once 'inc/Resolver.php';
 
         // The Root path of this Plugin Directory
         define('MGD_ROOT_PATH', __DIR__ . '/');
@@ -128,6 +129,13 @@ class Gitdown
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
+        });
+
+        $plg_name = plugin_basename(__FILE__);
+        add_action("plugin_action_links_$plg_name", function($links) {
+            array_push($links, '<a href="options-reading.php">Settings</a>');
+            array_push($links, '<a href="admin.php?page=gd-article-manager">Overview</a>');
+            return $links;
         });
 
         // Adding the Admin Menu

@@ -3,6 +3,7 @@ namespace WP\Plugin\Gitdown;
 use Parsedown as GDParsedown;
 use CzProject\GitPhp\Git as MGD_GIT;
 use MGD_Helpers;
+use MGD_Resolvers;
 
 class MGD_ArticleCollection {
     public $articles = [];
@@ -26,10 +27,10 @@ class MGD_ArticleCollection {
     private function parse() {
 
         if (get_option(MGD_SETTING_GLOB) == '') {
-            $this->push_report_error('No Glob specified', '.', 'You did not specify a glob pattern');
+            $this->push_report_error('Missing Glob Pattern', 'SETTINGS', 'You did not specify a glob pattern');
             return;
         } else if (get_option(MGD_SETTING_REPO) == '') {
-            $this->push_report_error('No Repository URL', '.', 'You did not specify a repository url');
+            $this->push_report_error('Missing Repository URL', 'SETTINGS', 'You did not specify a repository url');
             return;
         }
 
@@ -42,8 +43,7 @@ class MGD_ArticleCollection {
             } catch (\Throwable $th) {
                 $this->push_report_error('Repository Error', get_option(MGD_SETTING_REPO), 'There is something wrong with your repository. Maybe the link is wrong or it is a private repository.');
             }
-        }
-        else {
+        } else {
             // Try to pull the repository multiple times if they fail.
             $pull_success = false;
 
@@ -131,49 +131,26 @@ class MGD_ArticleCollection {
     }
 
     private function resolver(string $document_path) {
-
-        $resolver_simple = function ($path) {
-            if (!file_exists($path)) return false;
-
-            $fileContent = file_get_contents($path);
-
-            if (!$fileContent) {
-                $this->push_report_error('Empty File', $path, 'This file is empty but still matches the glob pattern.');
-                return false;
-            }
-
-            $parsed = MGD_Helpers::parse_markdown_with_frontmatter($fileContent);
-
-            $post_data = $parsed->frontmatter;
-            $post_data->raw_content = $parsed->content;
-            $post_data->featured_image = dirname($path) . '/preview.png';
-
-            return $post_data;
-        };
-
         
-        $resolver_dir_cat = function ($path) use ($resolver_simple) {
-            $post_data = $resolver_simple($path);
-
-            $post_data->category = [dirname($path)];
-            $post_data->name = [basename($path, '.md')];
-
-            return $post_data;
-        };
-
+        if (!file_get_contents($document_path)) {
+            $this->push_report_error('Empty File', $document_path, 'This file is empty but still matches the glob pattern.');
+            return false;
+        }
 
         $currentData = new \stdClass;
         switch (get_option(MGD_SETTING_RESOLVER)) {
-            case 'simple':
-                $currentData = $resolver_simple($document_path);
+            case 'simple': {
+                $currentData = MGD_Resolvers::simple($document_path);
                 break;
+            }
 
-            case 'dir_cat':
-                $currentData = $resolver_dir_cat($document_path);
+            case 'dir_cat': {
+                $currentData = MGD_Resolvers::directory_category($document_path);
                 break;
+            }
 
             default;
-                $currentData = $resolver_simple($document_path);
+                $currentData = MGD_Resolvers::simple($document_path);
                 break;
         }
 
