@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package  Gitdown
+ */
+namespace WP\Plugin\Gitdown;
 
 class MGD_Resolvers {
     public static function simple($path) {

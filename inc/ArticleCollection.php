@@ -1,9 +1,10 @@
 <?php
+/**
+ * @package  Gitdown
+ */
 namespace WP\Plugin\Gitdown;
 use Parsedown as GDParsedown;
 use CzProject\GitPhp\Git as MGD_GIT;
-use MGD_Helpers;
-use MGD_Resolvers;
 
 class MGD_ArticleCollection {
     public $articles = [];

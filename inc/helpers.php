@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package  Gitdown
+ */
+namespace WP\Plugin\Gitdown;
 use Mni\FrontYAML as GDFrontYaml;
 
 class MGD_Helpers {

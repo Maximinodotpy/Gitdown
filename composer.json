@@ -1,7 +1,21 @@
 {
+    "name": "maxim/gitdown",
+    "license": "GNU",
+    "autoload": {
+        "psr-4": {
+            "Inc\\": "inc/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Maxim Maeder",
+            "email": "85794303+Maximinodotpy@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "stable",
     "require": {
         "mnapoli/front-yaml": "^2.0",
         "erusev/parsedown": "^1.7",
         "czproject/git-php": "^4.1"
-    }
+    }   
 }

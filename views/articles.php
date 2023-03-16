@@ -1,4 +1,9 @@
 <div class="wrap gitdown_ui" id="vue_app">
+
+    <div class="tw-w-full tw-bg-red-400 tw-font-bold tw-p-4 tw-text-center tw-text-red-900" v-if="!online">
+        You Are offline ...
+    </div>
+
     <div class="tw-flex tw-gap-4 tw-items-center">
         <h1 class="tw-flex-grow"><?php _e('Manage Git Posts', 'gitdown')?></h1>
     
@@ -10,6 +15,7 @@
             </a>
         </div>
     </div>
+
 
 
     <!-- Report -->

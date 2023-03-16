@@ -10,9 +10,8 @@ Text Domain:  gitdown
 */
 
 namespace WP\Plugin\Gitdown;
-use MGD_Helpers;
 
-defined('ABSPATH') or die('No direct script access allowed.');
+defined( 'ABSPATH' ) or die( 'Hey, what are you doing here? You silly human!' );
 
 class Gitdown
 {

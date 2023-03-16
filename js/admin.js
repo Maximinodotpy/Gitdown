@@ -15,16 +15,28 @@ if (window.Vue) {
                     found_posts: 0,
                     valid_posts: 0,
                     coerced_slugs: 0,
-                }
+                },
+                online: true
             }
         },
     
-        async mounted() {
-            await this.sync()
+        mounted() {
+            this.online = navigator.onLine
+            console.log(this.online);
+            window.addEventListener('online', (event) => {
+                console.log("You are now connected to the network.");
+                this.online = true;
+                this.sync()
+            });
+            window.addEventListener('offline', (event) => {
+                console.log("You are no longer connected to the network.");
+                this.online = false;
+            });
+
+            this.sync()
         },
     
         methods: {
-    
             async callAJAX(desiredData) {
                 const form_data = new FormData()
     
@@ -59,7 +71,7 @@ if (window.Vue) {
                     })
                 }).catch(error => {
                     console.log(error)
-                    this.sync()
+                    if (this.online) this.sync()
                 }).finally(() => {
                     loaderElement.style.visibility = 'hidden'
                 })
@@ -83,6 +95,7 @@ if (window.Vue) {
                     })
                 }).catch(error => {
                     console.log(error)
+                    if (this.online) this.sync()
                 }).finally(() => {
                     loaderElement.style.visibility = 'hidden'
                 })
@@ -112,7 +125,6 @@ if (window.Vue) {
                     this.reports = response.reports
                 }).catch(error => {
                     console.log(error)
-                    this.sync()
                 })
             },
         }
