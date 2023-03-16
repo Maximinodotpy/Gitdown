@@ -20,8 +20,8 @@ class Gitdown
 
     public function __construct()
     {
-        require_once 'inc/vendor/autoload.php';
-        require_once 'inc/helpers.php';
+        require_once 'vendor/autoload.php';
+        require_once 'inc/Helpers.php';
         require_once 'inc/ArticleCollection.php';
         require_once 'inc/Resolver.php';
 
