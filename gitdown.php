@@ -18,9 +18,6 @@ class Gitdown
     public function __construct()
     {
         require_once 'vendor/autoload.php';
-        /* require_once 'inc/Helpers.php';
-        require_once 'inc/ArticleCollection.php';
-        require_once 'inc/Resolver.php'; */
 
         // The Root path of this Plugin Directory
         define('MGD_ROOT_PATH', __DIR__ . '/');
@@ -90,7 +87,7 @@ class Gitdown
             add_settings_section(
                 MGD_SETTINGS_SECTION,
                 ' Settings',
-                function () { include(MGD_ROOT_PATH . 'views/settings_head.php'); },
+                function () { include(MGD_ROOT_PATH . 'templates/settings/head.php'); },
                 MGD_SETTINGS_PAGE
             );
 
@@ -98,7 +95,7 @@ class Gitdown
             add_settings_field(
                 MGD_SETTING_GLOB,
                 'Glob Pattern',
-                function () { include(MGD_ROOT_PATH . 'views/settings_glob.php'); },
+                function () { include(MGD_ROOT_PATH . 'templates/settings/glob.php'); },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
@@ -106,7 +103,7 @@ class Gitdown
             add_settings_field(
                 MGD_SETTING_REPO,
                 'Repository Location',
-                function () { include(MGD_ROOT_PATH . 'views/settings_repo.php'); },
+                function () { include(MGD_ROOT_PATH . 'templates/settings/repo.php'); },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
@@ -114,7 +111,7 @@ class Gitdown
             add_settings_field(
                 MGD_SETTING_RESOLVER,
                 'Resolver',
-                function () { include(MGD_ROOT_PATH . 'views/settings_resolver.php'); },
+                function () { include(MGD_ROOT_PATH . 'templates/settings/resolver.php'); },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
@@ -122,7 +119,7 @@ class Gitdown
             add_settings_field(
                 MGD_SETTING_CRON,
                 'Automatic Updating',
-                function () { include(MGD_ROOT_PATH . 'views/settings_automatic.php'); },
+                function () { include(MGD_ROOT_PATH . 'templates/settings/automatic.php'); },
                 MGD_SETTINGS_PAGE,
                 MGD_SETTINGS_SECTION
             );
@@ -145,11 +142,11 @@ class Gitdown
                     'manage_options',
                     MGD_ARTICLES_SLUG,
                     function () {
-                        if (isset($_GET['how_to'])) include(MGD_ROOT_PATH . 'views/how_to/how_to.php');
-                        else include(MGD_ROOT_PATH . 'views/articles.php');
+                        if (isset($_GET['how_to'])) include(MGD_ROOT_PATH . 'templates/how_to/how_to.php');
+                        else include(MGD_ROOT_PATH . 'templates/articles.php');
                     },
                     'data:image/svg+xml;base64,' . base64_encode(file_get_contents(MGD_ROOT_PATH . 'images/icon.svg')),
-                    20,
+                    110,
                 );
 
                 add_action('admin_enqueue_scripts', function () {

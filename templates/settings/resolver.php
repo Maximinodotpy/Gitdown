@@ -1,4 +1,17 @@
+
+<pre>
+<?php
+
+print_r(get_defined_vars());
+print_r(get_defined_constants());
+print_r(get_defined_functions());
+
+?>
+</pre>
 <fieldset>
+
+
+    
 
     <label for="resolver_simple">
         <input type="radio" name="<?php echo esc_html(MGD_SETTING_RESOLVER) ?>"  id="resolver_simple" value="simple" <?php echo esc_html(get_option(MGD_SETTING_RESOLVER)) == 'simple' ? 'checked' : '' ?>>
@@ -15,16 +28,4 @@
         </p>
     </label>
     <br>
-
-    <!-- <label for="resolver_custom">
-        <input type="radio" name="<?php echo esc_html( MGD_SETTING_RESOLVER ) ?>"  id="resolver_custom" value="custom" <?php echo esc_html( get_option(MGD_SETTING_RESOLVER )) == 'simple' ? 'checked' : '' ?>>
-        <span>Custom</span>
-        <p class="description">This custom resolver function should return an associative array with the following members: </p>
-        <br>
-
-        <textarea name="" id="" cols="30" rows="10" style="width: 100%; font-family: monospace" class="tw-text-bold">function($path) {
-    // Return The Correct Object
-}</textarea>
-    </label>
-    <br> -->
 </fieldset>
