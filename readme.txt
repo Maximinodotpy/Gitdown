@@ -1,10 +1,10 @@
 === Gitdown: Git Repository to WordPress Blog Posts ===
 Contributors: maximmaeder
 Donate link: https://maximmaeder.com
-Tags: markdown, github, posts, cms
+Tags: markdown, github, posts, cms, article-management, markdown-to-html, blog
 Requires at least: 6.1.1
 Tested up to: 6.1.1
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,6 +14,40 @@ Use Gitdown to Publish Markdown Posts from a repository to your Wordpress Blog.
 == Description ==
 
 *Gitdown* can be used to upload markdown posts from a remote repository to the WordPress. It allows you to specify a glob pattern that will be used to find the posts and then you can also specify a function that will resolve the content of the posts.
+
+= 🎈 Easy to use =
+
+Setting Gitdown up to work with your Repository and Glob Pattern takes only little time and can be easily changed at any time.
+
+= 🔨 Customization =
+
+It does not matter how your Repository is shaped you can change the glob pattern to your liking and I will understand your repo correctly.
+
+= 🎁 100% Free =
+
+Gitdown is completely free and you can use for what ever you want.
+
+= 📚 Documentation =
+As soon as you activate gitdown it will take you to the documentation page where your should get all the info that you need.
+
+You can also consult the following documents for Help.
+
+- [FAQ](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/faq.md)
+- [Frontmatter Keys](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/keys.md)
+- [Example File](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/example.md)
+
+⚠️ It may be outdated in some parts as I am somewhat unkeen in writing documentations.
+
+= 👥 Contributing =
+All contributions are very welcome, so feel free to make [issues](https://github.com/Maximinodotpy/Gitdown/issues), [proposals](https://github.com/Maximinodotpy/Gitdown/issues/proposals) and [pull requests](https://github.com/Maximinodotpy/Gitdown/pulls).
+
+= ↗ Links =
+
+- [Maximmaeder.com](https://maximmaeder.com/)
+- [My Profile on Wordpress.org](https://profiles.wordpress.org/maximmaeder/)
+- [Plugin Page](https://wordpress.org/plugins/gitdown)
+- [SVN repository](http://plugins.svn.wordpress.org/gitdown/)
+- [TortoiseSVN](https://tortoisesvn.net/)
 
 = Third Party Services =
 

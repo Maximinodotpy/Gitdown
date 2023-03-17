@@ -24,9 +24,9 @@ As soon as you activate gitdown it will take you to the documentation page where
 
 You can also consult the following documents for Help.
 
-- [FAQ](docs/faq.md)
-- [Frontmatter Keys](docs/keys.md)
-- [Example File](docs/example.md)
+- [FAQ](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/faq.md)
+- [Frontmatter Keys](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/keys.md)
+- [Example File](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/example.md)
 
 ⚠️ It may be outdated in some parts as I am somewhat unkeen in writing documentations.
 
