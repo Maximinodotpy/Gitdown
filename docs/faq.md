@@ -6,9 +6,9 @@ Yes you can! Simply seperate them by commas.
 
 Yes it does! Something like Animals/Cats, will create these two classes in a nested fashion and add the last one as the category.
 
-## Does Gitdown read tags
+## Does Gitdown read tags?
 
-Yes It does!
+Yes It does! You can supply either a list of tags or a single tag.
 
 ## Does Gitdown support thumbnails?
 
