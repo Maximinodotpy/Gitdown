@@ -62,8 +62,6 @@ This plugin uses the following third Party Services and Programs.
     - [Homepage](https://vuejs.org/)
 - *mnapoli/FrontYAML*: Is used to get frontmatter information in markdown file.
     - [Homepage](https://github.com/mnapoli/FrontYAML)
-- *Parsedown*: Is used to parse the markdown content and turn it into HTMl.
-    - [Homepage](https://parsedown.org/)
 - *git-php*: Is used to clone and fetch git repositories.
     - [Homepage](https://github.com/czproject/git-php)
 
