@@ -54,7 +54,7 @@ class Gitdown
             mkdir(MGD_MIRROR_PATH, 0777, true);
         }
 
-        $this->article_collection = new Inc\ArticleCollection(MGD_MIRROR_PATH, get_option(MGD_SETTING_GLOB));
+        $this->article_collection = new Inc\ArticleCollection();
 
         // Setting up the Action Hooks
         $this->setupActions();
