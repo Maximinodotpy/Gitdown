@@ -17,7 +17,7 @@ Use Gitdown to Publish Markdown Posts from a repository to your Wordpress Blog.
 
 = Third Party Services =
 
-This plugin uses the following third Party Services and Programs
+This plugin uses the following third Party Services and Programs.
 
 - *Globster.xyz*: Is used in the how to section for Gitdown, to teach glob patterns.
     - [Homepage](https://globster.xyz/)
