@@ -1,4 +1,4 @@
-# Keys
+# Frontmatter Keys
 
 Below you see a table which tells you which key in the frontmatter corresponds to which property of your article in wordpress.
 

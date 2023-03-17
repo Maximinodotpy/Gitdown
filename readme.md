@@ -20,7 +20,13 @@ It does not matter how your Repository is shaped you can change the glob pattern
 Gitdown is completely free and you can use for what ever you want.
 
 ## 📚 Documentation
-As soon as you activate gitdown it will take you to the documentation page where your should get all the info that you need. You can also consult the [FAQ](docs/faq.md).
+As soon as you activate gitdown it will take you to the documentation page where your should get all the info that you need.
+
+You can also consult the following documents for Help.
+
+- [FAQ](docs/faq.md)
+- [Frontmatter Keys](docs/keys.md)
+- [Example File](docs/example.md)
 
 ⚠️ It may be outdated in some parts as I am somewhat unkeen in writing documentations.
 
