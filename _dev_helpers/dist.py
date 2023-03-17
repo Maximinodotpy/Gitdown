@@ -87,6 +87,8 @@ ignore = [
     'node_modules',
     '_releasing',
     '_svn',
+    '.vscode',
+    
     # Files
     '.eslintrc.json',
     'eslintrc.json',
