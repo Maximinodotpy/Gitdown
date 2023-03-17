@@ -1,3 +1,4 @@
+```markdown
 ---
 name: 'My Cool Post'
 slug: 'my-cool-post'
@@ -10,3 +11,4 @@ status: 'draft'
 Article content in the normal markdown format.
 
 ...
+```
