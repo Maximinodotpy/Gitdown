@@ -83,4 +83,12 @@ class Helpers {
             "content" => $parsed_document->getContent(),
         ];
     }
+
+    public static function delete_directory($path) {
+        if (!is_dir($path)) return;
+
+        Helpers::log('Deleting: '.$path);
+
+        exec('rmdir /s');
+    }
 }

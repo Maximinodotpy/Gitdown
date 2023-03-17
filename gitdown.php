@@ -9,6 +9,8 @@ Author URI:   https://maximmaeder.com
 Text Domain:  gitdown
 */
 
+use Inc\Helpers;
+
 defined( 'ABSPATH' ) or die( 'Hey, what are you doing here? You silly human!' );
 
 class Gitdown
@@ -309,6 +311,8 @@ class Gitdown
         delete_option(MGD_SETTING_REPO);
         delete_option(MGD_SETTING_DEBUG);
         delete_option(MGD_SETTING_CRON);
+
+        Helpers::delete_directory(MGD_MIRROR_PATH);
     }
 };
 
