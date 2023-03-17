@@ -42,6 +42,7 @@ class Gitdown
 
         // Where the current Repository is located depends on the repo url.
         $repo_nice_name =
+            'gd_'.
             Inc\Helpers::string_to_slug(basename(dirname(get_option(MGD_SETTING_REPO))))
             .'-'.
             Inc\Helpers::string_to_slug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
@@ -60,6 +61,16 @@ class Gitdown
 
         // Setting up the Action Hooks
         $this->setupActions();
+
+        chdir(dirname(MGD_MIRROR_PATH));
+        $d = dir(".");
+        while (false !== ($entry = $d->read()))
+        {
+            if (is_dir($entry) && ($entry != '.') && ($entry != '..') && ($entry != $repo_nice_name)) {
+                Helpers::delete_directory($entry);
+            }
+        }
+        $d->close();
     }
 
     /**
@@ -312,7 +323,9 @@ class Gitdown
         delete_option(MGD_SETTING_DEBUG);
         delete_option(MGD_SETTING_CRON);
 
-        Helpers::delete_directory(MGD_MIRROR_PATH);
+        Helpers::log('deactivate');
+
+        Helpers::delete_directory(dirname(MGD_MIRROR_PATH));
     }
 };
 

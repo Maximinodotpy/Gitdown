@@ -10,7 +10,6 @@ module.exports = {
     content: [
         'views/*.php',
         'views/**/*.php',
-        'js/tour.js',
     ],
     theme: {
         extend: {},

@@ -56,13 +56,11 @@ class Helpers {
     }
 
     public static function log($log) {
-        if (!function_exists('log')) {
-            if (true === WP_DEBUG) {
-                if (is_array($log) || is_object($log)) {
-                    error_log(print_r($log, true));
-                } else {
-                    error_log($log);
-                }
+        if (true === WP_DEBUG) {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
             }
         }
     }
@@ -85,10 +83,23 @@ class Helpers {
     }
 
     public static function delete_directory($path) {
-        if (!is_dir($path)) return;
+        if (!is_dir($path)) {
+            Helpers::log('Folder not found: '.$path);
+            return;
+        } else if (!str_starts_with( basename($path), 'gd_' )) {
+            Helpers::log('Folder not deletable: '.$path);
+            return;
+        };
 
         Helpers::log('Deleting: '.$path);
 
-        exec('rmdir /s');
+        switch (PHP_OS) {
+            case 'WINNT': {
+                exec("rmdir \"$path\" /s /q");
+            }
+            case 'LINUX': {
+                exec("rm -rf -f \"$path\"");
+            }
+        }
     }
 }
