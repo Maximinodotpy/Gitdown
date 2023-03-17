@@ -2,11 +2,12 @@
 /**
  * @package  Gitdown
  */
-namespace WP\Plugin\Gitdown;
-use Parsedown as GDParsedown;
+namespace Inc;
+
+use League\CommonMark\CommonMarkConverter;
 use CzProject\GitPhp\Git as MGD_GIT;
 
-class MGD_ArticleCollection {
+class ArticleCollection {
     public $articles = [];
     public $reports;
 
@@ -90,7 +91,7 @@ class MGD_ArticleCollection {
             // Add the name as the slug in case its not defined
             if (!property_exists($post_data->remote, 'slug')) {
                 $this->reports->coerced_slugs++;
-                $post_data->remote->slug = MGD_Helpers::string_to_slug($post_data->remote->name);
+                $post_data->remote->slug = Helpers::string_to_slug($post_data->remote->name);
 
                 $this->push_report_error('Coerced Slug', $path, __('This post does not define a slug so the name was turned into a slug. This is not advised.'));
             }
@@ -140,15 +141,15 @@ class MGD_ArticleCollection {
 
         switch (get_option(MGD_SETTING_RESOLVER)) {
             case 'simple': {
-                return MGD_Resolvers::simple($document_path);
+                return Resolvers::simple($document_path);
             }
 
             case 'dir_cat': {
-                return $currentData = MGD_Resolvers::directory_category($document_path);
+                return Resolvers::directory_category($document_path);
             }
 
             default; {
-                return MGD_Resolvers::simple($document_path);
+                return Resolvers::simple($document_path);
             }
         }
     }   
@@ -162,7 +163,7 @@ class MGD_ArticleCollection {
     function get_by_slug(string $slug): object {
         $this->check_if_parsed();
 
-        return MGD_Helpers::array_nested_find($this->articles, function($obj) use (&$slug) {
+        return Helpers::array_nested_find($this->articles, function($obj) use (&$slug) {
             return $obj->remote->slug == $slug;
         });
     }
@@ -170,7 +171,7 @@ class MGD_ArticleCollection {
     public function get_by_id(int $id): object {
         $this->check_if_parsed();
 
-        return MGD_Helpers::array_nested_find($this->articles, function($obj) use (&$id) {
+        return Helpers::array_nested_find($this->articles, function($obj) use (&$id) {
             return ($obj->local->ID ?? -1) == $id;
         }) ?? (object) array(
             '_is_published' => false,
@@ -192,18 +193,23 @@ class MGD_ArticleCollection {
 
         $post_data = $this->get_by_slug($slug);
 
-        MGD_Helpers::write_log(sprintf('Updating: %s', $post_data->remote->name));
+        Helpers::log(sprintf('Updating: %s', $post_data->remote->name));
 
-        $Parsedown = new GDParsedown();
+        $converter = new CommonMarkConverter([
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
+        
+        echo $converter->convert('# Hello World!');
 
         $new_post_data = array(
             'post_title'     =>  $post_data->remote->name,
             'post_name'      =>  $post_data->remote->slug,
             'post_excerpt'   =>  $post_data->remote->description ?? '',
-            'post_content'   =>  wp_kses_post($Parsedown->text($post_data->remote->raw_content)),
+            'post_content'   =>  wp_kses_post($converter->convert($post_data->remote->raw_content)),
             'post_status'    =>  $post_data->remote->status ?? 'publish',
-            'post_category'  =>  MGD_Helpers::create_categories($post_data->remote->category),
-            'tags_input'     =>  MGD_Helpers::coerce_to_array($post_data->remote->tags),
+            'post_category'  =>  Helpers::create_categories($post_data->remote->category),
+            'tags_input'     =>  Helpers::coerce_to_array($post_data->remote->tags),
         );
 
         // Add the ID in case it is already published
@@ -216,7 +222,7 @@ class MGD_ArticleCollection {
             $post_id = wp_insert_post($new_post_data);
             update_post_meta($post_id, 'mgd_last_updated', time());
         } catch (\Throwable $th) {
-            MGD_Helpers::write_log($th);
+            Helpers::log($th);
             return;
         }
 

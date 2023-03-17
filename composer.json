@@ -15,7 +15,7 @@
     "minimum-stability": "stable",
     "require": {
         "mnapoli/front-yaml": "^2.0",
-        "erusev/parsedown": "^1.7",
-        "czproject/git-php": "^4.1"
+        "czproject/git-php": "^4.1",
+        "league/commonmark": "^2.3"
     }   
 }

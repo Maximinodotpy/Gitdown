@@ -2,10 +2,11 @@
 /**
  * @package  Gitdown
  */
-namespace WP\Plugin\Gitdown;
-use Mni\FrontYAML as GDFrontYaml;
+namespace Inc;
 
-class MGD_Helpers {
+use Mni\FrontYAML\Parser;
+
+class Helpers {
     public static function truncate_string($string, $max, $after = ' ...') {
         if (strlen($string) >= $max) {
             return substr($string, 0, $max - strlen($after)).$after;
@@ -54,8 +55,8 @@ class MGD_Helpers {
         return (is_array($input) ? $input : array($input));
     }
 
-    public static function write_log($log) {
-        if (!function_exists('write_log')) {
+    public static function log($log) {
+        if (!function_exists('log')) {
             if (true === WP_DEBUG) {
                 if (is_array($log) || is_object($log)) {
                     error_log(print_r($log, true));
@@ -73,7 +74,7 @@ class MGD_Helpers {
     }
 
     public static function parse_markdown_with_frontmatter($content): object {
-        $parser = new GDFrontYaml\Parser;
+        $parser = new \Mni\FrontYAML\Parser;
 
         $parsed_document = $parser->parse($content, false);
 

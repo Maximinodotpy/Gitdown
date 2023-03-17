@@ -9,8 +9,6 @@ Author URI:   https://maximmaeder.com
 Text Domain:  gitdown
 */
 
-namespace WP\Plugin\Gitdown;
-
 defined( 'ABSPATH' ) or die( 'Hey, what are you doing here? You silly human!' );
 
 class Gitdown
@@ -20,9 +18,9 @@ class Gitdown
     public function __construct()
     {
         require_once 'vendor/autoload.php';
-        require_once 'inc/Helpers.php';
+        /* require_once 'inc/Helpers.php';
         require_once 'inc/ArticleCollection.php';
-        require_once 'inc/Resolver.php';
+        require_once 'inc/Resolver.php'; */
 
         // The Root path of this Plugin Directory
         define('MGD_ROOT_PATH', __DIR__ . '/');
@@ -45,9 +43,9 @@ class Gitdown
 
         // Where the current Repository is located depends on the repo url.
         $repo_nice_name =
-            MGD_Helpers::string_to_slug(basename(dirname(get_option(MGD_SETTING_REPO))))
+            Inc\Helpers::string_to_slug(basename(dirname(get_option(MGD_SETTING_REPO))))
             .'-'.
-            MGD_Helpers::string_to_slug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
+            Inc\Helpers::string_to_slug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
 
         define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
         define('MGD_MIRROR_URL', WP_CONTENT_URL . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
@@ -59,7 +57,7 @@ class Gitdown
             mkdir(MGD_MIRROR_PATH, 0777, true);
         }
 
-        $this->article_collection = new MGD_ArticleCollection(MGD_MIRROR_PATH, get_option(MGD_SETTING_GLOB));
+        $this->article_collection = new Inc\ArticleCollection(MGD_MIRROR_PATH, get_option(MGD_SETTING_GLOB));
 
         // Setting up the Action Hooks
         $this->setupActions();
@@ -251,7 +249,7 @@ class Gitdown
 
             $oldest_article = $this->article_collection->get_oldest()[0];
 
-            MGD_Helpers::write_log(sprintf('Auto Updating: %s', $oldest_article->remote->name));
+            Inc\Helpers::log(sprintf('Auto Updating: %s', $oldest_article->remote->name));
 
             echo json_encode($this->article_collection->update_post($oldest_article->remote->slug));
 
