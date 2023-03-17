@@ -138,24 +138,19 @@ class MGD_ArticleCollection {
             return false;
         }
 
-        $currentData = new \stdClass;
         switch (get_option(MGD_SETTING_RESOLVER)) {
             case 'simple': {
-                $currentData = MGD_Resolvers::simple($document_path);
-                break;
+                return MGD_Resolvers::simple($document_path);
             }
 
             case 'dir_cat': {
-                $currentData = MGD_Resolvers::directory_category($document_path);
-                break;
+                return $currentData = MGD_Resolvers::directory_category($document_path);
             }
 
-            default;
-                $currentData = MGD_Resolvers::simple($document_path);
-                break;
+            default; {
+                return MGD_Resolvers::simple($document_path);
+            }
         }
-
-        return $currentData;
     }   
 
     public function get_all(): array {

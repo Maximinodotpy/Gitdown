@@ -27,6 +27,13 @@ class MGD_Resolvers {
 
         return $post_data;
     }
+
+    public static function get_all_resolvers() {
+        return [
+            'Simple' => array('MGD_Resolvers', 'simple'),
+            'Directory to Category' => array('MGD_Resolvers', 'directory_category'),
+        ];
+    }
 }
 
 ?>
