@@ -1,5 +1,11 @@
 
 
+interface Post {
+    readonly name: string;
+}
+
+
+
 // @ts-ignore
 if (window.Vue) {
     // eslint-disable-next-line no-undef
@@ -39,7 +45,7 @@ if (window.Vue) {
         },
     
         methods: {
-            async callAJAX(desiredData) {
+            async callAJAX(desiredData: object): Promise<object> {
                 const form_data = new FormData()
     
                 for (const key in desiredData) {
@@ -64,7 +70,7 @@ if (window.Vue) {
                 this.callAJAX({
                     action: 'update_article',
                     slug: slug,
-                }).then(newData => {
+                }).then((newData: any) => {
                     this.articles.find(article => {
                         if (article.remote.slug == slug) {
                             article.local = newData.new_post

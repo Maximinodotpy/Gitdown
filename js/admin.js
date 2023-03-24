@@ -53,7 +53,7 @@ if (window.Vue) {
                 this.callAJAX({
                     action: 'update_article',
                     slug: slug,
-                }).then(newData => {
+                }).then((newData) => {
                     this.articles.find(article => {
                         if (article.remote.slug == slug) {
                             article.local = newData.new_post;

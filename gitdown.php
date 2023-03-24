@@ -238,8 +238,16 @@ class Gitdown
         });
 
 
+        function verify_ajax() {
+            if ( !current_user_can('edit_posts') ) {
+                echo json_encode(false);
+                die();
+            };
+        }
+
         // Ajax Calls
         add_action("wp_ajax_get_all_articles", function () {
+            verify_ajax();
             echo json_encode(array(
                 'posts' => $this->article_collection->get_all(),
                 'reports' => $this->article_collection->reports
@@ -247,14 +255,18 @@ class Gitdown
             die();
         });
         add_action("wp_ajax_update_article", function () {
+            verify_ajax();
             echo json_encode($this->article_collection->update_post($_REQUEST['slug']));
             die();
         });
         add_action("wp_ajax_delete_article", function () {
+            verify_ajax();
             echo json_encode($this->article_collection->delete_post($_REQUEST['slug']));
             die();
         });
         add_action("wp_ajax_update_oldest", function () {
+            verify_ajax();
+
             if (! (bool) get_option(MGD_SETTING_CRON) ) return;
 
             $oldest_article = $this->article_collection->get_oldest()[0];
@@ -268,7 +280,8 @@ class Gitdown
 
 
         add_action('init', function() {
-            if (wp_doing_ajax()) return;
+            if ( is_admin() ) return;
+            if ( wp_doing_ajax() ) return;
             if (! (bool) get_option(MGD_SETTING_CRON) ) return;
 
             add_action('wp_print_scripts', function() {
