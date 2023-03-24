@@ -102,6 +102,8 @@ ignore = [
     'gitdown-video.mp4',
     'input.css',
     '*.ai',
+    '*.ts',
+    '*.sass',
 ]
 clear_folder(trunk_folder)
 copy_folder('.', trunk_folder, ignore = ignore)
