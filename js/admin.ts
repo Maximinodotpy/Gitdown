@@ -1,11 +1,3 @@
-
-
-interface Post {
-    readonly name: string;
-}
-
-
-
 // @ts-ignore
 if (window.Vue) {
     // eslint-disable-next-line no-undef
@@ -16,7 +8,6 @@ if (window.Vue) {
         data() {
             return {
                 articles: [],
-                search_query: '',
                 complex_view: false,
                 reports: {
                     published_posts: 0,
@@ -30,7 +21,6 @@ if (window.Vue) {
     
         mounted() {
             this.online = navigator.onLine
-            console.log(this.online);
             window.addEventListener('online', (event) => {
                 console.log("You are now connected to the network.");
                 this.online = true;
@@ -61,7 +51,7 @@ if (window.Vue) {
                 return await re.json()
             },
     
-            async update_post(slug) {
+            update_post(slug: string): void {
                 const loaderElement = this.$refs[slug][0]
                 loaderElement.style.visibility = 'visible'
     
@@ -86,7 +76,7 @@ if (window.Vue) {
                 })
             },
     
-            async delete_post(slug) {
+            delete_post(slug: string): void {
                 const loaderElement = this.$refs[slug][0]
                 loaderElement.style.visibility = 'visible'
     
@@ -110,7 +100,7 @@ if (window.Vue) {
                 })
             },
     
-            updateAllArticles() {
+            updateAllArticles(): void {
                 console.log('Updating All ...')
     
                 this.articles.forEach(article => {
@@ -118,7 +108,7 @@ if (window.Vue) {
                 })
             },
     
-            deleteAll() {
+            deleteAll(): void {
                 console.log('Deleting All articles ...')
     
                 this.articles.forEach(article => {
@@ -126,7 +116,7 @@ if (window.Vue) {
                 })
             },
     
-            async sync() {            
+            sync(): void {            
                 this.callAJAX({
                     action: 'get_all_articles',
                 }).then(response => {

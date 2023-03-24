@@ -7,7 +7,6 @@ if (window.Vue) {
         data() {
             return {
                 articles: [],
-                search_query: '',
                 complex_view: false,
                 reports: {
                     published_posts: 0,
@@ -20,7 +19,6 @@ if (window.Vue) {
         },
         mounted() {
             this.online = navigator.onLine;
-            console.log(this.online);
             window.addEventListener('online', (event) => {
                 console.log("You are now connected to the network.");
                 this.online = true;
@@ -46,7 +44,7 @@ if (window.Vue) {
                 });
                 return await re.json();
             },
-            async update_post(slug) {
+            update_post(slug) {
                 const loaderElement = this.$refs[slug][0];
                 loaderElement.style.visibility = 'visible';
                 console.log(`%cUpdating Post: %c${slug}`, 'font-weight: bold', 'font-weight: unset');
@@ -69,7 +67,7 @@ if (window.Vue) {
                     loaderElement.style.visibility = 'hidden';
                 });
             },
-            async delete_post(slug) {
+            delete_post(slug) {
                 const loaderElement = this.$refs[slug][0];
                 loaderElement.style.visibility = 'visible';
                 console.log(`%cDeleting: %c${slug}`, 'font-weight: bold', 'font-weight: unset');
@@ -103,7 +101,7 @@ if (window.Vue) {
                     this.delete_post(article.remote.slug);
                 });
             },
-            async sync() {
+            sync() {
                 this.callAJAX({
                     action: 'get_all_articles',
                 }).then(response => {
