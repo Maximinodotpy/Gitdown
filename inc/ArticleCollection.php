@@ -199,9 +199,7 @@ class ArticleCollection {
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
         ]);
-        
-        echo $converter->convert('# Hello World!');
-
+    
         $new_post_data = array(
             'post_title'     =>  $post_data->remote->name,
             'post_name'      =>  $post_data->remote->slug,
