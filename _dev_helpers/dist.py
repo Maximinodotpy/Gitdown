@@ -80,15 +80,17 @@ ignore = [
     '.git',
     'dist',
     'assets',
+    'docs',
     'languages',
     'test-repo',
+    'test',
     'logs',
     '_dev_helpers',
     'node_modules',
     '_releasing',
     '_svn',
     '.vscode',
-    
+
     # Files
     '.eslintrc.json',
     'eslintrc.json',
@@ -101,6 +103,11 @@ ignore = [
     '.gitignore',
     'gitdown-video.mp4',
     'input.css',
+    '.editorconfig',
+    'composer.json',
+    'composer.lock',
+    'tsconfig.json',
+
     '*.ai',
     '*.ts',
     '*.sass',
