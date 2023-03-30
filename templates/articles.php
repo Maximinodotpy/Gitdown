@@ -4,9 +4,10 @@
         You Are offline ...
     </div>
 
+
     <div class="tw-flex tw-gap-4 tw-items-center">
         <h1 class="tw-flex-grow"><?php _e('Manage Git Posts', 'gitdown')?></h1>
-    
+
         <p class=""><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
         <p><i>Gitdown v<?php echo esc_html(get_plugin_data(MGD_ROOT_PATH.'gitdown.php')['Version']) ?></i></p>
         <div>
@@ -53,20 +54,26 @@
                                 <span class="tw-bg-blue-300 tw-text-blue-700 tw-flex">
                                     <span class="tw-p-1 tw-bg-blue-900 tw-text-blue-200">@</span>
                                     <span class="tw-p-1">{{ error.location }}</span>
-                                </span>                                
+                                </span>
                             </div>
                             <div class="tw-text-lg">
                                 {{ error.description }}
                             </div>
                         </div>
                         </div>
-                        
+
                     </div>
                     <div v-else>
                         Congratulations! You have no Errors 😀.
                     </div>
                 </div>
             </div>
+
+            <section>
+                <h2>Config File [Future]</h2>
+
+                <pre><?php print_r(MGD_REPO_CONFIG) ?></pre>
+            </section>
         </div>
     </details>
 
@@ -74,14 +81,14 @@
 
     <div>
         <button id="pa" @click="updateAllArticles()" class="tw-mr-2 button button-primary"><?php _e('Update All', 'gitdown')?></button>
-        
+
         <button id="da" @click="deleteAll()" class="button tw-mr-2"><?php _e('Delete All', 'gitdown')?></button>
 
 
         <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button tw-mr-2"><?php _e('Download Example Folder Structure', 'gitdown')?></a>
 
         <a href="<?php echo esc_url(get_site_url(null, 'wp-admin/options-reading.php')) ?>" class="button tw-mr-2"><?php _e('Settings', 'gitdown')?></a>
-        
+
         <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=gd-article-manager&how_to')) ?>" class="button tw-mr-2"><?php _e('How to use Gitdown', 'gitdown')?></a>
 
         <p class="search-box">
@@ -103,7 +110,7 @@
                     <span class="inline-block tw-mr-2 tw-mb-3">
                         <?php _e('Remote', 'gitdown')?>
                     </span>
-                    
+
                     <span class="tw-block">
                         <a href="<?php echo esc_url(get_option(MGD_SETTING_REPO)) ?>" target="_blank">
                             <code class=""><?php echo esc_html(basename(get_option(MGD_SETTING_REPO))) ?></code>
@@ -166,8 +173,8 @@
 
                     <br>
                 </td>
-                
-                <td :ref="item.remote.slug" style="visibility: hidden" 
+
+                <td :ref="item.remote.slug" style="visibility: hidden"
                     class="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-backdrop-blur-[4px]">
                     <div class="tw-text-xl tw-font-semibold tw-flex tw-items-center tw-gap-2 drop-shadow-2xl">
                         <img src="<?php echo esc_url(MGD_ROOT_URL . 'images/loader.svg') ?>" alt="Loader" style="width: 40px">

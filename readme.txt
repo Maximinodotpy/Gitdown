@@ -4,7 +4,7 @@ Donate link: https://maximmaeder.com
 Tags: markdown, github, posts, cms, article-management, markdown-to-html, blog
 Requires at least: 6.1.1
 Tested up to: 6.1.1
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -102,7 +102,7 @@ Yes It does! You simply have to provide a file called 'preview.png' in the same 
 - Added Tag Insertion
 - wp_generate_attachment_metadata() -> thumbnails will get regenerated if Image Editor is available.
 
-= 1.0.5 = 
+= 1.0.5 =
 - Added automated updating and posting of posts (Experimental)
 
 = 1.0.6 =

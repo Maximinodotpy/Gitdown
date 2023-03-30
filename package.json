@@ -1,6 +1,6 @@
 {
 	"name": "gitdown",
-	"version": "1.0.5",
+	"version": "1.0.8",
 	"description": "Wordpress Plugin to get Articles from a Git Repo and Publish them on Wordpress.",
 	"scripts": {
 		"watch": "start npx tailwindcss -i ./css/input.css -o ./css/gitdown.css --watch --minify && start npx tsc",

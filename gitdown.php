@@ -3,7 +3,7 @@
 Plugin Name:  Gitdown
 Plugin URI:   https://github.com/Maximinodotpy/Gitdown
 Description:  Use this Plugin to create, update, delete and manage markdown articles hosted on a remote repository.
-Version:      1.0.7
+Version:      1.0.8
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
 Text Domain:  gitdown
@@ -59,9 +59,31 @@ class Gitdown
 
         $this->article_collection = new Inc\ArticleCollection();
 
+
         // Setting up the Action Hooks
         $this->setupActions();
 
+
+        // Getting the gitdown.json config file from the Repository
+        $config_defaults = array(
+            "categories" => []
+        );
+        $config_path = MGD_MIRROR_PATH.'/gitdown.json';
+
+        define('MGD_REPO_CONFIG', file_exists($config_path)
+            ? array_merge($config_defaults, (array) json_decode(file_get_contents($config_path), true)) : $config_defaults
+        );
+
+
+        // Creating Categories if they are defined in the config.
+        if (isset(MGD_REPO_CONFIG['categories'])) {
+            \Inc\Helpers::create_categories(array_keys(MGD_REPO_CONFIG['categories']));
+
+            foreach (MGD_REPO_CONFIG['categories'] as $key => $value) {}
+        }
+
+
+        // Deleting unneded Mirror folders.
         chdir(dirname(MGD_MIRROR_PATH));
         $d = dir(".");
         while (false !== ($entry = $d->read()))
