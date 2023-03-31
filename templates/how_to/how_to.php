@@ -77,13 +77,13 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 
         <p>You want to publish your markdown articles from a remote repository like GitHub to your WordPress blog, so you will have to first define the location of your Remote repository in the settings. The Gitdown settings are located at <i><a href="<?php echo esc_url(home_url('/wp-admin/options-reading.php')) ?>" target="_blank">Reading</a></i>.</p>
 
-        
-        <?php image(MGD_ROOT_URL.'views/how_to/github-copy-repo-url.png', 'Where to find your github repository link.'); ?>
-        
+
+        <?php image(MGD_ROOT_URL.'templates/how_to/github-copy-repo-url.png', 'Where to find your github repository link.'); ?>
+
 
         <?php info('By default, there is a repository there that I have created so you can test out and understand how Gitdown works without having a repo ready yourself.'); ?>
 
-        
+
         <?php warning('Gitdown wont be able to clone and fetch private repositories as of now.') ?>
 
         <p>Now that you have a repository set Gitdown will clone and fetch this repository to your <code>wp-content</code>folder.</p>
@@ -119,9 +119,9 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
             </li>
         </ul>
 
-        
+
         <p>You will most likely be fine with the simple resolver.</p>
-        
+
         <p>Below you see an example of valid file.</p>
 
         <pre class="tw-p-3 tw-font-semibold tw-bg-neutral-300">---
@@ -136,10 +136,10 @@ Article content in the normal markdown format.
 ...</pre>
 
         <p>Now that you have setup everything you can go to the main admin page of the plugin, where you see all your found posts.</p>
-        
+
         <?php warning('Articles are connected via their slug/post_name which means Gitdown will think an article that was on your Blog before that matches another article in your repo are the same and it will overwrite it so It is advised to make a backup of your articles. This also means that if you change the slug of any article it will no longer match its counterpart on git or wordpress.') ?>
         <?php info('Gitdown will create the categories that were specified in your frontmatter and it even allows nested categories like this: Vehicles/Cars/Ford'); ?>
-        
+
         <?php insertBreak() ?>
 
         <p class="mt-8">To Recap, setting up consists of ...</p>
@@ -151,18 +151,18 @@ Article content in the normal markdown format.
 
 
         <?php insertBreak() ?>
-        
+
 
         <h2>Managing Articles</h2>
 
-        <?php image(MGD_ROOT_URL.'views/how_to/managing.png', 'Gitdown\'s User Interface'); ?>
+        <?php image(MGD_ROOT_URL.'templates/how_to/managing.png', 'Gitdown\'s User Interface'); ?>
 
         <p>Gitdown's User Interface is pretty straight forward, it consist of some buttons at the top to update / publish / delete all posts. These buttons are also individually available for each article.</p>
 
         <p>The second column will show you wether the post is on wordpress, which as stated earlier means that gitdown found a post with the same slug.</p>
 
         <p>Thats it have fun writing and publishing with Gitdown! 😀</p>
-        
+
         <?php warning('You should never edit posts on wordpress that originate from a repository since Gitdown will overwrite your changes the next time you click on update.', 'Gitdown Actually prohibits you from quick editing synced posts and it shows a warning message in the Block Editor. So you should always edit posts in the repository and then update the article via the ui or enable auto updates.'); ?>
 
     </div>

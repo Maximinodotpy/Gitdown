@@ -3,7 +3,7 @@
 Plugin Name:  Gitdown
 Plugin URI:   https://github.com/Maximinodotpy/Gitdown
 Description:  Use this Plugin to create, update, delete and manage markdown articles hosted on a remote repository.
-Version:      1.1.0
+Version:      1.1.1
 Author:       Maxim Maeder
 Author URI:   https://maximmaeder.com
 Text Domain:  gitdown
@@ -77,7 +77,7 @@ class Gitdown
 
         // Creating Categories if they are defined in the config.
         if (isset(MGD_REPO_CONFIG['categories'])) {
-            \Inc\Helpers::create_categories(array_keys(MGD_REPO_CONFIG['categories']));
+            Inc\Helpers::create_categories(array_keys(MGD_REPO_CONFIG['categories']));
 
             foreach (MGD_REPO_CONFIG['categories'] as $key => $value) {}
         }
