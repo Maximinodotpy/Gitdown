@@ -25,7 +25,7 @@ class Gitdown
 
         // The Root path of this Plugin Directory
         define('MGD_ROOT_PATH', __DIR__ . '/');
-        define('MGD_ROOT_URL', plugins_url('', __FILE__) . '/');
+        define('MGD_ROOT_URL', plugins_url('/', __FILE__));
 
         // Option names
         define('MGD_SETTING_GLOB', 'mgd_glob_setting');
@@ -34,17 +34,13 @@ class Gitdown
         define('MGD_SETTING_RESOLVER', 'mgd_resolver_setting');
         define('MGD_SETTING_CRON', 'mgd_cron_setting');
 
-        // Admin Menu Slugs
-        define('MGD_ARTICLES_SLUG', 'mgd-article-manager');
-        define('MGD_SETTINGS_SECTION',  'mgd-settings-section');
-        define('MGD_SETTINGS_PAGE',  'reading');
-
         // Where the current Repository is located depends on the repo url.
-        $repo_nice_name =
-            'mgd_'.
-            Inc\Helpers::string_to_slug(basename(dirname(get_option(MGD_SETTING_REPO))))
-            .'-'.
-            Inc\Helpers::string_to_slug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
+        $repo_nice_name = Inc\Helpers::string_to_slug(
+            'mgd_'
+            . basename(dirname(get_option(MGD_SETTING_REPO)))
+            . '-'
+            . rtrim(basename(get_option(MGD_SETTING_REPO)), '.git')
+        );
 
         define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '\/mgd_mirror/' . $repo_nice_name . '/');
         define('MGD_MIRROR_URL', WP_CONTENT_URL . '\/mgd_mirror/' . $repo_nice_name . '/');
@@ -91,17 +87,17 @@ class Gitdown
                 wp_redirect(home_url('/wp-admin/admin.php?page=mgd-article-manager&how_to'));
             }
 
-            register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_GLOB);
-            register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_REPO);
-            register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_RESOLVER);
-            register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_DEBUG);
-            register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_CRON);
+            register_setting('reading', MGD_SETTING_GLOB);
+            register_setting('reading', MGD_SETTING_REPO);
+            register_setting('reading', MGD_SETTING_RESOLVER);
+            register_setting('reading', MGD_SETTING_DEBUG);
+            register_setting('reading', MGD_SETTING_CRON);
 
             add_settings_section(
-                MGD_SETTINGS_SECTION,
+                'mgd-settings-section',
                 ' Settings',
                 function () { include(MGD_ROOT_PATH . 'templates/settings/head.php'); },
-                MGD_SETTINGS_PAGE
+                'reading'
             );
 
 
@@ -109,32 +105,32 @@ class Gitdown
                 MGD_SETTING_GLOB,
                 'Glob Pattern',
                 function () { include(MGD_ROOT_PATH . 'templates/settings/glob.php'); },
-                MGD_SETTINGS_PAGE,
-                MGD_SETTINGS_SECTION
+                'reading',
+                'mgd-settings-section'
             );
 
             add_settings_field(
                 MGD_SETTING_REPO,
                 'Repository Location',
                 function () { include(MGD_ROOT_PATH . 'templates/settings/repo.php'); },
-                MGD_SETTINGS_PAGE,
-                MGD_SETTINGS_SECTION
+                'reading',
+                'mgd-settings-section'
             );
 
             add_settings_field(
                 MGD_SETTING_RESOLVER,
                 'Resolver',
                 function () { include(MGD_ROOT_PATH . 'templates/settings/resolver.php'); },
-                MGD_SETTINGS_PAGE,
-                MGD_SETTINGS_SECTION
+                'reading',
+                'mgd-settings-section'
             );
 
             add_settings_field(
                 MGD_SETTING_CRON,
                 'Automatic Updating',
                 function () { include(MGD_ROOT_PATH . 'templates/settings/automatic.php'); },
-                MGD_SETTINGS_PAGE,
-                MGD_SETTINGS_SECTION
+                'reading',
+                'mgd-settings-section'
             );
         });
 
@@ -152,7 +148,7 @@ class Gitdown
                     'Gitdown',
                     'Gitdown',
                     'manage_options',
-                    MGD_ARTICLES_SLUG,
+                    'mgd-article-manager',
                     function () {
                         if (isset($_GET['how_to'])) include(MGD_ROOT_PATH . 'templates/how_to/how_to.php');
                         else include(MGD_ROOT_PATH . 'templates/articles.php');
