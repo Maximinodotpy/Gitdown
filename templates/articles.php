@@ -68,12 +68,6 @@
                     </div>
                 </div>
             </div>
-
-            <section>
-                <h2>Config File [Future]</h2>
-
-                <pre><?php print_r(MGD_REPO_CONFIG) ?></pre>
-            </section>
         </div>
     </details>
 

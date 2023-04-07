@@ -10,7 +10,11 @@ class Resolvers {
 
         $file_content = file_get_contents($path);
 
-        $parsed = Helpers::parse_markdown_with_frontmatter($file_content);
+        try {
+            $parsed = Helpers::parse_markdown_with_frontmatter($file_content);
+        } catch (\Exception $e) {
+            return $e;
+        };
 
         $post_data = $parsed->frontmatter;
         $post_data->raw_content = $parsed->content;
@@ -30,8 +34,16 @@ class Resolvers {
 
     public static function get_all_resolvers() {
         return [
-            'Simple' => array('Resolvers', 'simple'),
-            'Directory to Category' => array('Resolvers', 'directory_category'),
+            'Simple' => [
+                'slug' => 'simple',
+                'callback' => array('Resolvers', 'simple'),
+                'description' => '',
+            ],
+            'Directory to Category' => [
+                'slug' => 'dir_cat',
+                'callback' => array('Resolvers', 'directory_category'),
+                'description' => '',
+            ],
         ];
     }
 }

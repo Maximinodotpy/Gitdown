@@ -21,34 +21,33 @@ class Gitdown
     {
         require_once 'vendor/autoload.php';
 
+        // Plugin Prefix: mgd(_)
+
         // The Root path of this Plugin Directory
         define('MGD_ROOT_PATH', __DIR__ . '/');
         define('MGD_ROOT_URL', plugins_url('', __FILE__) . '/');
 
-        // The Plugin prefix is used for slugs and settings names to avoid naming collisions.
-        define('MGD_PLUGIN_PREFIX', 'gd');
-
         // Option names
-        define('MGD_SETTING_GLOB', MGD_PLUGIN_PREFIX . '_glob_setting');
-        define('MGD_SETTING_REPO', MGD_PLUGIN_PREFIX . '_repo_setting');
-        define('MGD_SETTING_DEBUG', MGD_PLUGIN_PREFIX . '_debug_setting');
-        define('MGD_SETTING_RESOLVER', MGD_PLUGIN_PREFIX . '_resolver_setting');
-        define('MGD_SETTING_CRON', MGD_PLUGIN_PREFIX . '_cron_setting');
+        define('MGD_SETTING_GLOB', 'mgd_glob_setting');
+        define('MGD_SETTING_REPO', 'mgd_repo_setting');
+        define('MGD_SETTING_DEBUG', 'mgd_debug_setting');
+        define('MGD_SETTING_RESOLVER', 'mgd_resolver_setting');
+        define('MGD_SETTING_CRON', 'mgd_cron_setting');
 
         // Admin Menu Slugs
-        define('MGD_ARTICLES_SLUG', MGD_PLUGIN_PREFIX . '-article-manager');
-        define('MGD_SETTINGS_SECTION',  MGD_PLUGIN_PREFIX . '-settings-section');
+        define('MGD_ARTICLES_SLUG', 'mgd-article-manager');
+        define('MGD_SETTINGS_SECTION',  'mgd-settings-section');
         define('MGD_SETTINGS_PAGE',  'reading');
 
         // Where the current Repository is located depends on the repo url.
         $repo_nice_name =
-            'gd_'.
+            'mgd_'.
             Inc\Helpers::string_to_slug(basename(dirname(get_option(MGD_SETTING_REPO))))
             .'-'.
             Inc\Helpers::string_to_slug(rtrim(basename(get_option(MGD_SETTING_REPO)), '.git'));
 
-        define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
-        define('MGD_MIRROR_URL', WP_CONTENT_URL . '/' . MGD_PLUGIN_PREFIX . '_mirror/' . $repo_nice_name . '/');
+        define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '\/mgd_mirror/' . $repo_nice_name . '/');
+        define('MGD_MIRROR_URL', WP_CONTENT_URL . '\/mgd_mirror/' . $repo_nice_name . '/');
 
         define('MGD_REMOTE_IS_CLONED', is_dir(MGD_MIRROR_PATH . '.git'));
 
@@ -59,29 +58,8 @@ class Gitdown
 
         $this->article_collection = new Inc\ArticleCollection();
 
-
         // Setting up the Action Hooks
         $this->setupActions();
-
-
-        // Getting the gitdown.json config file from the Repository
-        $config_defaults = array(
-            "categories" => []
-        );
-        $config_path = MGD_MIRROR_PATH.'/gitdown.json';
-
-        define('MGD_REPO_CONFIG', file_exists($config_path)
-            ? array_merge($config_defaults, (array) json_decode(file_get_contents($config_path), true)) : $config_defaults
-        );
-
-
-        // Creating Categories if they are defined in the config.
-        if (isset(MGD_REPO_CONFIG['categories'])) {
-            Inc\Helpers::create_categories(array_keys(MGD_REPO_CONFIG['categories']));
-
-            foreach (MGD_REPO_CONFIG['categories'] as $key => $value) {}
-        }
-
 
         // Deleting unneded Mirror folders.
         chdir(dirname(MGD_MIRROR_PATH));
@@ -107,10 +85,10 @@ class Gitdown
         add_action('admin_init', function () {
 
             // Redirect if the plugin has been activated.
-            if (get_option('MGD_do_activation_redirect', false)) {
-                delete_option('MGD_do_activation_redirect');
+            if (get_option('mgd_do_activation_redirect', false)) {
+                delete_option('mgd_do_activation_redirect');
 
-                wp_redirect(home_url('/wp-admin/admin.php?page=gd-article-manager&how_to'));
+                wp_redirect(home_url('/wp-admin/admin.php?page=mgd-article-manager&how_to'));
             }
 
             register_setting(MGD_SETTINGS_PAGE, MGD_SETTING_GLOB);
@@ -160,10 +138,9 @@ class Gitdown
             );
         });
 
-        $plg_name = plugin_basename(__FILE__);
-        add_action("plugin_action_links_$plg_name", function($links) {
+        add_action("plugin_action_links_" . plugin_basename(__FILE__), function($links) {
             array_push($links, '<a href="options-reading.php">Settings</a>');
-            array_push($links, '<a href="admin.php?page=gd-article-manager">Overview</a>');
+            array_push($links, '<a href="admin.php?page=mgd-article-manager">Overview</a>');
             return $links;
         });
 
@@ -185,9 +162,9 @@ class Gitdown
                 );
 
                 add_action('admin_enqueue_scripts', function () {
-                    wp_enqueue_script('MGD_vuejs', MGD_ROOT_URL . 'js/vue.js');
-                    wp_enqueue_script('MGD_adminjs', MGD_ROOT_URL . 'js/admin.js');
-                    wp_enqueue_style(MGD_PLUGIN_PREFIX . '_styles', MGD_ROOT_URL . 'css/gitdown.css');
+                    wp_enqueue_script('mgd_vuejs', MGD_ROOT_URL . 'js/vue.js');
+                    wp_enqueue_script('mgd_adminjs', MGD_ROOT_URL . 'js/admin.js');
+                    wp_enqueue_style('mgd_styles', MGD_ROOT_URL . 'css/gitdown.css');
                 });
             }
         );
@@ -347,7 +324,7 @@ class Gitdown
         add_option(MGD_SETTING_DEBUG, '0');
         add_option(MGD_SETTING_CRON, false);
 
-        add_option('MGD_do_activation_redirect', true);
+        add_option('mgd_do_activation_redirect', true);
     }
 
     public function deactivate()

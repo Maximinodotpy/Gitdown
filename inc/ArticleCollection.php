@@ -59,7 +59,7 @@ class ArticleCollection {
             }
         }
 
-        
+
         // Get all Paths
         $paths = [];
         foreach (explode(',', get_option(MGD_SETTING_GLOB)) as $single_glob) {
@@ -70,14 +70,14 @@ class ArticleCollection {
         // Resolve Articles
         foreach ($paths as $path) {
             $this->reports->found_posts++;
-            
+
             // Creating the Std Object
             $post_data = new \stdClass();
-            
+
             $post_data->remote = $this->resolver($path);
-            
+
             if ( !$post_data->remote ) continue;
-            
+
             if (!property_exists($post_data->remote, 'name')) {
                 $this->push_report_error('Missing Name', $path, __('It seems like this post has no name.'));
             }
@@ -121,7 +121,7 @@ class ArticleCollection {
             $this->articles[$key]->local = $localArticle;
             $this->articles[$key]->_is_published = !!$localArticle;
             $this->articles[$key]->last_updated = 0;
-            
+
             if (!!$localArticle) $this->articles[$key]->last_updated = (int) get_post_meta($localArticle->ID, 'mgd_last_updated', true);
 
             if (!!$localArticle) {
@@ -133,26 +133,28 @@ class ArticleCollection {
     }
 
     private function resolver(string $document_path) {
-        
+
         if (!file_get_contents($document_path)) {
             $this->push_report_error('Empty File', $document_path, 'This file is empty but still matches the glob pattern.');
             return false;
         }
 
         switch (get_option(MGD_SETTING_RESOLVER)) {
-            case 'simple': {
-                return Resolvers::simple($document_path);
-            }
-
             case 'dir_cat': {
                 return Resolvers::directory_category($document_path);
             }
 
             default; {
-                return Resolvers::simple($document_path);
+                $result = Resolvers::simple($document_path);
+
+                if ('Symfony\Component\Yaml\Exception\ParseException' == get_class($result)) {
+                    return false;
+                }
+
+                return $result;
             }
         }
-    }   
+    }
 
     public function get_all(): array {
         $this->check_if_parsed();
@@ -199,7 +201,7 @@ class ArticleCollection {
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
         ]);
-    
+
         $new_post_data = array(
             'post_title'     =>  $post_data->remote->name,
             'post_name'      =>  $post_data->remote->slug,

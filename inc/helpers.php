@@ -86,7 +86,7 @@ class Helpers {
         if (!is_dir($path)) {
             Helpers::log('Folder not found: '.$path);
             return;
-        } else if (!str_starts_with( basename($path), 'gd_' )) {
+        } else if (!str_starts_with( basename($path), 'mgd_' )) {
             Helpers::log('Folder not deletable: '.$path);
             return;
         };
