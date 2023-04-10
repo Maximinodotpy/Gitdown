@@ -27,6 +27,7 @@ class ArticleCollection {
     }
 
     private function parse() {
+        $reserved_frontmatter_keys = ['name', 'slug', 'tags', 'category', 'published', 'raw_content', 'featured_image', 'description', 'status', 'mgd_last_updated'];
 
         if (get_option(MGD_SETTING_GLOB) == '') {
             $this->push_report_error('Missing Glob Pattern', 'SETTINGS', 'You did not specify a glob pattern');
@@ -65,7 +66,6 @@ class ArticleCollection {
         foreach (explode(',', get_option(MGD_SETTING_GLOB)) as $single_glob) {
             $paths = array_merge($paths, glob($single_glob));
         }
-
 
         // Resolve Articles
         foreach ($paths as $path) {
@@ -125,7 +125,15 @@ class ArticleCollection {
 
             if (!!$localArticle) {
                 $this->reports->published_posts++;
+
+                // Add unreserved keys to the Article as a post Meta
+                foreach ($article->remote as $key => $value) {
+                    if (!in_array($key, $reserved_frontmatter_keys)) {
+                        update_post_meta($localArticle->ID, $key, $value);
+                    }
+                }
             }
+
         }
 
         chdir(MGD_ROOT_PATH);
@@ -208,6 +216,7 @@ class ArticleCollection {
             'post_content'   =>  wp_kses_post($converter->convert($post_data->remote->raw_content)),
             'post_status'    =>  $post_data->remote->status ?? 'publish',
             'post_category'  =>  Helpers::create_categories($post_data->remote->category),
+            'post_type'      =>  $post_data->remote->post_type ?? 'post',
             'tags_input'     =>  Helpers::coerce_to_array($post_data->remote->tags),
         );
 
@@ -239,11 +248,11 @@ class ArticleCollection {
             require_once(ABSPATH . 'wp-admin/includes/image.php');
 
             $attachment_data = array(
-                'ID' => $thumbnailId,
-                'post_mime_type' => wp_check_filetype($uploadPath, null)['type'],
-                'post_title' => $new_post_data['post_title'],
-                'post_content' => '',
-                'post_status' => 'inherit',
+                'ID'              => $thumbnailId,
+                'post_mime_type'  => wp_check_filetype($uploadPath, null)['type'],
+                'post_title'      => $new_post_data['post_title'],
+                'post_content'    => '',
+                'post_status'     => 'inherit',
             );
 
             $attach_id = wp_insert_attachment($attachment_data, $uploadPath, $post_id);

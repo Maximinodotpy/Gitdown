@@ -170,11 +170,11 @@ class Gitdown
         });
 
 
-        add_filter('manage_post_posts_columns', function($columns) {
+        $custom_column_head_callback = function ($columns) {
             return array_merge($columns, ['MGD_status' => 'Gitdown Status']);
-        });
+        };
 
-        add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
+        $custom_column_callback = function ($column_key, $post_id) {
             if ($column_key == 'MGD_status') {
                 $post_data = $this->article_collection->get_by_id($post_id);
 
@@ -184,7 +184,13 @@ class Gitdown
                     echo '<div class="tw-font-semibold" >❌ Not from Repository</div>';
                 }
             }
-        }, 10, 2);
+        };
+
+        add_filter('manage_post_posts_columns', $custom_column_head_callback);
+        add_filter('manage_pages_columns', $custom_column_head_callback);
+
+        add_action('manage_post_posts_custom_column', $custom_column_callback, 10, 2);
+        add_action('manage_pages_custom_column', $custom_column_callback, 10, 2);
 
 
         add_filter('post_row_actions', function ( $actions, $post ) {

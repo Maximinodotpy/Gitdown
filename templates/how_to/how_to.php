@@ -161,6 +161,11 @@ Article content in the normal markdown format.
 
         <p>The second column will show you wether the post is on wordpress, which as stated earlier means that gitdown found a post with the same slug.</p>
 
+        <h3>Publishing</h3>
+
+        <p>Unreserved Keys are added as a meta keyword</p>
+        <p>Pages can also be added</p>
+
         <p>Thats it have fun writing and publishing with Gitdown! 😀</p>
 
         <?php warning('You should never edit posts on wordpress that originate from a repository since Gitdown will overwrite your changes the next time you click on update.', 'Gitdown Actually prohibits you from quick editing synced posts and it shows a warning message in the Block Editor. So you should always edit posts in the repository and then update the article via the ui or enable auto updates.'); ?>
