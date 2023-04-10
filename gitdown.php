@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) or die( 'Hey, what are you doing here? You silly human!' );
 class Gitdown
 {
     private $article_collection;
+    private $option_slugs = [];
 
     public function __construct()
     {
@@ -28,11 +29,20 @@ class Gitdown
         define('MGD_ROOT_URL', plugins_url('/', __FILE__));
 
         // Option names
+        // TODO: Make this better somehow
         define('MGD_SETTING_GLOB', 'mgd_glob_setting');
         define('MGD_SETTING_REPO', 'mgd_repo_setting');
         define('MGD_SETTING_DEBUG', 'mgd_debug_setting');
         define('MGD_SETTING_RESOLVER', 'mgd_resolver_setting');
         define('MGD_SETTING_CRON', 'mgd_cron_setting');
+
+        $this->option_slugs = [
+            'mgd_glob_setting'      => 'simple/*.md',
+            'mgd_repo_setting'      => 'https://github.com/Maximinodotpy/gitdown-test-repository.git',
+            'mgd_debug_setting'     => false,
+            'mgd_resolver_setting'  => 'simple',
+            'mgd_cron_setting'      => false,
+        ];
 
         // Where the current Repository is located depends on the repo url.
         $repo_nice_name = Inc\Helpers::string_to_slug(
@@ -87,11 +97,18 @@ class Gitdown
                 wp_redirect(home_url('/wp-admin/admin.php?page=mgd-article-manager&how_to'));
             }
 
-            register_setting('reading', MGD_SETTING_GLOB);
-            register_setting('reading', MGD_SETTING_REPO);
-            register_setting('reading', MGD_SETTING_RESOLVER);
-            register_setting('reading', MGD_SETTING_DEBUG);
-            register_setting('reading', MGD_SETTING_CRON);
+            // Register the Settings for the reading page.
+            foreach ($this->option_slugs as $slug => $default) {
+                register_setting('reading', $slug);
+
+                // Add the settings section
+                add_settings_field(
+                    $slug,
+                    $slug,
+                    function () { include(MGD_ROOT_PATH . 'templates/settings/'. $slug .'.php'); },
+                    'reading'
+                );
+            }
 
             add_settings_section(
                 'mgd-settings-section',
@@ -100,8 +117,13 @@ class Gitdown
                 'reading'
             );
 
+            /* register_setting('reading', MGD_SETTING_GLOB);
+            register_setting('reading', MGD_SETTING_REPO);
+            register_setting('reading', MGD_SETTING_RESOLVER);
+            register_setting('reading', MGD_SETTING_DEBUG);
+            register_setting('reading', MGD_SETTING_CRON); */
 
-            add_settings_field(
+            /* add_settings_field(
                 MGD_SETTING_GLOB,
                 'Glob Pattern',
                 function () { include(MGD_ROOT_PATH . 'templates/settings/glob.php'); },
@@ -131,7 +153,7 @@ class Gitdown
                 function () { include(MGD_ROOT_PATH . 'templates/settings/automatic.php'); },
                 'reading',
                 'mgd-settings-section'
-            );
+            ); */
         });
 
         add_action("plugin_action_links_" . plugin_basename(__FILE__), function($links) {
@@ -169,26 +191,30 @@ class Gitdown
             if ('post.php' != $hook) return;
             if (!$this->article_collection->get_by_id($_GET['post'])->_is_published) return;
 
-            wp_enqueue_script('edit-warning', MGD_ROOT_URL . 'js/edit-warning.js');
+            add_action('wp_print_scripts', function() {
+                ?><script>alert('<?php _e('This Article was added via Gitdown and your specified repository, If you edit the article here it will be overwritten by Gitdown next time you try to update it there.') ?>')</script><?php
+            });
         });
+
 
         add_filter('manage_post_posts_columns', function($columns) {
             return array_merge($columns, ['MGD_status' => 'Gitdown Status']);
         });
+
         add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
             if ($column_key == 'MGD_status') {
-                    $post_data = $this->article_collection->get_by_id($post_id);
+                $post_data = $this->article_collection->get_by_id($post_id);
 
-                    if ($post_data->_is_published) {
-                        echo '<div class="tw-font-semibold" >✅ Originates from <br/> Repository</div>';
-                    } else {
-                        echo '<div class="tw-font-semibold" >❌ Not from Repository</div>';
-                    }
-
+                if ($post_data->_is_published) {
+                    echo '<div class="tw-font-semibold" >✅ Originates from <br/> Repository</div>';
+                } else {
+                    echo '<div class="tw-font-semibold" >❌ Not from Repository</div>';
+                }
             }
         }, 10, 2);
 
-        add_filter( 'post_row_actions', function ( $actions, $post ) {
+
+        add_filter('post_row_actions', function ( $actions, $post ) {
             $postData = $this->article_collection->get_by_id($post->ID);
 
             if ($postData->_is_published) {
@@ -197,40 +223,6 @@ class Gitdown
 
             return $actions;
         }, 10, 2 );
-
-        // Custom Action for Post List Bulk Actions
-        add_filter('bulk_actions-edit-post', function ($bulk_actions) {
-            $bulk_actions['MGD_update'] = 'Gitdown: Update';
-            return $bulk_actions;
-        });
-
-        add_filter('handle_bulk_actions-edit-post', function ($redirect_url, $action, $post_ids) {
-            if ($action == 'MGD_update') {
-
-                $count = 0;
-
-                foreach ($post_ids as $post_id) {
-                    $postData = $this->article_collection->get_by_id($post_id);
-
-                    if ($postData->_is_published) {
-                        $count++;
-                        $this->article_collection->update_post($postData->remote->slug);
-                    };
-                }
-
-                $redirect_url = add_query_arg('MGD_notice', 'Gitdown: Updated ' . $count . ' Posts', $redirect_url);
-                $redirect_url = remove_query_arg('MGD_action');
-                $redirect_url = remove_query_arg('MGD_slug');
-            }
-            return $redirect_url;
-        }, 10, 3);
-
-
-        add_action('admin_notices', function () {
-            if (!empty($_REQUEST['MGD_notice'])) {
-                echo '<div id="message" class="updated notice is-dismissable"><p>' . esc_html($_REQUEST['MGD_notice']) . '</p></div>';
-            }
-        });
 
 
         function verify_ajax() {
@@ -312,28 +304,30 @@ class Gitdown
         });
     }
 
-    public function activate()
-    {
-        add_option(MGD_SETTING_RESOLVER, 'simple');
-        add_option(MGD_SETTING_GLOB, 'simple/*.md');
-        add_option(MGD_SETTING_REPO, 'https://github.com/Maximinodotpy/gitdown-test-repository.git');
-        add_option(MGD_SETTING_DEBUG, '0');
-        add_option(MGD_SETTING_CRON, false);
+    public function activate() {
+        // Loop over all option slugs and add them and their default values
+        foreach ($this->option_slugs as $key => $value) {
+            add_option($key, $value);
+        }
 
+        // Do this to later show the documentation
         add_option('mgd_do_activation_redirect', true);
     }
 
     public function deactivate()
     {
-        delete_option(MGD_SETTING_RESOLVER);
-        delete_option(MGD_SETTING_GLOB);
-        delete_option(MGD_SETTING_REPO);
-        delete_option(MGD_SETTING_DEBUG);
-        delete_option(MGD_SETTING_CRON);
+        // Deleting all Options
+        foreach ($this->option_slugs as $key => $value) {
+            delete_option($key);
+        }
 
-        Helpers::log('deactivate');
-
+        // Delete Mirror Directory
         Helpers::delete_directory(dirname(MGD_MIRROR_PATH));
+
+        // Delete mgd_last_updated for every post
+        foreach ($this->article_collection->get_all() as $key => $value) {
+            delete_post_meta($value->local->id, 'mgd_last_updated');
+        }
     }
 };
 
