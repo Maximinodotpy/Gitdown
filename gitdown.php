@@ -186,14 +186,7 @@ class Gitdown
             }
         };
 
-        add_filter('manage_post_posts_columns', $custom_column_head_callback);
-        add_filter('manage_pages_columns', $custom_column_head_callback);
-
-        add_action('manage_post_posts_custom_column', $custom_column_callback, 10, 2);
-        add_action('manage_pages_custom_column', $custom_column_callback, 10, 2);
-
-
-        add_filter('post_row_actions', function ( $actions, $post ) {
+        $row_actions = function ( $actions, $post ) {
             $postData = $this->article_collection->get_by_id($post->ID);
 
             if ($postData->_is_published) {
@@ -201,7 +194,16 @@ class Gitdown
             }
 
             return $actions;
-        }, 10, 2 );
+        };
+
+        add_filter('manage_post_posts_columns', $custom_column_head_callback);
+        add_filter('manage_pages_columns', $custom_column_head_callback);
+
+        add_action('manage_post_posts_custom_column', $custom_column_callback, 10, 2);
+        add_action('manage_pages_custom_column', $custom_column_callback, 10, 2);
+
+        add_filter('post_row_actions', $row_actions, 10, 2 );
+        add_filter('page_row_actions', $row_actions, 10, 2 );
 
 
         function verify_ajax() {

@@ -86,7 +86,7 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 
         <?php warning('Gitdown wont be able to clone and fetch private repositories as of now.') ?>
 
-        <p>Now that you have a repository set Gitdown will clone and fetch this repository to your <code>wp-content</code>folder.</p>
+        <p>Now that you have a repository set Gitdown will clone and fetch this repository to your <code><a href="<?php echo MGD_MIRROR_URL ?>" target="_blank">wp-content ↗</a></code>folder.</p>
 
         <?php insertBreak() ?>
 
@@ -163,8 +163,11 @@ Article content in the normal markdown format.
 
         <h3>Publishing</h3>
 
-        <p>Unreserved Keys are added as a meta keyword</p>
-        <p>Pages can also be added</p>
+        <p>Now for some tips when publishing articles.</p>
+
+        <p>You can specify custom frontmatter keys that will be added as post meta for the given article. You can use this for themes.</p>
+
+        <p>By specifiying <code>post_type: page</code> you can add markdown articles as Pages and not Posts.</p>
 
         <p>Thats it have fun writing and publishing with Gitdown! 😀</p>
 

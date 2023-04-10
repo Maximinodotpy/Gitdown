@@ -83,7 +83,7 @@
 
         <a href="<?php echo esc_url(get_site_url(null, 'wp-admin/options-reading.php')) ?>" class="button tw-mr-2"><?php _e('Settings', 'gitdown')?></a>
 
-        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=gd-article-manager&how_to')) ?>" class="button tw-mr-2"><?php _e('How to use Gitdown', 'gitdown')?></a>
+        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&how_to')) ?>" class="button tw-mr-2"><?php _e('How to use Gitdown', 'gitdown')?></a>
 
         <p class="search-box">
             <span class="tw-inline-block">
