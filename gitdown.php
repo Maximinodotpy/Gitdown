@@ -36,12 +36,23 @@ class Gitdown
         define('MGD_SETTING_RESOLVER', 'mgd_resolver_setting');
         define('MGD_SETTING_CRON', 'mgd_cron_setting');
 
-        $this->option_slugs = [
-            'mgd_glob_setting'      => 'simple/*.md',
-            'mgd_repo_setting'      => 'https://github.com/Maximinodotpy/gitdown-test-repository.git',
-            'mgd_debug_setting'     => false,
-            'mgd_resolver_setting'  => 'simple',
-            'mgd_cron_setting'      => false,
+        $this->option_slugs = (object) [
+            'mgd_glob_setting' => (object) [
+                'default' => 'simple/*.md',
+                'label'   => 'Glob Pattern',
+            ],
+            'mgd_repo_setting' => (object) [
+                'default' => 'https://github.com/Maximinodotpy/gitdown-test-repository.git',
+                'label' => 'Repository Location',
+            ],
+            'mgd_resolver_setting'  => (object) [
+                'default' => 'simple',
+                'label' => 'Resolver',
+            ],
+            'mgd_cron_setting' => (object) [
+                'default' => false,
+                'label' => 'Automatic Updates',
+            ],
         ];
 
         // Where the current Repository is located depends on the repo url.
@@ -89,7 +100,6 @@ class Gitdown
         register_deactivation_hook(__FILE__, function () { $this->deactivate(); });
 
         add_action('admin_init', function () {
-
             // Redirect if the plugin has been activated.
             if (get_option('mgd_do_activation_redirect', false)) {
                 delete_option('mgd_do_activation_redirect');
@@ -97,63 +107,26 @@ class Gitdown
                 wp_redirect(home_url('/wp-admin/admin.php?page=mgd-article-manager&how_to'));
             }
 
+            add_settings_section(
+                'mgd-settings-section',
+                'Gitdown Settings',
+                function () { include(MGD_ROOT_PATH . 'templates/settings/head.php'); },
+                'reading'
+            );
+
             // Register the Settings for the reading page.
-            foreach ($this->option_slugs as $slug => $default) {
+            foreach ($this->option_slugs as $slug => $slug_meta) {
                 register_setting('reading', $slug);
 
                 // Add the settings section
                 add_settings_field(
                     $slug,
-                    $slug,
-                    function () { include(MGD_ROOT_PATH . 'templates/settings/'. $slug .'.php'); },
-                    'reading'
+                    $slug_meta->label,
+                    function () use ($slug) { include(MGD_ROOT_PATH . 'templates/settings/'. $slug .'.php'); },
+                    'reading',
+                    'mgd-settings-section',
                 );
             }
-
-            add_settings_section(
-                'mgd-settings-section',
-                ' Settings',
-                function () { include(MGD_ROOT_PATH . 'templates/settings/head.php'); },
-                'reading'
-            );
-
-            /* register_setting('reading', MGD_SETTING_GLOB);
-            register_setting('reading', MGD_SETTING_REPO);
-            register_setting('reading', MGD_SETTING_RESOLVER);
-            register_setting('reading', MGD_SETTING_DEBUG);
-            register_setting('reading', MGD_SETTING_CRON); */
-
-            /* add_settings_field(
-                MGD_SETTING_GLOB,
-                'Glob Pattern',
-                function () { include(MGD_ROOT_PATH . 'templates/settings/glob.php'); },
-                'reading',
-                'mgd-settings-section'
-            );
-
-            add_settings_field(
-                MGD_SETTING_REPO,
-                'Repository Location',
-                function () { include(MGD_ROOT_PATH . 'templates/settings/repo.php'); },
-                'reading',
-                'mgd-settings-section'
-            );
-
-            add_settings_field(
-                MGD_SETTING_RESOLVER,
-                'Resolver',
-                function () { include(MGD_ROOT_PATH . 'templates/settings/resolver.php'); },
-                'reading',
-                'mgd-settings-section'
-            );
-
-            add_settings_field(
-                MGD_SETTING_CRON,
-                'Automatic Updating',
-                function () { include(MGD_ROOT_PATH . 'templates/settings/automatic.php'); },
-                'reading',
-                'mgd-settings-section'
-            ); */
         });
 
         add_action("plugin_action_links_" . plugin_basename(__FILE__), function($links) {
@@ -306,8 +279,8 @@ class Gitdown
 
     public function activate() {
         // Loop over all option slugs and add them and their default values
-        foreach ($this->option_slugs as $key => $value) {
-            add_option($key, $value);
+        foreach ($this->option_slugs as $slug => $slug_options) {
+            add_option($slug, $slug_options->default);
         }
 
         // Do this to later show the documentation

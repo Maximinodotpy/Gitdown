@@ -71,7 +71,6 @@ class ArticleCollection {
         foreach ($paths as $path) {
             $this->reports->found_posts++;
 
-            // Creating the Std Object
             $post_data = new \stdClass();
 
             $post_data->remote = $this->resolver($path);
@@ -115,7 +114,7 @@ class ArticleCollection {
             $localArticle = get_posts(array(
                 'name'            =>  $article->remote->slug,
                 'post_status'     =>  ['draft', 'publish', 'trash'],
-                'posts_per_page'  =>  1
+                'posts_per_page'  =>  1,
             ))[0] ?? [];
 
             $this->articles[$key]->local = $localArticle;
