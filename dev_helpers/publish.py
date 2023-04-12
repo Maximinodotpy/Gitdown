@@ -10,8 +10,6 @@ import create_readmes
 # Constants
 SVN_PATH = Path(os.getcwd()) / Path('_svn')
 SVN_URL = 'http://plugins.svn.wordpress.org/gitdown'
-CONFIG = json.load(open('_dev_helpers/config.json'))
-
 
 # Setup Argument Parser
 parser = argparse.ArgumentParser(
@@ -87,7 +85,7 @@ ignore = [
     'test-repo',
     'test',
     'logs',
-    '_dev_helpers',
+    'dev_helpers',
     'node_modules',
     '_releasing',
     '_svn',
