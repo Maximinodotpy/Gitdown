@@ -123,7 +123,6 @@
         <tbody>
             <tr v-for="item in articles" class="tw-relative tw-box-border">
                 <td>
-
                     <p class="row-title" title="Post Name">
                         {{ item.remote.name }}
 

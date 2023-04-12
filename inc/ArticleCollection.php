@@ -27,7 +27,7 @@ class ArticleCollection {
     }
 
     private function parse() {
-        $reserved_frontmatter_keys = ['name', 'slug', 'tags', 'category', 'published', 'raw_content', 'featured_image', 'description', 'status', 'mgd_last_updated'];
+        $reserved_frontmatter_keys = ['name', 'slug', 'tags', 'category', 'published', 'raw_content', 'featured_image', 'description', 'status', 'mgd_last_updated', 'parent_page', 'post_type'];
 
         if (get_option(MGD_SETTING_GLOB) == '') {
             $this->push_report_error('Missing Glob Pattern', 'SETTINGS', 'You did not specify a glob pattern');
@@ -115,6 +115,7 @@ class ArticleCollection {
                 'name'            =>  $article->remote->slug,
                 'post_status'     =>  ['draft', 'publish', 'trash'],
                 'posts_per_page'  =>  1,
+                'post_type'       =>  ['post', 'page'],
             ))[0] ?? [];
 
             $this->articles[$key]->local = $localArticle;
@@ -224,6 +225,24 @@ class ArticleCollection {
         if ($post_data->_is_published) {
             $new_post_data['ID'] = $post_data->local->ID;
         }
+
+        // Add parent page id via the parent_page key if it is a page, but use all posts not only the ones in the gitdown
+        if ($new_post_data['post_type'] == 'page' && property_exists($post_data->remote, 'parent_page')) {
+            $parent_page = get_posts(array(
+                'name'            =>  $post_data->remote->parent_page,
+                'post_status'     =>  ['draft', 'publish', 'trash'],
+                'post_type'       =>  ['post', 'page'],
+                'posts_per_page'  =>  1,
+            ))[0] ?? [];
+
+            if (!!$parent_page) {
+                Helpers::log('Adding as child of: ' . $post_data->remote->parent_page);
+                $new_post_data['post_parent'] = $parent_page->ID;
+            } else {
+                Helpers::log('Parent page not found: ' . $post_data->remote->parent_page);
+            }
+        }
+
 
         // Insert the post into the database
         try {

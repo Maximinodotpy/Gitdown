@@ -1,6 +1,6 @@
 # Frontmatter Keys
 
-Below you see a table which tells you which key in the frontmatter corresponds to which property of your article in wordpress.
+Below you see a table that tells you which key in the frontmatter corresponds to which property of your article in WordPress.
 
 | Frontmatter Key | Wordpress Property | Default Value |
 |---|---|---|
@@ -11,5 +11,6 @@ Below you see a table which tells you which key in the frontmatter corresponds t
 | `category` | Post Categories. This can be a list or a single string that contains nested categories. | Default WordPress Category |
 | `status` | The status of the post. `publish`, `draft` or `trash` | `publish` |
 | `post_type` | Is this file a normal Post or is it a page | `post` |
+| `parent_page` | The slug of the parent page | None |
 
-[Here](example.md) you find an example of a working markdown file that contains all the keys.
+[Here](example.md) you find an example of a working markdown file.
