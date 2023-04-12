@@ -5,6 +5,8 @@ from pathlib import Path
 import json
 import argparse
 
+import create_readmes
+
 # Constants
 SVN_PATH = Path(os.getcwd()) / Path('_svn')
 SVN_URL = 'http://plugins.svn.wordpress.org/gitdown'

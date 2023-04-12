@@ -13,7 +13,7 @@ Use Gitdown to Publish Markdown Posts from a repository to your Wordpress Blog.
 
 == Description ==
 
-*Gitdown* can be used to upload markdown posts from a remote repository to the WordPress. It allows you to specify a glob pattern that will be used to find the posts and then you can also specify a function that will resolve the content of the posts.
+*Gitdown* can be used to upload markdown posts from a remote repository to WordPress. It allows you to specify a glob pattern that will be used to find the posts and then you can also specify a function that will resolve the content of the posts.
 
 = 🎈 Easy to use =
 
@@ -25,10 +25,10 @@ It does not matter how your Repository is shaped you can change the glob pattern
 
 = 🎁 100% Free =
 
-Gitdown is completely free and you can use for what ever you want.
+Gitdown is completely free and you can use for whatever you want.
 
 = 📚 Documentation =
-As soon as you activate gitdown it will take you to the documentation page where your should get all the info that you need.
+As soon as you activate Gitdown it will take you to the documentation page where your should get all the info that you need.
 
 You can also consult the following documents for Help.
 
