@@ -196,6 +196,7 @@ class Gitdown
             return $actions;
         };
 
+        // Add these filters for Posts and Pages
         add_filter('manage_post_posts_columns', $custom_column_head_callback);
         add_filter('manage_pages_columns', $custom_column_head_callback);
 

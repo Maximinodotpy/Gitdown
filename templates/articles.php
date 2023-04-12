@@ -8,7 +8,7 @@
     <div class="tw-flex tw-gap-4 tw-items-center">
         <h1 class="tw-flex-grow"><?php _e('Manage Git Posts', 'gitdown')?></h1>
 
-        <p class=""><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
+        <p><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
         <p><i>Gitdown v<?php echo esc_html(get_plugin_data(MGD_ROOT_PATH.'gitdown.php')['Version']) ?></i></p>
         <div>
             <a href="https://github.com/Maximinodotpy/Gitdown" target="_blank">
@@ -107,10 +107,10 @@
 
                     <span class="tw-block">
                         <a href="<?php echo esc_url(get_option(MGD_SETTING_REPO)) ?>" target="_blank">
-                            <code class=""><?php echo esc_html(basename(get_option(MGD_SETTING_REPO))) ?></code>
+                            <code><?php echo esc_html(basename(get_option(MGD_SETTING_REPO))) ?></code>
                         </a>
                         →
-                        <code class="">
+                        <code>
                             <?php echo get_option(MGD_SETTING_GLOB) ?>
                         </code> ↓
                     </span>
@@ -123,8 +123,15 @@
         <tbody>
             <tr v-for="item in articles" class="tw-relative tw-box-border">
                 <td>
-                    <p class="row-title" title="Post Name">{{ item.remote.name }}
-                        <span class="tw-text-neutral-400">— {{ item.remote.status ?? 'publish' }}</span>
+
+                    <p class="row-title" title="Post Name">
+                        {{ item.remote.name }}
+
+                        <span class="tw-block tw-text-neutral-400">
+                            <span>{{ item.remote.status ?? 'publish' }}</span>
+                            |
+                            <span>{{ item.remote.post_type ?? 'post' }}</span>
+                        </span>
                     </p>
 
                     <div v-if="complex_view">

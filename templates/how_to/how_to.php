@@ -167,11 +167,15 @@ Article content in the normal markdown format.
 
         <p>You can specify custom frontmatter keys that will be added as post meta for the given article. You can use this for themes.</p>
 
-        <p>By specifiying <code>post_type: page</code> you can add markdown articles as Pages and not Posts.</p>
+        <p>By specifiying <code>post_type: 'page'</code> you can add markdown articles as Pages and not Posts.</p>
 
         <p>Thats it have fun writing and publishing with Gitdown! 😀</p>
 
         <?php warning('You should never edit posts on wordpress that originate from a repository since Gitdown will overwrite your changes the next time you click on update.', 'Gitdown Actually prohibits you from quick editing synced posts and it shows a warning message in the Block Editor. So you should always edit posts in the repository and then update the article via the ui or enable auto updates.'); ?>
+
+        <h2>Contributing</h2>
+
+        <p>If you want to help me develop this plugin you can check out the <a href="https://github.com/Maximinodotpy/Gitdown" target="_blank">Github Repository</a> for it.</p>
 
     </div>
 </div>

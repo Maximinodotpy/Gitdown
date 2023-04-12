@@ -8,8 +8,8 @@ module.exports = {
     prefix: 'tw-',
     important: true,
     content: [
-        'views/*.php',
-        'views/**/*.php',
+        'templates/*.php',
+        'templates/**/*.php',
     ],
     theme: {
         extend: {},
