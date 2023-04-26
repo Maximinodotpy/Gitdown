@@ -21,11 +21,13 @@
 
     <!-- Report -->
     <details class="tw-my-4">
-        <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">Report</summary>
-
+        <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">
+            Report
+            <span class="tw-px-2 tw-py-1 tw-bg-red-200 tw-rounded-md tw-text-sm">{{ reports?.errors?.length ?? '0' }} Error(s)</span>
+        </summary>
         <div class="tw-p-8 tw-max-h-[400px] tw-overflow-y-auto tw-overflow-x-visible">
-            <div class="tw-grid md:tw-grid-cols-2 tw-gap-28">
-                <div class="tw-grid tw-grid-cols-2 tw-gap-10 tw-pr-8">
+            <div class="tw-grid lg:tw-grid-cols-2 tw-gap-10 lg:tw-gap-28">
+                <div class="tw-grid tw-grid-cols-2 tw-auto-rows-auto lg:tw-gap-10 tw-pr-8">
                     <div>
                         <div class="tw-text-4xl tw-font-mono">{{ reports.found_posts }}</div>
                         <div class="tw-text-lg">Found Posts</div>
@@ -180,6 +182,12 @@
                         <img src="<?php echo esc_url(MGD_ROOT_URL . 'images/loader.svg') ?>" alt="Loader" style="width: 40px">
                         <span class="tw-select-none"><?php _e('Loading', 'gitdown')?></span>
                     </div>
+                </td>
+            </tr>
+
+            <tr v-if="articles.length == 0">
+                <td colspan="3" class="tw-text-xl tw-text-center tw-py-10">
+                    If there are no articles, maybe an error occured, you will find helpful informations in the <code>Report</code> section above.
                 </td>
             </tr>
         </tbody>

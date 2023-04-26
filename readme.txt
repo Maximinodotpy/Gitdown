@@ -4,7 +4,7 @@ Donate link: https://maximmaeder.com
 Tags: markdown, github, posts, cms, article-management, markdown-to-html, blog
 Requires at least: 6.1.0
 Tested up to: 6.2.0
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -111,3 +111,7 @@ Yes It does! You simply have to provide a file called 'preview.png' in the same 
 = 1.2.0 =
 - Ability to add Pages
 - Breaking Changes
+
+= 1.2.1 =
+- Added more Warnings to Report Section (Git Clone Issues)
+-

@@ -29,13 +29,23 @@ class ArticleCollection {
     private function parse() {
         $reserved_frontmatter_keys = ['name', 'slug', 'tags', 'category', 'published', 'raw_content', 'featured_image', 'description', 'status', 'mgd_last_updated', 'parent_page', 'post_type'];
 
+        // Check if there is no glob pattern
         if (get_option(MGD_SETTING_GLOB) == '') {
             $this->push_report_error('Missing Glob Pattern', 'SETTINGS', 'You did not specify a glob pattern');
             return;
-        } else if (get_option(MGD_SETTING_REPO) == '') {
+        }
+
+        // Check if there is no repository url
+        if (get_option(MGD_SETTING_REPO) == '') {
             $this->push_report_error('Missing Repository URL', 'SETTINGS', 'You did not specify a repository url');
             return;
         }
+        // Check if the link ends with .git
+        if ( !str_ends_with(get_option(MGD_SETTING_REPO), '.git') ) {
+            $this->push_report_error('Invalid Repository URL', get_option(MGD_SETTING_REPO), 'The repository url does not end with .git');
+            return;
+        }
+
 
         chdir(MGD_MIRROR_PATH);
 
@@ -44,7 +54,7 @@ class ArticleCollection {
             try {
                 $repo = $git->cloneRepository(get_option(MGD_SETTING_REPO), '.');
             } catch (\Throwable $th) {
-                $this->push_report_error('Repository Error', get_option(MGD_SETTING_REPO), 'There is something wrong with your repository. Maybe the link is wrong or it is a private repository.');
+                $this->push_report_error('Repository Error', get_option(MGD_SETTING_REPO), 'There is something wrong with your repository. Maybe the link is wrong or it is a private repository: ' . $th->getMessage());
             }
         } else {
             // Try to pull the repository multiple times if they fail.
@@ -56,7 +66,9 @@ class ArticleCollection {
                     $repo->pull('origin');
 
                     $pull_success = true;
-                } catch (\Throwable $th) {}
+                } catch (\Throwable $th) {
+                    $this->push_report_error('Repository Error', get_option(MGD_SETTING_REPO), 'Something went wrong when pulling your repository, we will try again: ' . $th->getMessage());
+                }
             }
         }
 

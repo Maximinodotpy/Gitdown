@@ -1,32 +1,33 @@
 # Gitdown: Git Repository to WordPress Blog Posts
-*By [Maxim Maeder](https://maximmaeder.com/)*
+*By [Maxim Maeder]*
 
-Gitdown enables you to connect a Remote Repository to your Website and upload Markdown articles from there to your WordPress Blog.
+Gitdown lets you connect a Remote Repository to your Website and upload Markdown articles to your WordPress Blog.
 
 ![Gitdown](https://raw.githubusercontent.com/Maximinodotpy/Gitdown/master/assets/banner-1544x500.png)
 
-⚠️ This plugin is still in development, if you find any issues don't hesitate to report them.
+⚠️ This plugin is still in development. If you find any issues, don't hesitate to report them.
 
 ## 🎈 Easy to use
 
-Setting Gitdown up to work with your Repository and Glob Pattern takes only a little time and can be easily changed at any time.
+Setting Gitdown up to work with your Repository and Glob Pattern takes only a little time and can be easily changed anytime.
 
 ## 🔨 Customization
 
-It does not matter how your Repository is shaped you can change the glob pattern to your liking and I will understand your repo correctly.
+The shape of your Repository does not matter, you can change the glob pattern to your liking, and it will understand your repo correctly.
 
 ## 🎁 100% Free
-
-Gitdown is completely free and you can use it for whatever you want.
+Gitdown is free, and you can use it for whatever you want.
 
 ## 📚 Documentation
-As soon as you activate Gitdown it will take you to the documentation page where you should get all the info that you need.
+Once you activate Gitdown, it will take you to the documentation page, where you should get all the necessary info.
 
 You can also consult the following documents for Help.
 
 - [FAQ](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/faq.md)
 - [Frontmatter Keys](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/keys.md)
 - [Example File](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/example.md)
+
+You will also find helpful information in the reports section of the article overview.
 
 ⚠️ It may be outdated in some parts as I am somewhat unkeen writing documentation.
 
