@@ -6,27 +6,34 @@ on:
       - master
   workflow_dispatch:
 jobs:
-  tag:
-    name: New tag
+  commit:
+    name: New Commit
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Check Commit Type
+    - id: commit-type
+      name: Check Commit Type
       uses: gsactions/commit-message-checker@v2
       with:
         pattern: '^\d*\.\d*\.\d*$'
-        error: 'Your first line has to contain a commit type like "[BUGFIX]"'
+        error: 'The commit message does not look like a version number. Please use semantic versioning (https://semver.org/).'
+
     - name: Find and Replace
+      if: steps.commit-type.conclusion == 'success'
       uses: jacobtomlinson/gha-find-replace@v3
       with:
         find: "__MGD_VERSION__"
         replace: ${{ github.event.head_commit.message }}
         regex: false
+
     - name: Build # Remove or modify this step as needed
+      if: steps.commit-type.conclusion == 'success'
       run: |
         npm install
         composer install
+
     - name: WordPress Plugin Deploy
+      if: steps.commit-type.conclusion == 'success'
       uses: 10up/action-wordpress-plugin-deploy@stable
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}

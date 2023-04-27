@@ -16,6 +16,7 @@ _releasing
 _svn
 .vscode
 
+.distignore
 .eslintrc.json
 eslintrc.json
 package.json
