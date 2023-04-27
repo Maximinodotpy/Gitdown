@@ -30,19 +30,19 @@ class ArticleCollection {
         $reserved_frontmatter_keys = ['name', 'slug', 'tags', 'category', 'published', 'raw_content', 'featured_image', 'description', 'status', 'mgd_last_updated', 'parent_page', 'post_type'];
 
         // Check if there is no glob pattern
-        if (get_option(MGD_SETTING_GLOB) == '') {
+        if (get_option('mgd_glob_setting') == '') {
             $this->push_report_error('Missing Glob Pattern', 'SETTINGS', 'You did not specify a glob pattern');
             return;
         }
 
         // Check if there is no repository url
-        if (get_option(MGD_SETTING_REPO) == '') {
+        if (get_option('mgd_repo_setting') == '') {
             $this->push_report_error('Missing Repository URL', 'SETTINGS', 'You did not specify a repository url');
             return;
         }
         // Check if the link ends with .git
-        if ( !str_ends_with(get_option(MGD_SETTING_REPO), '.git') ) {
-            $this->push_report_error('Invalid Repository URL', get_option(MGD_SETTING_REPO), 'The repository url does not end with .git');
+        if ( !str_ends_with(get_option('mgd_repo_setting'), '.git') ) {
+            $this->push_report_error('Invalid Repository URL', get_option('mgd_repo_setting'), 'The repository url does not end with .git');
             return;
         }
 
@@ -52,9 +52,9 @@ class ArticleCollection {
         $git = new MGD_GIT;
         if (!MGD_REMOTE_IS_CLONED) {
             try {
-                $repo = $git->cloneRepository(get_option(MGD_SETTING_REPO), '.');
+                $repo = $git->cloneRepository(get_option('mgd_repo_setting'), '.');
             } catch (\Throwable $th) {
-                $this->push_report_error('Repository Error', get_option(MGD_SETTING_REPO), 'There is something wrong with your repository. Maybe the link is wrong or it is a private repository: ' . $th->getMessage());
+                $this->push_report_error('Repository Error', get_option('mgd_repo_setting'), 'There is something wrong with your repository. Maybe the link is wrong or it is a private repository: ' . $th->getMessage());
             }
         } else {
             // Try to pull the repository multiple times if they fail.
@@ -67,7 +67,7 @@ class ArticleCollection {
 
                     $pull_success = true;
                 } catch (\Throwable $th) {
-                    $this->push_report_error('Repository Error', get_option(MGD_SETTING_REPO), 'Something went wrong when pulling your repository, we will try again: ' . $th->getMessage());
+                    $this->push_report_error('Repository Error', get_option('mgd_repo_setting'), 'Something went wrong when pulling your repository, we will try again: ' . $th->getMessage());
                 }
             }
         }
@@ -75,7 +75,7 @@ class ArticleCollection {
 
         // Get all Paths
         $paths = [];
-        foreach (explode(',', get_option(MGD_SETTING_GLOB)) as $single_glob) {
+        foreach (explode(',', get_option('mgd_glob_setting')) as $single_glob) {
             $paths = array_merge($paths, glob($single_glob));
         }
 
@@ -91,6 +91,7 @@ class ArticleCollection {
 
             if (!property_exists($post_data->remote, 'name')) {
                 $this->push_report_error('Missing Name', $path, __('It seems like this post has no name.'));
+                continue;
             }
 
             if (!property_exists($post_data->remote, 'raw_content')) {

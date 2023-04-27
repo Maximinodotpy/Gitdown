@@ -106,12 +106,12 @@
                     </span>
 
                     <span class="tw-block">
-                        <a href="<?php echo esc_url(get_option(MGD_SETTING_REPO)) ?>" target="_blank">
-                            <code><?php echo esc_html(basename(get_option(MGD_SETTING_REPO))) ?></code>
+                        <a href="<?php echo esc_url(get_option('mgd_repo_setting')) ?>" target="_blank">
+                            <code><?php echo esc_html(basename(get_option('mgd_repo_setting'))) ?></code>
                         </a>
                         →
                         <code>
-                            <?php echo get_option(MGD_SETTING_GLOB) ?>
+                            <?php echo get_option('mgd_glob_setting') ?>
                         </code> ↓
                     </span>
                 </th>

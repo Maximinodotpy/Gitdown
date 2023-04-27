@@ -1,5 +1,5 @@
 name: Deploy to WordPress.org
-run-name: Deploy Commit "${{ github.event.head_commit.modified }}" to WordPress.org
+run-name: Deploy Commit "${{ github.event.head_commit.message }}" to WordPress.org
 on:
   push:
     branches:

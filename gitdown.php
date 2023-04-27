@@ -28,14 +28,7 @@ class Gitdown
         define('MGD_ROOT_PATH', __DIR__ . '/');
         define('MGD_ROOT_URL', plugins_url('/', __FILE__));
 
-        // Option names
-        // TODO: Make this better somehow
-        define('MGD_SETTING_GLOB', 'mgd_glob_setting');
-        define('MGD_SETTING_REPO', 'mgd_repo_setting');
-        define('MGD_SETTING_DEBUG', 'mgd_debug_setting');
-        define('MGD_SETTING_RESOLVER', 'mgd_resolver_setting');
-        define('MGD_SETTING_CRON', 'mgd_cron_setting');
-
+        // Option names, labels, and default values
         $this->option_slugs = (object) [
             'mgd_glob_setting' => (object) [
                 'default' => 'simple/*.md',
@@ -58,9 +51,9 @@ class Gitdown
         // Where the current Repository is located depends on the repo url.
         $repo_nice_name = Inc\Helpers::string_to_slug(
             'mgd_'
-            . basename(dirname(get_option(MGD_SETTING_REPO)))
+            . basename(dirname(get_option('mgd_repo_setting')))
             . '-'
-            . rtrim(basename(get_option(MGD_SETTING_REPO)), '.git')
+            . rtrim(basename(get_option('mgd_repo_setting')), '.git')
         );
 
         define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '\/mgd_mirror/' . $repo_nice_name . '/');
