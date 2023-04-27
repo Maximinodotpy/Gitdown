@@ -17,8 +17,6 @@
         </div>
     </div>
 
-
-
     <!-- Report -->
     <details class="tw-my-4">
         <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">

@@ -91,7 +91,7 @@ class Helpers {
             return;
         };
 
-        Helpers::log('Deleting: '.$path);
+        Helpers::log('Deleting Folder: '.$path);
 
         switch (PHP_OS) {
             case 'WINNT': {
