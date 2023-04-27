@@ -19,7 +19,6 @@ jobs:
         error: 'The commit message does not look like a version number. Please use semantic versioning (https://semver.org/).'
 
     - name: Find and Replace
-      if: steps.commit-type.conclusion == 'success'
       uses: jacobtomlinson/gha-find-replace@v3
       with:
         find: "__MGD_VERSION__"
@@ -27,13 +26,11 @@ jobs:
         regex: false
 
     - name: Build # Remove or modify this step as needed
-      if: steps.commit-type.conclusion == 'success'
       run: |
         npm install
         composer install
 
     - name: WordPress Plugin Deploy
-      if: steps.commit-type.conclusion == 'success'
       uses: 10up/action-wordpress-plugin-deploy@stable
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
