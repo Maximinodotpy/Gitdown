@@ -1,2 +1,2 @@
-<input class="regular-text code" type="checkbox" id="<?php echo esc_html(MGD_SETTING_CRON)?>" name="<?php echo esc_html(MGD_SETTING_CRON)?>" <?php echo ((bool)get_option(MGD_SETTING_CRON)) ? 'checked' : '' ?>> <label for="<?php echo esc_html(MGD_SETTING_CRON) ?>">Enable Automatic Updates</label>
+<input class="regular-text code" type="checkbox" id="<?php echo esc_html('mgd_cron_setting')?>" name="<?php echo esc_html('mgd_cron_setting')?>" <?php echo ((bool)get_option('mgd_cron_setting')) ? 'checked' : '' ?>> <label for="<?php echo esc_html('mgd_cron_setting') ?>">Enable Automatic Updates</label>
 <p class="description">Do you want that gitdown automatically updates your posts? <span>(❗Experimental)</span></p>

@@ -229,7 +229,7 @@ class Gitdown
         add_action("wp_ajax_update_oldest", function () {
             verify_ajax();
 
-            if (! (bool) get_option(MGD_SETTING_CRON) ) return;
+            if (! (bool) get_option('mgd_cron_setting') ) return;
 
             $oldest_article = $this->article_collection->get_oldest()[0];
 
@@ -244,7 +244,7 @@ class Gitdown
         add_action('init', function() {
             if ( is_admin() ) return;
             if ( wp_doing_ajax() ) return;
-            if (! (bool) get_option(MGD_SETTING_CRON) ) return;
+            if (! (bool) get_option('mgd_cron_setting') ) return;
 
             add_action('wp_print_scripts', function() {
                 ?>

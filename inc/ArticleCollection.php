@@ -87,6 +87,12 @@ class ArticleCollection {
 
             $post_data->remote = $this->resolver($path);
 
+            // Adding the last commit hash to the article
+            /* $command = 'git log -n 1 --pretty=format:%H -- "' . $path . '"';
+            $output = [];
+            exec($command, $output);
+            $post_data->last_commit = $output[0] ?? ''; */
+
             if ( !$post_data->remote ) continue;
 
             if (!property_exists($post_data->remote, 'name')) {
@@ -160,7 +166,7 @@ class ArticleCollection {
             return false;
         }
 
-        switch (get_option(MGD_SETTING_RESOLVER)) {
+        switch (get_option('mgd_resolver_setting')) {
             case 'dir_cat': {
                 return Resolvers::directory_category($document_path);
             }
