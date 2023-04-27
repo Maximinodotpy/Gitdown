@@ -2,8 +2,8 @@ name: Deploy to WordPress.org
 run-name: Deploy Commit "${{ github.sha }}" to WordPress.org"
 on:
   push:
-    tags:
-    - "*"
+    branches:
+      - master
   workflow_dispatch:
 jobs:
   tag:
@@ -11,6 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: Check Commit Type
+      uses: gsactions/commit-message-checker@v2
+      with:
+        pattern: '^\d*\.\d*\.\d*$'
+        error: 'Your first line has to contain a commit type like "[BUGFIX]"'
+    - name: Find and Replace
+      uses: jacobtomlinson/gha-find-replace@v3
+      with:
+        find: "__MGD_VERSION__"
+        replace: ${{ github.event.head_commit.message }}
+        regex: false
     - name: Build # Remove or modify this step as needed
       run: |
         npm install
@@ -21,3 +32,4 @@ jobs:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SLUG: gitdown # optional, remove if GitHub repo name matches SVN slug, including capitalization
+        VERSION: ${{ github.event.head_commit.message }}
