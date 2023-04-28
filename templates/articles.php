@@ -1,7 +1,7 @@
 <div class="wrap gitdown_ui" id="vue_app">
 
     <div class="tw-w-full tw-bg-red-400 tw-font-bold tw-p-4 tw-text-center tw-text-red-900" v-if="!online">
-        You Are offline ...
+        <?php _e('You Are offline', 'gitdown'); ?>
     </div>
 
 
