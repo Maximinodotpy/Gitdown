@@ -28,6 +28,7 @@ jobs:
       run: |
         npm install
         composer install
+        npm run tailwind_build
 
     # Helpers.php gets renamed to helpers.php for some reason
     - name: Rename Helpers file
