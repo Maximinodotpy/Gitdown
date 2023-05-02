@@ -139,6 +139,11 @@ class Gitdown
                     'mgd-article-manager',
                     function () {
                         if (isset($_GET['how_to'])) include(MGD_ROOT_PATH . 'templates/how_to/how_to.php');
+                        if (isset($_GET['raw_data'])) {
+                            echo '<pre style="white-space: pre-wrap;">';
+                            echo esc_html(print_r($this->article_collection->get_all(), true));
+                            echo '</pre>';
+                        }
                         else include(MGD_ROOT_PATH . 'templates/articles.php');
                     },
                     'data:image/svg+xml;base64,' . base64_encode(file_get_contents(MGD_ROOT_PATH . 'images/icon.svg')),
@@ -226,24 +231,18 @@ class Gitdown
             echo json_encode($this->article_collection->delete_post($_REQUEST['slug']));
             die();
         });
-        add_action("wp_ajax_update_oldest", function () {
+        add_action("wp_ajax_mgd_get_outdated", function () {
             verify_ajax();
 
             if (! (bool) get_option('mgd_cron_setting') ) return;
 
-            $oldest_article = $this->article_collection->get_oldest()[0];
-
-            Inc\Helpers::log(sprintf('Auto Updating: %s', $oldest_article->remote->name));
-
-            echo json_encode($this->article_collection->update_post($oldest_article->remote->slug));
+            echo json_encode($this->article_collection->get_outdated());
 
             die();
         });
 
 
         add_action('init', function() {
-            if ( is_admin() ) return;
-            if ( wp_doing_ajax() ) return;
             if (! (bool) get_option('mgd_cron_setting') ) return;
 
             add_action('wp_print_scripts', function() {
@@ -251,27 +250,40 @@ class Gitdown
                 <script>
                     console.log('MGD Autoupdate starting ...');
 
-                    let i = 0;
                     (async () => {
-                        do {
-                            console.log('MGD Autoupdate Request ...');
+                        console.log('MGD Autoupdate Request ...');
 
-                            const form_data = new FormData()
-                            form_data.append('action', 'update_oldest')
+                        const form_data = new FormData()
+                        form_data.append('action', 'mgd_get_outdated')
 
-                            const re = await fetch(ajaxurl, {
-                                method: 'POST',
-                                body: form_data,
-                            })
+                        const re = await fetch(ajaxurl, {
+                            method: 'POST',
+                            body: form_data,
+                        })
 
-                            try {
-                                console.log((await re.json()));
-                            } catch (error) {
-                                console.log(error);
+                        try {
+                            const articles = await re.json()
+                            console.log(articles);
+
+                            for (const article of articles ) {
+                                console.log('MGD Autoupdate Updating:', article.remote.slug);
+                                const form_data = new FormData()
+                                form_data.append('action', 'update_article')
+                                form_data.append('slug', article.remote.slug)
+
+                                fetch(ajaxurl, {
+                                    method: 'POST',
+                                    body: form_data,
+                                }).then( re => {
+                                    re.json().then(result => {
+                                        console.log('MGD Autoupdate Result ...', result)
+                                    });
+                                })
+
                             }
-
-                            i++
-                        } while (<?php echo is_admin() ? 'true' : 'i < 5' ?>)
+                        } catch (error) {
+                            console.log(error);
+                        }
                     })()
                 </script>
                 <?php

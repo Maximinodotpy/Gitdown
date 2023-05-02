@@ -88,10 +88,10 @@ class ArticleCollection {
             $post_data->remote = $this->resolver($path);
 
             // Adding the last commit hash to the article
-            /* $command = 'git log -n 1 --pretty=format:%H -- "' . $path . '"';
+            $command = 'git log -n 1 --pretty=format:%H -- "' . $path . '"';
             $output = [];
             exec($command, $output);
-            $post_data->last_commit = $output[0] ?? ''; */
+            $post_data->remote->last_commit = $output[0] ?? '';
 
             if ( !$post_data->remote ) continue;
 
@@ -141,7 +141,11 @@ class ArticleCollection {
             $this->articles[$key]->_is_published = !!$localArticle;
             $this->articles[$key]->last_updated = 0;
 
-            if (!!$localArticle) $this->articles[$key]->last_updated = (int) get_post_meta($localArticle->ID, 'mgd_last_updated', true);
+            if (!!$localArticle) {
+                $this->articles[$key]->last_updated = (int) get_post_meta($localArticle->ID, 'mgd_last_updated', true) ?? '';
+
+                $this->articles[$key]->local->last_commit = get_post_meta($localArticle->ID, 'mgd_local_last_commit', true) ?? '';
+            }
 
             if (!!$localArticle) {
                 $this->reports->published_posts++;
@@ -207,14 +211,17 @@ class ArticleCollection {
         );
     }
 
-    public function get_oldest(int $count = 1): array {
+    public function get_outdated(): array {
         $all_posts = $this->get_all();
+        $outdated = [];
 
-        usort($all_posts, function($a, $b){
-            return $a->last_updated <=> $b->last_updated;
-        });
+        foreach ($all_posts as $post) {
+            if ($post->local->last_commit != $post->remote->last_commit) {
+                array_push($outdated, $post);
+            }
+        }
 
-        return array_slice($all_posts, 0, $count);
+        return $outdated;
     }
 
     public function update_post(string $slug) {
@@ -267,6 +274,7 @@ class ArticleCollection {
         try {
             $post_id = wp_insert_post($new_post_data);
             update_post_meta($post_id, 'mgd_last_updated', time());
+            update_post_meta($post_id, 'mgd_local_last_commit', $post_data->remote->last_commit);
         } catch (\Throwable $th) {
             Helpers::log($th);
             return;

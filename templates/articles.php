@@ -75,17 +75,18 @@
 
     <br>
 
-    <div class="tw-flex tw-flex-1 tw-overflow-auto">
+    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-items-center">
         <button id="pa" @click="updateAllArticles()" class="tw-mr-2 button button-primary"><?php _e('Update All', 'gitdown')?></button>
 
         <button id="da" @click="deleteAll()" class="button tw-mr-2"><?php _e('Delete All', 'gitdown')?></button>
-
 
         <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button tw-mr-2"><?php _e('Download Example Folder Structure', 'gitdown')?></a>
 
         <a href="<?php echo esc_url(get_site_url(null, 'wp-admin/options-reading.php')) ?>" class="button tw-mr-2"><?php _e('Settings', 'gitdown')?></a>
 
         <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&how_to')) ?>" class="button tw-mr-2"><?php _e('How to use Gitdown', 'gitdown')?></a>
+
+        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data')) ?>">Show Raw Data</a>
 
         <p class="search-box tw-ml-auto">
             <span class="tw-inline-block">
@@ -133,6 +134,8 @@
                             <span>{{ item.remote.status ?? 'publish' }}</span>
                             |
                             <span>{{ item.remote.post_type ?? 'post' }}</span>
+                            |
+                            <code title="last commit hash for this article in the remote repository">{{ item.remote.last_commit.slice(0, 6) }}</code>
                         </span>
                     </p>
 
@@ -152,6 +155,7 @@
 
                         <div v-if="complex_view">
                             <div>ID: <code>{{ item.local.ID }}</code></div>
+                            <div>Latest Commit: <code title="last commit hash for this article in the remote repository">{{ item.local.last_commit.slice(0, 6) }}</code></div>
                             <div>Slug: <code>{{ item.local.post_name }}</code></div>
                             <div>Excerpt: <code>{{ item.local.post_excerpt }}</code></div>
                             <div>Status: <code>{{ item.local.post_status }}</code></div>
@@ -168,6 +172,10 @@
                         <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="delete_post(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
 
                         <a target="_blank" class="button action tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
+
+                        <br>
+                        <span v-if="item.remote.last_commit == item.local.last_commit">Up to Date</span>
+                        <span v-else>Outdated</span>
                     </div>
 
                     <div v-else>
