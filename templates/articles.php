@@ -5,15 +5,17 @@
     </div>
 
 
-    <div class="tw-flex tw-gap-4 tw-items-center">
+    <div class="tw-flex tw-items-center tw-flex-col sm:tw-flex-row">
         <h1 class="tw-flex-grow"><?php _e('Manage Git Posts', 'gitdown')?></h1>
 
-        <p><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
-        <p><i>Gitdown v<?php echo esc_html(get_plugin_data(MGD_ROOT_PATH.'gitdown.php')['Version']) ?></i></p>
-        <div>
-            <a href="https://github.com/Maximinodotpy/Gitdown" target="_blank">
-                <img src="<?php echo esc_url(MGD_ROOT_URL.'images/github-mark.svg') ?>" alt="Contribute to Gitdown on Github" class="tw-w-[30px]" title="Contribute to Gitdown on Github">
-            </a>
+        <div class="tw-flex tw-gap-4">
+            <p><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
+            <p><i>Gitdown v<?php echo esc_html(get_plugin_data(MGD_ROOT_PATH.'gitdown.php')['Version']) ?></i></p>
+            <div>
+                <a href="https://github.com/Maximinodotpy/Gitdown" target="_blank">
+                    <img src="<?php echo esc_url(MGD_ROOT_URL.'images/github-mark.svg') ?>" alt="Contribute to Gitdown on Github" class="tw-w-[30px]" title="Contribute to Gitdown on Github">
+                </a>
+            </div>
         </div>
     </div>
 
@@ -73,7 +75,7 @@
 
     <br>
 
-    <div>
+    <div class="tw-flex tw-flex-1 tw-overflow-auto">
         <button id="pa" @click="updateAllArticles()" class="tw-mr-2 button button-primary"><?php _e('Update All', 'gitdown')?></button>
 
         <button id="da" @click="deleteAll()" class="button tw-mr-2"><?php _e('Delete All', 'gitdown')?></button>
@@ -115,13 +117,13 @@
                         </code> ↓
                     </span>
                 </th>
-                <th>WordPress</th>
-                <th><?php _e('Actions', 'gitdown')?></th>
+                <th class="tw-hidden sm:tw-table-cell">WordPress</th>
+                <th class="tw-hidden sm:tw-table-cell"><?php _e('Actions', 'gitdown')?></th>
                 <th class="tw-w-0"><!-- This row is used for the Loader --></th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in articles" class="tw-relative tw-box-border">
+            <tr v-for="item in articles" class="tw-relative tw-box-border tw-flex sm:tw-table-row tw-flex-col">
                 <td>
                     <p class="row-title" title="Post Name">
                         {{ item.remote.name }}
