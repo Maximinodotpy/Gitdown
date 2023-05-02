@@ -29,16 +29,18 @@ jobs:
         npm install
         composer install
         npm run tailwind_build
+
     - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.event.head_commit.message }}
-          release_name: Release ${{ github.event.head_commit.message }}
-          body: ""
-          draft: false
-          prerelease: false
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.event.head_commit.message }}
+        release_name: Release ${{ github.event.head_commit.message }}
+        body: ""
+        draft: false
+        prerelease: false
 
     # Helpers.php gets renamed to helpers.php for some reason
     - name: Rename Helpers file
