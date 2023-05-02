@@ -178,7 +178,7 @@
                 </td>
 
                 <td :ref="item.remote.slug" style="visibility: hidden"
-                    class="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-backdrop-blur-[4px]">
+                    class="tw-absolute tw-top-0 tw-left-0 tw-h-full tw-flex tw-justify-center tw-items-center tw-backdrop-blur-[4px]" style="width: 100% !important;">
                     <div class="tw-text-xl tw-font-semibold tw-flex tw-items-center tw-gap-2 drop-shadow-2xl">
                         <img src="<?php echo esc_url(MGD_ROOT_URL . 'images/loader.svg') ?>" alt="Loader" style="width: 40px">
                         <span class="tw-select-none"><?php _e('Loading', 'gitdown')?></span>

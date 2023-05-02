@@ -46,7 +46,7 @@ if (window.Vue) {
             },
             update_post(slug) {
                 const loaderElement = this.$refs[slug][0];
-                loaderElement.style.visibility = 'visible';
+                loaderElement.setAttribute('style', 'visibility: visible; width: 100% !important;');
                 console.log(`%cUpdating Post: %c${slug}`, 'font-weight: bold', 'font-weight: unset');
                 this.callAJAX({
                     action: 'update_article',
@@ -69,7 +69,7 @@ if (window.Vue) {
             },
             delete_post(slug) {
                 const loaderElement = this.$refs[slug][0];
-                loaderElement.style.visibility = 'visible';
+                loaderElement.setAttribute('style', 'visibility: visible; width: 100% !important;');
                 console.log(`%cDeleting: %c${slug}`, 'font-weight: bold', 'font-weight: unset');
                 this.callAJAX({
                     action: 'delete_article',

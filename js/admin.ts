@@ -3,7 +3,7 @@ if (window.Vue) {
     // eslint-disable-next-line no-undef
     // @ts-ignore
     const { createApp } = Vue
-    
+
     const vueApp = createApp({
         data() {
             return {
@@ -18,7 +18,7 @@ if (window.Vue) {
                 online: true
             }
         },
-    
+
         mounted() {
             this.online = navigator.onLine
             window.addEventListener('online', (event) => {
@@ -33,15 +33,15 @@ if (window.Vue) {
 
             this.sync()
         },
-    
+
         methods: {
             async callAJAX(desiredData: object): Promise<object> {
                 const form_data = new FormData()
-    
+
                 for (const key in desiredData) {
                     form_data.append(key, desiredData[key])
                 }
-    
+
                 // eslint-disable-next-line no-undef
                 // @ts-ignore
                 const re = await fetch(ajaxurl, {
@@ -50,11 +50,11 @@ if (window.Vue) {
                 })
                 return await re.json()
             },
-    
+
             update_post(slug: string): void {
                 const loaderElement = this.$refs[slug][0]
-                loaderElement.style.visibility = 'visible'
-    
+                loaderElement.setAttribute('style', 'visibility: visible; width: 100% !important;')
+
                 console.log(`%cUpdating Post: %c${slug}`, 'font-weight: bold', 'font-weight: unset')
 
                 this.callAJAX({
@@ -75,13 +75,13 @@ if (window.Vue) {
                     loaderElement.style.visibility = 'hidden'
                 })
             },
-    
+
             delete_post(slug: string): void {
                 const loaderElement = this.$refs[slug][0]
-                loaderElement.style.visibility = 'visible'
-    
+                loaderElement.setAttribute('style', 'visibility: visible; width: 100% !important;')
+
                 console.log(`%cDeleting: %c${slug}`, 'font-weight: bold', 'font-weight: unset')
-    
+
                 this.callAJAX({
                     action: 'delete_article',
                     slug: slug,
@@ -99,24 +99,24 @@ if (window.Vue) {
                     loaderElement.style.visibility = 'hidden'
                 })
             },
-    
+
             updateAllArticles(): void {
                 console.log('Updating All ...')
-    
+
                 this.articles.forEach(article => {
                     this.update_post(article.remote.slug)
                 })
             },
-    
+
             deleteAll(): void {
                 console.log('Deleting All articles ...')
-    
+
                 this.articles.forEach(article => {
                     this.delete_post(article.remote.slug)
                 })
             },
-    
-            sync(): void {            
+
+            sync(): void {
                 this.callAJAX({
                     action: 'get_all_articles',
                 }).then(response => {
@@ -128,9 +128,9 @@ if (window.Vue) {
             },
         }
     })
-    
-    
-    
+
+
+
     document.addEventListener('DOMContentLoaded', () => {
         const appNode = document.querySelector('#vue_app')
 
