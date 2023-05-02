@@ -181,7 +181,6 @@
                     <div v-else>
                         <button class="button action" @click="update_post(item.remote.slug)"><?php _e('Publish', 'gitdown')?></button>
                     </div>
-
                     <br>
                 </td>
 
