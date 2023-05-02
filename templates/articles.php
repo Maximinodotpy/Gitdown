@@ -8,7 +8,7 @@
     <div class="tw-flex tw-items-center tw-flex-col sm:tw-flex-row">
         <h1 class="tw-flex-grow"><?php _e('Manage Git Posts', 'gitdown')?></h1>
 
-        <div class="tw-flex tw-gap-4">
+        <div class="tw-flex tw-gap-4 tw-items-center">
             <p><?php _e('Made by', 'gitdown')?> <a href="https://maximmaeder.com" target="_blank">Maxim Maeder</a></p>
             <p><i>Gitdown v<?php echo esc_html(get_plugin_data(MGD_ROOT_PATH.'gitdown.php')['Version']) ?></i></p>
             <div>
@@ -87,7 +87,7 @@
 
         <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&how_to')) ?>" class="button tw-mr-2"><?php _e('How to use Gitdown', 'gitdown')?></a>
 
-        <p class="search-box">
+        <p class="search-box tw-ml-auto">
             <span class="tw-inline-block">
                 <span class="tw-mr-3 tw-flex tw-items-center">
                     <input type="checkbox" v-model="complex_view">
@@ -104,7 +104,8 @@
             <tr>
                 <th class="tw-flex tw-flex-col">
                     <span class="inline-block tw-mr-2 tw-mb-3">
-                        <?php _e('Remote', 'gitdown')?>
+                        <span class="tw-hidden sm:tw-inline-block"><?php _e('Remote', 'gitdown')?></span>
+                        <span class="sm:tw-hidden"><?php _e('Articles', 'gitdown')?></span>
                     </span>
 
                     <span class="tw-block">
