@@ -173,9 +173,18 @@
 
                         <a target="_blank" class="button action tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
 
-                        <br>
-                        <span v-if="item.remote.last_commit == item.local.last_commit">Up to Date</span>
-                        <span v-else>Outdated</span>
+                        <div class="">
+                            <div>
+                                <span v-if="item.remote.last_commit == item.local.last_commit">Up to Date</span>
+                                <span v-else>Outdated</span>
+                            </div>
+
+                            <div>
+                                <span>
+                                    <a :href="`<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data=&slug=')) ?>${item.remote.slug}`">Raw Data</a>
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
                     <div v-else>

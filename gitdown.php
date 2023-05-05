@@ -141,7 +141,11 @@ class Gitdown
                         if (isset($_GET['how_to'])) include(MGD_ROOT_PATH . 'templates/how_to/how_to.php');
                         if (isset($_GET['raw_data'])) {
                             echo '<pre style="white-space: pre-wrap;">';
-                            echo esc_html(print_r($this->article_collection->get_all(), true));
+                            if (isset($_GET['slug'])) {
+                                echo esc_html(print_r($this->article_collection->get_by_slug($_GET['slug']), true));
+                            } else {
+                                echo esc_html(print_r($this->article_collection->get_all(), true));
+                            }
                             echo '</pre>';
                         }
                         else include(MGD_ROOT_PATH . 'templates/articles.php');
