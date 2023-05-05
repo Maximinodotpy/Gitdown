@@ -59,6 +59,7 @@ class ArticleCollection {
         } else {
             // Try to pull the repository multiple times if they fail.
             $pull_success = false;
+            $break_out_counter = 0;
 
             while (!$pull_success) {
                 try {
@@ -68,6 +69,12 @@ class ArticleCollection {
                     $pull_success = true;
                 } catch (\Throwable $th) {
                     $this->push_report_error('Repository Error', get_option('mgd_repo_setting'), 'Something went wrong when pulling your repository, we will try again: ' . $th->getMessage());
+                }
+                $break_out_counter++;
+
+                if ($break_out_counter > 10) {
+                    $this->push_report_error('Repository Error', get_option('mgd_repo_setting'), 'The repo Error occured to many times [10]');
+                    break;
                 }
             }
         }

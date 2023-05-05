@@ -21,13 +21,13 @@
 
     <!-- Report -->
     <details class="tw-my-4">
-        <summary class="tw-text-xl tw-transition-all tw-p-3 hover:tw-cursor-pointer">
+        <summary class="tw-text-xl tw-transition-all md:tw-p-3 hover:tw-cursor-pointer">
             Report
-            <span class="tw-px-2 tw-py-1 tw-bg-red-200 tw-rounded-md tw-text-sm">{{ reports?.errors?.length ?? '0' }} Error(s)</span>
+            <span class="tw-border tw-border-solid tw-border-red-600 tw-px-2 tw-py-1 tw-bg-red-200 tw-text-red-700 tw-rounded-md tw-text-sm">{{ reports?.errors?.length ?? '0' }} Error(s)</span>
         </summary>
-        <div class="tw-p-8 tw-max-h-[400px] tw-overflow-y-auto tw-overflow-x-visible">
+        <div class="md:tw-p-8 tw-max-h-[400px] tw-overflow-y-auto tw-overflow-x-visible">
             <div class="tw-grid lg:tw-grid-cols-2 tw-gap-10 lg:tw-gap-28">
-                <div class="tw-grid tw-grid-cols-2 tw-auto-rows-auto lg:tw-gap-10 tw-pr-8">
+                <div class="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-3 lg:tw-gap-10 md:tw-pr-8">
                     <div>
                         <div class="tw-text-4xl tw-font-mono">{{ reports.found_posts }}</div>
                         <div class="tw-text-lg">Found Posts</div>
@@ -50,7 +50,7 @@
 
                     <div v-if="reports?.errors?.length != 0" class="tw-flex tw-flex-col tw-gap-4">
                         <div v-for="error in reports.errors">
-                            <div class="tw-p-2 hover:tw-scale-[1.01] tw-transition-all hover:tw-shadow-lg tw-bg-[#f0f0f1]">
+                            <div class="tw-p-2 md:hover:tw-scale-[1.01] tw-transition-all hover:tw-shadow-lg tw-bg-[#f0f0f1]">
                             <div class="tw-font-mono tw-font-semibold tw-gap-3 tw-flex tw-flex-col">
                                 <span class="tw-bg-orange-300 tw-text-orange-700 tw-p-1">{{ error.type }}</span>
                                 <span class="tw-bg-blue-300 tw-text-blue-700 tw-flex">
@@ -75,18 +75,18 @@
 
     <br>
 
-    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-items-center">
-        <button id="pa" @click="updateAllArticles()" class="tw-mr-2 button button-primary"><?php _e('Update All', 'gitdown')?></button>
+    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-items-center tw-gap-2">
+        <button id="pa" @click="updateAllArticles()" class=" button button-primary"><?php _e('Update All', 'gitdown')?></button>
 
-        <button id="da" @click="deleteAll()" class="button tw-mr-2"><?php _e('Delete All', 'gitdown')?></button>
+        <button id="da" @click="deleteAll()" class="button "><?php _e('Delete All', 'gitdown')?></button>
 
-        <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button tw-mr-2"><?php _e('Download Example Folder Structure', 'gitdown')?></a>
+        <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button "><?php _e('Download Example Folder Structure', 'gitdown')?></a>
 
-        <a href="<?php echo esc_url(get_site_url(null, 'wp-admin/options-reading.php')) ?>" class="button tw-mr-2"><?php _e('Settings', 'gitdown')?></a>
+        <a href="<?php echo esc_url(get_site_url(null, 'wp-admin/options-reading.php')) ?>" class="button "><?php _e('Settings', 'gitdown')?></a>
 
-        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&how_to')) ?>" class="button tw-mr-2"><?php _e('How to use Gitdown', 'gitdown')?></a>
+        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&how_to')) ?>" class="button "><?php _e('How to use Gitdown', 'gitdown')?></a>
 
-        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data')) ?>">Show Raw Data</a>
+        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data')) ?>" class="button ">Show Raw Data</a>
 
         <p class="search-box tw-ml-auto">
             <span class="tw-inline-block">
@@ -171,19 +171,17 @@
                         <button class="button action button-primary tw-mr-2 tw-mb-2 tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
                         <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="delete_post(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
 
-                        <a target="_blank" class="button action tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
-
-                        <div class="">
+                        <div class="tw-flex tw-gap-2">
                             <div>
                                 <span v-if="item.remote.last_commit == item.local.last_commit">Up to Date</span>
                                 <span v-else>Outdated</span>
                             </div>
 
                             <div>
-                                <span>
-                                    <a :href="`<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data=&slug=')) ?>${item.remote.slug}`">Raw Data</a>
-                                </span>
+                                <a :href="`<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data=&slug=')) ?>${item.remote.slug}`">Raw Data</a>
                             </div>
+
+                            <a target="_blank" class="tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
                         </div>
                     </div>
 
