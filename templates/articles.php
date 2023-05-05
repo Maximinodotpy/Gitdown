@@ -109,15 +109,16 @@
                         <span class="sm:tw-hidden"><?php _e('Articles', 'gitdown')?></span>
                     </span>
 
-                    <span class="tw-block">
+                    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-gap-2 tw-w-full tw-flex-nowrap">
                         <a href="<?php echo esc_url(get_option('mgd_repo_setting')) ?>" target="_blank">
                             <code><?php echo esc_html(basename(get_option('mgd_repo_setting'))) ?></code>
                         </a>
                         →
                         <code>
                             <?php echo get_option('mgd_glob_setting') ?>
-                        </code> ↓
-                    </span>
+                        </code>
+                        ↓
+                    </div>
                 </th>
                 <th class="tw-hidden sm:tw-table-cell">WordPress</th>
                 <th class="tw-hidden sm:tw-table-cell"><?php _e('Actions', 'gitdown')?></th>
@@ -147,7 +148,15 @@
                 </td>
                 <td>
                     <template v-if="item._is_published">
-                        <div class="row-title tw-mb-3">✅ <?php _e('Is on WordPress', 'gitdown')?></div>
+                        <div class="row-title tw-mb-3">
+                            ✅ <?php _e('Is on WordPress', 'gitdown')?>
+
+                            <span class="tw-opacity-75">and it is </span>
+
+                            <span v-if="item.remote.last_commit == item.local.last_commit" class="">📪 up to Date</span>
+                            <span v-else>📬 Outdated</span>
+                            </div>
+                        </div>
                         <div>
                             <b>Last updated: </b>
                             {{ new Date(item.last_updated*1000).toLocaleString() }}
@@ -172,11 +181,6 @@
                         <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="delete_post(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
 
                         <div class="tw-flex tw-gap-2">
-                            <div>
-                                <span v-if="item.remote.last_commit == item.local.last_commit">Up to Date</span>
-                                <span v-else>Outdated</span>
-                            </div>
-
                             <div>
                                 <a :href="`<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data=&slug=')) ?>${item.remote.slug}`">Raw Data</a>
                             </div>
