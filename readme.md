@@ -42,8 +42,8 @@ All contributions are very welcome, so feel free to make [issues](https://github
 ## 🤙 Other Software that Gitdown uses.
 This plugin uses the following third Party Services and Programs.
 
-- *[Globster.xyz](https://globster.xyz/)*: Is used in the how-to section for Gitdown, to teach glob patterns. ([Privacy Policy](https://globster.xyz/privacy/))
-- *[Tailwindcss](https://tailwindcss.com/)*: Is used to style the main admin UI.
-- *[Vue.js](https://vuejs.org/)*: Is used for the main admin UI and its interactivity features.
-- *[mnapoli/FrontYAML](https://github.com/mnapoli/FrontYAML)*: Is used to get frontmatter information in markdown files.
-- *[git-php](https://github.com/czproject/git-php)*: Is used to clone and fetch git repositories.
+- *[Globster.xyz](https://globster.xyz/)* Is used in the how-to section for Gitdown, to teach glob patterns. ([Privacy Policy](https://globster.xyz/privacy/))
+- *[Tailwindcss](https://tailwindcss.com/)* Is used to style the main admin UI.
+- *[Vue.js](https://vuejs.org/)* Is used for the main admin UI and its interactivity features.
+- *[mnapoli/FrontYAML](https://github.com/mnapoli/FrontYAML)* Is used to get frontmatter information in markdown files.
+- *[git-php](https://github.com/czproject/git-php)* Is used to clone and fetch git repositories.

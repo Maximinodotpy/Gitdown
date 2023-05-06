@@ -4,7 +4,7 @@ Yes, you can! Simply separate them by commas.
 
 ## Does Gitdown read nested categories from the markdown file?
 
-Yes, it does! Something like Animals/Cats, will create these two classes in a nested fashion and add the last one as the category.
+Yes, it does! Something like `Animals/Cats`, will create these two classes in a nested fashion and add the last one as the category.
 
 ## Does Gitdown read tags?
 
@@ -21,3 +21,7 @@ You find the description for each key [here](keys.md).
 ## Can I also manage Pages with Gitdown
 
 Yes, you can! simply add `post_type: page` to your frontmatter and this file will be added as a page. You can then also define a parent page with `parent_page: <slug of the parent page>`.
+
+## Can Gitdown Automatically update/sync my articles?
+
+Yes it can, simply go to the Settings and activate automatic updating there. Just keep in mind that this could mean that you will create duplicate content by mistake if you change the slug of your article.
