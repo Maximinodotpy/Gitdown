@@ -140,7 +140,7 @@ class Gitdown
                     function () {
                         if (isset($_GET['how_to'])) include(MGD_ROOT_PATH . 'templates/how_to/how_to.php');
 
-                        if (isset($_GET['raw_data'])) {
+                        else if (isset($_GET['raw_data'])) {
 
                             $data = isset($_GET['slug'])  ? $this->article_collection->get_by_slug($_GET['slug']) : $this->article_collection->get_all();
 
