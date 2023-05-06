@@ -89,7 +89,7 @@
             <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data')) ?>" class="button ">Show Raw Data</a>
         </div>
 
-        <div class="tw-flex tw-items-center tw-mt-4 md:tw-mt-0">
+        <div class="md:tw-flex tw-items-center tw-mt-4 tw-hidden">
             <input type="checkbox" v-model="complex_view">
             <span><?php _e('Complex View', 'gitdown')?></span>
         </div>
@@ -99,12 +99,19 @@
 
     <table class="fixed wp-list-table widefat striped table-view-list posts">
         <thead>
-            <tr>
+            <tr class="tw-z-40 md:tw-top-[32px] tw-top-[0] tw-sticky tw-backdrop-blur-lg">
                 <th class="tw-flex tw-flex-col">
-                    <span class="inline-block tw-mr-2 tw-mb-3">
-                        <span class="tw-hidden sm:tw-inline-block"><?php _e('Remote', 'gitdown')?></span>
-                        <span class="sm:tw-hidden"><?php _e('Articles', 'gitdown')?></span>
-                    </span>
+                    <div class="tw-mb-3 tw-flex tw-items-center tw-gap-8">
+                        <div>
+                            <div class="tw-hidden sm:tw-block"><?php _e('Remote', 'gitdown')?></div>
+                            <div class="sm:tw-hidden"><?php _e('Articles', 'gitdown')?></div>
+                        </div>
+
+                        <div class="md:tw-hidden tw-items-center md:tw-mt-0 tw-flex tw-gap-2">
+                            <input type="checkbox" v-model="complex_view" class="tw-m-0">
+                            <span><?php _e('Complex View', 'gitdown')?></span>
+                        </div>
+                    </div>
 
                     <div class="tw-flex tw-flex-1 tw-overflow-auto tw-gap-2 tw-w-full tw-flex-nowrap tw-whitespace-nowrap">
                         <a href="<?php echo esc_url(get_option('mgd_repo_setting')) ?>" target="_blank">
