@@ -75,27 +75,25 @@
 
     <br>
 
-    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-items-center tw-gap-2">
-        <button id="pa" @click="updateAllArticles()" class=" button button-primary"><?php _e('Update All', 'gitdown')?></button>
+    <div>
+        <div class="tw-flex tw-flex-1 tw-overflow-auto tw-items-center tw-gap-2">
+            <button id="pa" @click="updateAllArticles()" class=" button button-primary"><?php _e('Update All', 'gitdown')?></button>
 
-        <button id="da" @click="deleteAll()" class="button "><?php _e('Delete All', 'gitdown')?></button>
+            <button id="da" @click="deleteAll()" class="button "><?php _e('Delete All', 'gitdown')?></button>
 
-        <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button "><?php _e('Download Example Folder Structure', 'gitdown')?></a>
+            <a href="https://github.com/Maximinodotpy/gitdown-test-repository/archive/refs/heads/master.zip" download="example" class="button "><?php _e('Download Example Folder Structure', 'gitdown')?></a>
 
-        <a href="<?php echo esc_url(get_site_url(null, 'wp-admin/options-reading.php')) ?>" class="button "><?php _e('Settings', 'gitdown')?></a>
+            <a href="<?php echo esc_url(get_site_url(null, 'wp-admin/options-reading.php')) ?>" class="button "><?php _e('Settings', 'gitdown')?></a>
 
-        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&how_to')) ?>" class="button "><?php _e('How to use Gitdown', 'gitdown')?></a>
+            <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&how_to')) ?>" class="button "><?php _e('How to use Gitdown', 'gitdown')?></a>
 
-        <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data')) ?>" class="button ">Show Raw Data</a>
+            <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data')) ?>" class="button ">Show Raw Data</a>
+        </div>
 
-        <p class="search-box tw-ml-auto">
-            <span class="tw-inline-block">
-                <span class="tw-mr-3 tw-flex tw-items-center">
-                    <input type="checkbox" v-model="complex_view">
-                    <span><?php _e('Complex View', 'gitdown')?></span>
-                </span>
-            </span>
-        </p>
+        <div class="tw-flex tw-items-center tw-mt-4 md:tw-mt-0">
+            <input type="checkbox" v-model="complex_view">
+            <span><?php _e('Complex View', 'gitdown')?></span>
+        </div>
     </div>
 
     <br>
@@ -109,7 +107,7 @@
                         <span class="sm:tw-hidden"><?php _e('Articles', 'gitdown')?></span>
                     </span>
 
-                    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-gap-2 tw-w-full tw-flex-nowrap">
+                    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-gap-2 tw-w-full tw-flex-nowrap tw-whitespace-nowrap">
                         <a href="<?php echo esc_url(get_option('mgd_repo_setting')) ?>" target="_blank">
                             <code><?php echo esc_html(basename(get_option('mgd_repo_setting'))) ?></code>
                         </a>
@@ -122,7 +120,6 @@
                 </th>
                 <th class="tw-hidden sm:tw-table-cell">WordPress</th>
                 <th class="tw-hidden sm:tw-table-cell"><?php _e('Actions', 'gitdown')?></th>
-                <th class="tw-w-0"><!-- This row is used for the Loader --></th>
             </tr>
         </thead>
         <tbody>
@@ -164,7 +161,7 @@
 
                         <div v-if="complex_view">
                             <div>ID: <code>{{ item.local.ID }}</code></div>
-                            <div>Latest Commit: <code title="last commit hash for this article in the remote repository">{{ item.local.last_commit.slice(0, 6) }}</code></div>
+                            <div>Latest Commit: <code title="last commit hash for this article in the remote repository">{{ item.local?.last_commit?.slice(0, 6) }}</code></div>
                             <div>Slug: <code>{{ item.local.post_name }}</code></div>
                             <div>Excerpt: <code>{{ item.local.post_excerpt }}</code></div>
                             <div>Status: <code>{{ item.local.post_status }}</code></div>
@@ -177,8 +174,18 @@
                 </td>
                 <td class="tw-relative tw-box-border">
                     <div v-if="item._is_published">
-                        <button class="button action button-primary tw-mr-2 tw-mb-2 tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
-                        <button class="button action tw-mr-2 tw-mb-2 tw-inline-block" @click="delete_post(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
+
+                        <div class="tw-flex tw-mb-2 tw-gap-2 tw-items-center">
+                            <button class="button action button-primary tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
+                            <button class="button action tw-inline-block" @click="delete_post(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
+
+                            <div :ref="item.remote.slug" style="visibility: hidden">
+                                <div class="tw-text-lg tw-font-semibold tw-flex tw-items-center tw-gap-2 drop-shadow-2xl">
+                                    <img src="<?php echo esc_url(MGD_ROOT_URL . 'images/loader.svg') ?>" alt="Loader" style="width: 30px">
+                                    <span class="tw-select-none"><?php _e('Loading', 'gitdown')?></span>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="tw-flex tw-gap-2">
                             <div>
@@ -194,18 +201,10 @@
                     </div>
                     <br>
                 </td>
-
-                <td :ref="item.remote.slug" style="visibility: hidden"
-                    class="tw-absolute tw-top-0 tw-left-0 tw-h-full tw-flex tw-justify-center tw-items-center tw-backdrop-blur-[4px]" style="width: 100% !important;">
-                    <div class="tw-text-xl tw-font-semibold tw-flex tw-items-center tw-gap-2 drop-shadow-2xl">
-                        <img src="<?php echo esc_url(MGD_ROOT_URL . 'images/loader.svg') ?>" alt="Loader" style="width: 40px">
-                        <span class="tw-select-none"><?php _e('Loading', 'gitdown')?></span>
-                    </div>
-                </td>
             </tr>
 
             <tr v-if="articles.length == 0">
-                <td colspan="3" class="tw-text-xl tw-text-center tw-py-10">
+                <td class="tw-text-xl tw-text-center tw-py-10">
                     If there are no articles, maybe an error occured, you will find helpful informations in the <code>Report</code> section above.
                 </td>
             </tr>

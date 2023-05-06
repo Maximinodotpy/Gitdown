@@ -139,15 +139,17 @@ class Gitdown
                     'mgd-article-manager',
                     function () {
                         if (isset($_GET['how_to'])) include(MGD_ROOT_PATH . 'templates/how_to/how_to.php');
+
                         if (isset($_GET['raw_data'])) {
-                            echo '<pre style="white-space: pre-wrap;">';
-                            if (isset($_GET['slug'])) {
-                                echo esc_html(print_r($this->article_collection->get_by_slug($_GET['slug']), true));
-                            } else {
-                                echo esc_html(print_r($this->article_collection->get_all(), true));
-                            }
+
+                            $data = isset($_GET['slug'])  ? $this->article_collection->get_by_slug($_GET['slug']) : $this->article_collection->get_all();
+
+                            echo '<div class="wrap"><pre style="white-space: pre-wrap;" id="raw_data_container">';
                             echo '</pre>';
+                            echo '<script>const raw_data = ' . json_encode($data) . '; renderJson({ data: raw_data, top_level_root: raw_data_container })</script>';
+                            echo '<link rel="stylesheet" href="'.MGD_ROOT_URL.' . css/json.css">';
                         }
+
                         else include(MGD_ROOT_PATH . 'templates/articles.php');
                     },
                     'data:image/svg+xml;base64,' . base64_encode(file_get_contents(MGD_ROOT_PATH . 'images/icon.svg')),
@@ -156,6 +158,7 @@ class Gitdown
 
                 add_action('admin_enqueue_scripts', function () {
                     wp_enqueue_script('mgd_vuejs', MGD_ROOT_URL . 'js/vue.js');
+                    wp_enqueue_script('mgd_jsonjs', MGD_ROOT_URL . 'js/json.js');
                     wp_enqueue_script('mgd_adminjs', MGD_ROOT_URL . 'js/admin.js');
                     wp_enqueue_style('mgd_styles', MGD_ROOT_URL . 'css/gitdown.css');
                 });
