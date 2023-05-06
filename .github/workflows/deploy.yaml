@@ -45,10 +45,10 @@ jobs:
           prerelease: false
 
       # Helpers.php gets renamed to helpers.php for some reason
-      - name: Rename Helpers file
-        run: mv inc/helpers.php inc/Helpers.php
-      - name: Delete Old Helpers file
-        run: rm -f inc/helpers.php
+      # - name: Rename Helpers file
+      #   run: mv inc/helpers.php inc/Helpers.php
+      # - name: Delete Old Helpers file
+      #   run: rm -f inc/helpers.php
 
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
