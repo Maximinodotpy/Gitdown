@@ -74,7 +74,6 @@
     </details>
 
     <br>
-
     <div>
         <div class="tw-flex tw-flex-1 tw-overflow-auto tw-items-center tw-gap-2">
             <button id="pa" @click="updateAllArticles()" class=" button button-primary"><?php _e('Update All', 'gitdown')?></button>
