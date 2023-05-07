@@ -146,8 +146,16 @@ class Gitdown
 
                             echo '<div class="wrap"><pre style="white-space: pre-wrap;" id="raw_data_container">';
                             echo '</pre>';
-                            echo '<script>const raw_data = ' . json_encode($data) . '; renderJson({ data: raw_data, top_level_root: raw_data_container })</script>';
-                            echo '<link rel="stylesheet" href="'.MGD_ROOT_URL.' . css/json.css">';
+                            echo '
+                            <script>
+                            const raw_data = ' . json_encode($data) . ';
+                            renderJson({ data: raw_data, top_level_root: raw_data_container });
+                            var element = document.createElement("link");
+                            element.setAttribute("rel", "stylesheet");
+                            element.setAttribute("type", "text/css");
+                            element.setAttribute("href", "' . MGD_ROOT_URL . 'css/json.css");
+                            document.getElementsByTagName("head")[0].appendChild(element);
+                            </script>';
                         }
 
                         else include(MGD_ROOT_PATH . 'templates/articles.php');

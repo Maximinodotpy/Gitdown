@@ -57,6 +57,7 @@ if (window.Vue) {
                             article.local = newData.new_post;
                             article._is_published = true;
                             article.last_updated = newData.last_updated;
+                            article.local.last_commit = newData.last_commit;
                         }
                     });
                 }).catch(error => {

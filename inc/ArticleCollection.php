@@ -319,6 +319,7 @@ class ArticleCollection {
         return [
             'new_post' => get_post($post_id),
             'last_updated' => (int) get_post_meta($post_id, 'mgd_last_updated', true),
+            'last_commit' => get_post_meta($post_id, 'mgd_local_last_commit', true),
         ];
     }
 

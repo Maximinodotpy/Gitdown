@@ -99,9 +99,9 @@
 
     <table class="fixed wp-list-table widefat striped table-view-list posts">
         <thead>
-            <tr class="tw-z-40 md:tw-top-[32px] tw-top-[0] tw-sticky tw-backdrop-blur-lg">
+            <tr class="tw-z-40 md:tw-top-[32px] tw-top-[0] tw-sticky tw-bg-white">
                 <th class="tw-flex tw-flex-col">
-                    <div class="tw-mb-3 tw-flex tw-items-center tw-gap-8">
+                    <div class="tw-mb-3 tw-flex tw-items-center tw-justify-between">
                         <div>
                             <div class="tw-hidden sm:tw-block"><?php _e('Remote', 'gitdown')?></div>
                             <div class="sm:tw-hidden"><?php _e('Articles', 'gitdown')?></div>

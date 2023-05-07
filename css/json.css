@@ -30,7 +30,7 @@ ul {
 }
 
 pre {
-    padding: 1em;
+    padding: 0.5em;
     margin: 0;
     background-color: var(--bg)
 }
