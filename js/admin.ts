@@ -53,6 +53,7 @@ if (window.Vue) {
 
             update_post(slug: string): void {
                 const loaderElement = this.$refs[slug][0]
+
                 loaderElement.setAttribute('style', 'visibility: visible; width: 100% !important;')
 
                 console.log(`%cUpdating Post: %c${slug}`, 'font-weight: bold', 'font-weight: unset')

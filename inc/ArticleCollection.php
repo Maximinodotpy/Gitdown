@@ -68,11 +68,11 @@ class ArticleCollection {
 
                     $pull_success = true;
                 } catch (\Throwable $th) {
-                    $this->push_report_error('Repository Error', get_option('mgd_repo_setting'), 'Something went wrong when pulling your repository, we will try again: ' . $th->getMessage());
+                    $this->push_report_error('Repository Error No ' . $break_out_counter, get_option('mgd_repo_setting'), 'Something went wrong when pulling your repository, we will try again: ' . $th->getMessage());
                 }
                 $break_out_counter++;
 
-                if ($break_out_counter > 10) {
+                if ($break_out_counter > 3) {
                     $this->push_report_error('Repository Error', get_option('mgd_repo_setting'), 'The repo Error occured to many times [10]');
                     break;
                 }

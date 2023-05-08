@@ -129,7 +129,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in articles" class="tw-relative tw-box-border tw-flex sm:tw-table-row tw-flex-col">
+            <tr v-for="item in articles" class="tw-relative tw-box-border tw-flex sm:tw-table-row tw-flex-col" :key="item.remote.slug">
                 <td>
                     <p class="row-title" title="Post Name">
                         {{ item.remote.name }}
@@ -179,12 +179,17 @@
                     </template>
                 </td>
                 <td class="tw-relative tw-box-border">
-                    <div v-if="item._is_published">
+                    <div>
 
                         <div class="tw-flex tw-mb-2 tw-gap-2 tw-items-center">
-                            <button class="button action button-primary tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
-                            <button class="button action tw-inline-block" @click="delete_post(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
+                            <!-- Start Sync -->
+                            <button v-if="!item._is_published" class="button action button-primary tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Start Sync', 'gitdown')?></button>
+                            
+                            <!-- Sync and Delete -->
+                            <button v-if="item._is_published" class="button action button-primary tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
+                            <button v-if="item._is_published" class="button action tw-inline-block" @click="delete_post(item.remote.slug)"><?php _e('Delete', 'gitdown')?></button>
 
+                            <!-- Loader -->
                             <div :ref="item.remote.slug" style="visibility: hidden">
                                 <div class="tw-text-lg tw-font-semibold tw-flex tw-items-center tw-gap-2 drop-shadow-2xl">
                                     <img src="<?php echo esc_url(MGD_ROOT_URL . 'images/loader.svg') ?>" alt="Loader" style="width: 30px">
@@ -193,18 +198,21 @@
                             </div>
                         </div>
 
+                        <!-- Extra Links -->
                         <div class="tw-flex tw-gap-2">
-                            <div>
-                                <a :href="`<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data=&slug=')) ?>${item.remote.slug}`">Raw Data</a>
-                            </div>
+                            <a :href="`<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data=&slug=')) ?>${item.remote.slug}`">Raw Data</a>
 
-                            <a target="_blank" class="tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
+                            <a v-if="item._is_published" :href="`<?php echo esc_html(home_url('wp-admin/edit.php?post_type=${item.local.post_type}#post-${item.local.ID}')) ?>`">Normal Overview</a>
+
+                            <a v-if="item._is_published" target="_blank" class="tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
                         </div>
                     </div>
 
-                    <div v-else>
-                        <button class="button action" @click="update_post(item.remote.slug)"><?php _e('Publish', 'gitdown')?></button>
-                    </div>
+                    <!-- <div v-else-if="!item._is_published">
+                        {{ item.remote.slug }}
+                        <button class="button action" @click="update_post(item.remote.slug)"><?php _e('Start Syncing', 'gitdown')?></button>
+                        <button class="button action button-primary tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
+                    </div> -->
                     <br>
                 </td>
             </tr>
