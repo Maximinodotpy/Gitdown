@@ -180,7 +180,6 @@
                 </td>
                 <td class="tw-relative tw-box-border">
                     <div>
-
                         <div class="tw-flex tw-mb-2 tw-gap-2 tw-items-center">
                             <!-- Start Sync -->
                             <button v-if="!item._is_published" class="button action button-primary tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Start Sync', 'gitdown')?></button>
