@@ -237,7 +237,6 @@ class Gitdown
             die();
         });
         add_action("wp_ajax_update_article", function () {
-            verify_ajax();
             echo json_encode($this->article_collection->update_post($_REQUEST['slug']));
             die();
         });
@@ -247,8 +246,6 @@ class Gitdown
             die();
         });
         add_action("wp_ajax_mgd_get_outdated", function () {
-            verify_ajax();
-
             if (! (bool) get_option('mgd_cron_setting') ) return;
 
             echo json_encode($this->article_collection->get_outdated());
