@@ -206,13 +206,6 @@
                             <a v-if="item._is_published" target="_blank" class="tw-inline-block" :href="item.local.guid"><?php _e('Open in new Tab', 'gitdown')?> ↗</a>
                         </div>
                     </div>
-
-                    <!-- <div v-else-if="!item._is_published">
-                        {{ item.remote.slug }}
-                        <button class="button action" @click="update_post(item.remote.slug)"><?php _e('Start Syncing', 'gitdown')?></button>
-                        <button class="button action button-primary tw-inline-block" @click="update_post(item.remote.slug)"><?php _e('Update', 'gitdown')?></button>
-                    </div> -->
-                    <br>
                 </td>
             </tr>
 
