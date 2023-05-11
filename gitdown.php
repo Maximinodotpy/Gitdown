@@ -192,7 +192,12 @@ class Gitdown
                 $post_data = $this->article_collection->get_by_id($post_id);
 
                 if ($post_data->_is_published) {
-                    echo '<div class="tw-font-semibold" >✅ Originates from <br/> Repository</div>';
+                    echo '<div class="tw-font-semibold" >✅ from Repository <br/>';
+                    echo '<code>';
+                    echo $post_data->remote->last_commit == $post_data->local->last_commit ?
+                    'Up To Date' : 'Outdated';
+                    echo '</code>';
+                    echo '</div>';
                 } else {
                     echo '<div class="tw-font-semibold" >❌ Not from Repository</div>';
                 }
