@@ -56,8 +56,8 @@ class Gitdown
             . rtrim(basename(get_option('mgd_repo_setting')), '.git')
         );
 
-        define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '\/mgd_mirror/' . $repo_nice_name . '/');
-        define('MGD_MIRROR_URL', WP_CONTENT_URL . '\/mgd_mirror/' . $repo_nice_name . '/');
+        define('MGD_MIRROR_PATH', WP_CONTENT_DIR . '/mgd_mirror/' . $repo_nice_name . '/');
+        define('MGD_MIRROR_URL', WP_CONTENT_URL . '/mgd_mirror/' . $repo_nice_name . '/');
 
         define('MGD_REMOTE_IS_CLONED', is_dir(MGD_MIRROR_PATH . '.git'));
 
