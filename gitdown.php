@@ -48,7 +48,7 @@ class Gitdown
             ],
         ];
 
-        // Where the current Repository is located depends on the repo url.
+        // Where the current Repository is located depends on the repo url
         $repo_nice_name = Inc\Helpers::string_to_slug(
             'mgd_'
             . basename(dirname(get_option('mgd_repo_setting')))
