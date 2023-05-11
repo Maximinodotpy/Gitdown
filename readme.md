@@ -1,7 +1,7 @@
 # Gitdown: Git Repository to WordPress Blog Posts
 *By [Maxim Maeder](https://www.maximmaeder.com)*
 
-Gitdown lets you connect a Remote Repository to your Website and upload Markdown articles to your WordPress Blog.
+Gitdown lets you connect a Remote Repository to your Website and upload Markdown articles to your WordPress Blog. Read about it on my [Blog](https://maximmaeder.com/my-wordpress-plugin/).
 
 ![Gitdown](https://raw.githubusercontent.com/Maximinodotpy/Gitdown/master/.wordpress-org/banner-1544x500.png)
 
