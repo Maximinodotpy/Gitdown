@@ -130,7 +130,7 @@
         </thead>
         <tbody>
             <tr v-for="item in articles" class="tw-relative tw-box-border tw-flex sm:tw-table-row tw-flex-col" :key="item.remote.slug">
-                <td>
+                <td class="tw-py-4">
                     <p class="row-title" title="Post Name">
                         {{ item.remote.name }}
 
@@ -149,7 +149,7 @@
                         <p title="Category">{{ item.remote.category }}</p>
                     </div>
                 </td>
-                <td>
+                <td class="tw-py-4">
                     <template v-if="item._is_published">
                         <div class="row-title tw-mb-3">
                             ✅ <?php _e('Is on WordPress', 'gitdown')?>
@@ -178,7 +178,7 @@
                         ❌ <?php _e('Not on WordPress', 'gitdown')?>
                     </template>
                 </td>
-                <td class="tw-relative tw-box-border">
+                <td class="tw-relative tw-box-border tw-py-4">
                     <div>
                         <div class="tw-flex tw-mb-2 tw-gap-2 tw-items-center">
                             <!-- Start Sync -->
@@ -208,12 +208,10 @@
                     </div>
                 </td>
             </tr>
-
-            <tr v-if="articles.length == 0">
-                <td class="tw-text-xl tw-text-center tw-py-10">
-                    If there are no articles, maybe an error occured, you will find helpful informations in the <code>Report</code> section above.
-                </td>
-            </tr>
         </tbody>
     </table>
+
+    <div v-if="articles.length == 0" class="tw-text-xl tw-text-center tw-py-10">
+        If there are no articles, maybe an error occured, you will find helpful informations in the <code>Report</code> section above.
+    </div>
 </div>
