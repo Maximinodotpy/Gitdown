@@ -89,7 +89,7 @@
             <a href="<?php echo esc_html(home_url('wp-admin/admin.php?page=mgd-article-manager&raw_data')) ?>" class="button ">Show Raw Data</a>
         </div>
 
-        <div class="md:tw-flex tw-items-center tw-mt-4 tw-hidden">
+        <div class="lg:tw-flex tw-items-center tw-mt-4 tw-hidden">
             <input type="checkbox" v-model="complex_view">
             <span><?php _e('Complex View', 'gitdown')?></span>
         </div>
@@ -100,20 +100,20 @@
     <table class="fixed wp-list-table widefat striped table-view-list posts">
         <thead>
             <tr class="tw-z-40 md:tw-top-[32px] tw-top-[0] tw-sticky tw-bg-white">
-                <th class="tw-flex tw-flex-col">
+                <th class="tw-flex tw-flex-col tw-align-baseline">
                     <div class="tw-mb-3 tw-flex tw-items-center tw-justify-between">
                         <div>
                             <div class="tw-hidden sm:tw-block"><?php _e('Remote', 'gitdown')?></div>
                             <div class="sm:tw-hidden"><?php _e('Articles', 'gitdown')?></div>
                         </div>
 
-                        <div class="md:tw-hidden tw-items-center md:tw-mt-0 tw-flex tw-gap-2">
+                        <div class="lg:tw-hidden tw-items-center md:tw-mt-0 tw-flex tw-gap-2">
                             <input type="checkbox" v-model="complex_view" class="tw-m-0">
                             <span><?php _e('Complex View', 'gitdown')?></span>
                         </div>
                     </div>
 
-                    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-gap-2 tw-w-full tw-flex-nowrap tw-whitespace-nowrap">
+                    <div class="tw-flex tw-flex-1 tw-overflow-auto tw-gap-2 tw-w-full tw-flex-nowrap tw-whitespace-nowrap mgd-hide-scrollbar">
                         <a href="<?php echo esc_url(get_option('mgd_repo_setting')) ?>" target="_blank">
                             <code><?php echo esc_html(basename(get_option('mgd_repo_setting'))) ?></code>
                         </a>
@@ -124,13 +124,26 @@
                         ↓
                     </div>
                 </th>
-                <th class="tw-hidden sm:tw-table-cell">WordPress</th>
-                <th class="tw-hidden sm:tw-table-cell"><?php _e('Actions', 'gitdown')?></th>
+                <th class="tw-hidden sm:tw-table-cell tw-align-baseline">
+                    <div class="tw-mb-3">
+                        WordPress
+                    </div>
+                    
+                    <?php
+                        $automatice_updates = (bool) get_option('mgd_cron_setting');
+                    ?>
+                    <?php if($automatice_updates) : ?>
+                        <code class="tw-whitespace-nowrap tw-border-2 tw-border-solid tw-border-green-500 tw-bg-green-200 tw-text-green-800">Automatic Updates Enabled</code>
+                    <?php else : ?>
+                        <code class="tw-whitespace-nowrap tw-border-2 tw-border-solid tw-border-red-500 tw-bg-red-200 tw-text-red-800">Automatic Updates Disabled</code>
+                    <?php endif ; ?>
+                </th>
+                <th class="tw-hidden sm:tw-table-cell tw-align-baseline"><?php _e('Actions', 'gitdown')?></th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="item in articles" class="tw-relative tw-box-border tw-flex sm:tw-table-row tw-flex-col" :key="item.remote.slug">
-                <td class="tw-py-4">
+                <td class="md:tw-py-4 tw-py-2">
                     <p class="row-title" title="Post Name">
                         {{ item.remote.name }}
 
@@ -149,7 +162,7 @@
                         <p title="Category">{{ item.remote.category }}</p>
                     </div>
                 </td>
-                <td class="tw-py-4">
+                <td class="md:tw-py-4 tw-py-2">
                     <template v-if="item._is_published">
                         <div class="row-title tw-mb-3">
                             ✅ <?php _e('Is on WordPress', 'gitdown')?>
@@ -178,7 +191,7 @@
                         ❌ <?php _e('Not on WordPress', 'gitdown')?>
                     </template>
                 </td>
-                <td class="tw-relative tw-box-border tw-py-4">
+                <td class="tw-relative tw-box-border md:tw-py-4 tw-py-2">
                     <div>
                         <div class="tw-flex tw-mb-2 tw-gap-2 tw-items-center">
                             <!-- Start Sync -->
