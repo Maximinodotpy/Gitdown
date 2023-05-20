@@ -165,10 +165,11 @@ class Gitdown
                 );
 
                 add_action('admin_enqueue_scripts', function () {
-                    wp_enqueue_script('mgd_vuejs', MGD_ROOT_URL . 'js/vue.js');
-                    wp_enqueue_script('mgd_jsonjs', MGD_ROOT_URL . 'js/json.js');
-                    wp_enqueue_script('mgd_adminjs', MGD_ROOT_URL . 'js/admin.js');
-                    wp_enqueue_style('mgd_styles', MGD_ROOT_URL . 'css/gitdown.css');
+                    $plugin_version = get_plugin_data(MGD_ROOT_PATH.'gitdown.php')['Version'];
+                    wp_enqueue_script('mgd_vuejs', MGD_ROOT_URL . 'js/vue.js', [], $plugin_version);
+                    wp_enqueue_script('mgd_jsonjs', MGD_ROOT_URL . 'js/json.js', [], $plugin_version);
+                    wp_enqueue_script('mgd_adminjs', MGD_ROOT_URL . 'js/admin.js', [], $plugin_version);
+                    wp_enqueue_style('mgd_styles', MGD_ROOT_URL . 'css/gitdown.css', [], $plugin_version);
                 });
             }
         );
