@@ -282,6 +282,8 @@ class ArticleCollection {
             $post_id = wp_insert_post($new_post_data);
             update_post_meta($post_id, 'mgd_last_updated', time());
             update_post_meta($post_id, 'mgd_local_last_commit', $post_data->remote->last_commit);
+            $revision_id = wp_save_post_revision($post_id);
+            Helpers::log('Post Revision: ' . print_r(json_encode($revision_id), true));
         } catch (\Throwable $th) {
             Helpers::log($th);
             return;
