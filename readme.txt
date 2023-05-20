@@ -114,4 +114,7 @@ Yes It does! You simply have to provide a file called 'preview.png' in the same 
 
 = 1.2.1 =
 - Added more Warnings to Report Section (Git Clone Issues)
--
+
+= 1.4.6 =
+- Post Revisions
+- Better Static Resource Caching

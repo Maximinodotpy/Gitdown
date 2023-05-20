@@ -1,8 +1,8 @@
-// @ts-ignore
-if (window.Vue) {
+
+if (Object.hasOwn(window, 'Vue')) {
     // eslint-disable-next-line no-undef
     // @ts-ignore
-    const { createApp } = Vue
+    const { createApp } = window.Vue
 
     const vueApp = createApp({
         data() {
