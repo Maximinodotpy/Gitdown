@@ -27,7 +27,7 @@ class ArticleCollection {
     }
 
     private function parse() {
-        $reserved_frontmatter_keys = ['name', 'slug', 'tags', 'category', 'published', 'raw_content', 'featured_image', 'description', 'status', 'mgd_last_updated', 'parent_page', 'post_type'];
+        $reserved_frontmatter_keys = ['name', 'slug', 'tags', 'category', 'published', 'raw_content', 'featured_image', 'description', 'status', 'mgd_last_updated', 'parent_page', 'post_type', 'author'];
 
         // Check if there is no glob pattern
         if (get_option('mgd_glob_setting') == '') {
