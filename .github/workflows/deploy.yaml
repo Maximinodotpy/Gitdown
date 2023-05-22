@@ -44,6 +44,12 @@ jobs:
           draft: false
           prerelease: false
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Create readme.txt
+        run: 'node ./create-readme.js'
+
       # Helpers.php gets renamed to helpers.php for some reason
       # - name: Rename Helpers file
       #   run: mv inc/helpers.php inc/Helpers.php
