@@ -37,7 +37,7 @@ const CHANGELOG_PATH = './docs/changelog.md';
 
 result += Head;
 result += MD_TO_WP(fs.readFileSync(README_MD_PATH, 'utf8'));
-result += `== Frequently Asked Questions ==`;
+result += `\n== Frequently Asked Questions ==\n\n`;
 result += MD_TO_WP(fs.readFileSync(FAQ_PATH, 'utf8'));
 result += `\n\n== Screenshots ==\n`;
 result += `
