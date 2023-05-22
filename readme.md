@@ -8,7 +8,7 @@ Gitdown lets you connect a Remote Repository to your Website and upload Markdown
 ⚠️ This plugin is still in development. If you find any issues, don't hesitate to report them.
 
 ## 🎈 Easy to use
-Setting Gitdown up to work with your Repository and Glob Pattern takes only little time and can be easily changed anytime.
+Setting Gitdown up to work with your Repository and Glob Pattern takes no time and can be easily changed anytime.
 
 ## 🔨 Customization
 The shape of your Repository does not matter, you can change the glob pattern to your liking, and it will understand your repo correctly.
@@ -43,7 +43,7 @@ All contributions are very welcome, so feel free to make [issues](https://github
 ## 🤙 Other Software that Gitdown uses.
 This plugin uses the following third Party Services and Programs.
 
-- *[Globster.xyz](https://globster.xyz/)* Is used in the how-to section for Gitdown, to teach glob patterns. ([Privacy Policy](https://globster.xyz/privacy/))
+- *[Globster.xyz](https://globster.xyz/)* Is used in the how-to section for Gitdown to teach glob patterns. ([Privacy Policy](https://globster.xyz/privacy/))
 - *[Tailwindcss](https://tailwindcss.com/)* Is used to style the main admin UI.
 - *[Vue.js](https://vuejs.org/)* Is used for the main admin UI and its interactivity features.
 - *[mnapoli/FrontYAML](https://github.com/mnapoli/FrontYAML)* Is used to get frontmatter information in markdown files.
