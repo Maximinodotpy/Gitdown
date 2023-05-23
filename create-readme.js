@@ -41,7 +41,8 @@ result += `\n== Frequently Asked Questions ==\n\n`;
 result += MD_TO_WP(fs.readFileSync(FAQ_PATH, 'utf8'));
 result += `\n\n== Screenshots ==\n`;
 result += `
-1. Dashboard User Interface
+1. Dashboard User Interface (Normal)
+1. Dashboard User Interface (Empty)
 2. How to View Number One
 3. How to View Number Two
 4. Gitdown Reading Settings

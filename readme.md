@@ -1,7 +1,7 @@
 # Gitdown: Git Repository to WordPress Blog Posts
 *By [Maxim Maeder](https://www.maximmaeder.com)*
 
-Gitdown lets you connect a Remote Repository to your Website and upload Markdown articles to your WordPress Blog. Read about it on my [Blog](https://maximmaeder.com/my-wordpress-plugin/).
+Gitdown lets you connect a Remote Repository to your Website and upload Markdown articles to your WordPress Blog.
 
 ![Gitdown](https://raw.githubusercontent.com/Maximinodotpy/Gitdown/master/.wordpress-org/banner-1544x500.png)
 
@@ -14,7 +14,7 @@ Setting Gitdown up to work with your Repository and Glob Pattern takes no time a
 The shape of your Repository does not matter, you can change the glob pattern to your liking, and it will understand your repo correctly.
 
 ## 🎁 100% Free
-Gitdown is free, and you can use it for whatever you want.
+Gitdown is free, and you can use it for whatever you want. Of course, I would be very grateful if you link back to me or the plugin so more people know about it 😀.
 
 ## 📚 Documentation
 Once you activate Gitdown, it will take you to the documentation page, where you should get all the necessary info.
@@ -24,7 +24,7 @@ You can also consult the following documents for Help.
 - [FAQ](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/faq.md)
 - [Frontmatter Keys]([docs/keys.md](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/keys.md))
 - [Example File]([docs/example.md](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/example.md))
-- [Changelog](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/changelog.md)
+- ([Changelog](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/changelog.md))
 
 You will also find helpful information in the *Reports* section of the article overview.
 
@@ -33,12 +33,13 @@ You will also find helpful information in the *Reports* section of the article o
 ## 👥 Contributing
 All contributions are very welcome, so feel free to make [issues](https://github.com/Maximinodotpy/Gitdown/issues), [proposals](https://github.com/Maximinodotpy/Gitdown/issues/proposals) and [pull requests](https://github.com/Maximinodotpy/Gitdown/pulls).
 
+I'm building this Plugin by myself, and I made it for myself, but I think it could also be helpful for others. So if you have any ideas on how to improve it, please let me know.
+
 ## ↗ Links
 - [Maximmaeder.com](https://maximmaeder.com/)
 - [My Profile on Wordpress.org](https://profiles.wordpress.org/maximmaeder/)
 - [Plugin Page](https://wordpress.org/plugins/gitdown)
 - [SVN repository](http://plugins.svn.wordpress.org/gitdown/)
-- [TortoiseSVN](https://tortoisesvn.net/)
 
 ## 🤙 Other Software that Gitdown uses.
 This plugin uses the following third Party Services and Programs.
