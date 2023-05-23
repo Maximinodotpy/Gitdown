@@ -32,3 +32,5 @@ Yes you can you will have to create an URL with the authentication. Consult the 
 
 - [Creating a URL to clone Private Github Repos](https://stackoverflow.com/questions/22755268/clone-a-private-repo-of-github-with-username-and-password)
 - [Creating a custom Personal Access Token](https://docs.github.com/de/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+
+Generally the URL will have to look something like this: `https://<Username_or_Company>:<[PAT](https://docs.github.com/de/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)_or_Password>@github.com/<Username_or_Company>/<Repository_name>.git`
