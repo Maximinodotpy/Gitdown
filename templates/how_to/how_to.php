@@ -73,8 +73,6 @@ $globsterURL = 'https://globster.xyz/?q=**%2Farticle.md&f=%2Findex.md%2C%2F00%20
 
     <?php info('By default, there is a repository there that I have created so you can test out and understand how Gitdown works without having a repo ready yourself.'); ?>
 
-    <?php warning('Gitdown wont be able to clone and fetch private repositories as of now.') ?>
-
     <p>Now that you have a repository set Gitdown will clone and fetch this repository to your <code><a href="<?php echo MGD_MIRROR_URL ?>" target="_blank">wp-content ↗</a></code>folder.</p>
 
     <?php insertBreak() ?>

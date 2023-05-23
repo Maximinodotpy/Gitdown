@@ -25,3 +25,10 @@ Yes, you can! simply add `post_type: page` to your frontmatter and this file wil
 ## Can Gitdown Automatically update/sync my articles?
 
 Yes it can, simply go to the Settings and activate automatic updating there. Just keep in mind that this could mean that you will create duplicate content by mistake if you change the slug of your article.
+
+## Can I connect Private Repositories?
+
+Yes you can you will have to create an URL with the authentication. Consult the following links to set this up.
+
+- [Creating a URL to clone Private Github Repos](https://stackoverflow.com/questions/22755268/clone-a-private-repo-of-github-with-username-and-password)
+- [Creating a custom Personal Access Token](https://docs.github.com/de/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
