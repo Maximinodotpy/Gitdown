@@ -5,6 +5,7 @@
 namespace Inc;
 
 use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 use CzProject\GitPhp\Git as MGD_GIT;
 
 class ArticleCollection {
@@ -238,7 +239,7 @@ class ArticleCollection {
 
         Helpers::log(sprintf('Updating: %s', $post_data->remote->name));
 
-        $converter = new CommonMarkConverter([
+        $converter = new GithubFlavoredMarkdownConverter([
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
         ]);
