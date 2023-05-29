@@ -34,3 +34,6 @@
 
 ## 1.4.11
 - Swapped `CommonMarkConverter` with `GithubFlavoredConverter`
+
+## 1.4.12
+- Added [Heading Permalink Extension](https://commonmark.thephpleague.com/2.4/extensions/heading-permalinks/)

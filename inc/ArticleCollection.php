@@ -4,8 +4,12 @@
  */
 namespace Inc;
 
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\GithubFlavoredMarkdownConverter;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkRenderer;
+use League\CommonMark\Extension\Table\TableExtension;
+use League\CommonMark\MarkdownConverter;
 use CzProject\GitPhp\Git as MGD_GIT;
 
 class ArticleCollection {
@@ -239,10 +243,22 @@ class ArticleCollection {
 
         Helpers::log(sprintf('Updating: %s', $post_data->remote->name));
 
-        $converter = new GithubFlavoredMarkdownConverter([
+        $markdown_config = array(
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
-        ]);
+        );
+
+        // Configure the Environment with all the CommonMark parsers/renderers
+        $environment = new Environment($markdown_config);
+        $environment->addExtension(new CommonMarkCoreExtension());
+
+        // Add this extension
+        $environment->addExtension(new HeadingPermalinkExtension());
+        $environment->addExtension(new TableExtension());
+
+        // Instantiate the converter engine and start converting some Markdown!
+        $converter = new MarkdownConverter($environment);
+
 
         $new_post_data = array(
             'post_title'     =>  $post_data->remote->name,
