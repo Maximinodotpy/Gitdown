@@ -31,3 +31,6 @@
 
 ## 1.4.9
 - Documentation Update
+
+## 1.4.11
+- Swapped `CommonMarkConverter` with `GithubFlavoredConverter`
