@@ -281,7 +281,10 @@ class Gitdown
 
                         try {
                             const articles = await re.json()
+                            
                             console.log(articles);
+
+                            if (articles.constructor != Array) return;
 
                             for (const article of articles ) {
                                 console.log('MGD Autoupdate Updating:', article.remote.slug);

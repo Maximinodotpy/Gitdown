@@ -37,3 +37,6 @@
 
 ## 1.4.12
 - Added [Heading Permalink Extension](https://commonmark.thephpleague.com/2.4/extensions/heading-permalinks/)
+
+## 1.4.13
+- Catch Type Error when getting Outdated Articles. ([Issue](https://github.com/Maximinodotpy/Gitdown/issues/31))
