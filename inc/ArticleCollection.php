@@ -246,6 +246,10 @@ class ArticleCollection {
         $markdown_config = array(
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
+            'heading_permalink' => [
+                'id_prefix' => '',
+                'fragment_prefix' => '',
+            ],
         );
 
         // Configure the Environment with all the CommonMark parsers/renderers

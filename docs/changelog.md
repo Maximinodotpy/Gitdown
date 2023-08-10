@@ -40,3 +40,6 @@
 
 ## 1.4.13
 - Catch Type Error when getting Outdated Articles. ([Issue](https://github.com/Maximinodotpy/Gitdown/issues/31))
+  
+## 1.5.0
+- Heading Permalinks removed `content` before id

@@ -4,7 +4,6 @@
         <?php _e('You Are offline', 'gitdown'); ?>
     </div>
 
-
     <div class="tw-flex tw-items-center tw-flex-col sm:tw-flex-row">
         <h1 class="tw-flex-grow"><?php _e('Manage Git Posts', 'gitdown')?></h1>
 
