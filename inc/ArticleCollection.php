@@ -249,6 +249,7 @@ class ArticleCollection {
             'heading_permalink' => [
                 'id_prefix' => '',
                 'fragment_prefix' => '',
+                'aria_hidden' => false,
             ],
         );
 
