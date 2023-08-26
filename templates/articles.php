@@ -92,6 +92,16 @@
             <input type="checkbox" v-model="complex_view">
             <span><?php _e('Complex View', 'gitdown')?></span>
         </div>
+
+        <!-- Show the API Endpoint for this website -->
+        <div class="tw-flex tw-flex-col tw-gap-2 tw-mt-4">
+            <div class="tw-text-lg tw-font-semibold">API Endpoint</div>
+            <div class="tw-flex tw-gap-2 tw-items-center">
+                <a href="<?php echo esc_html(home_url('wp-json/mgd/v1/update_outdated')) ?>">
+                    <code><?php echo esc_html(home_url('wp-json/mgd/v1/update_outdated')) ?></code>
+                </a>
+            </div>
+        </div>
     </div>
 
     <br>

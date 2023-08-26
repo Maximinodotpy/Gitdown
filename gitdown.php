@@ -9,6 +9,12 @@ Author URI:   https://maximmaeder.com
 Text Domain:  gitdown
 */
 
+/*
+bn: maximmaeder
+pw: $P$BNA.8vIf6NPsAd4qY67U0f7HvXGJce.
+https://codebeautify.org/wordpress-password-hash-generator
+*/
+
 use Inc\Helpers;
 
 defined( 'ABSPATH' ) or die( 'Hey, what are you doing here? You silly human!' );
@@ -310,6 +316,27 @@ class Gitdown
                 <?php
             });
         });
+
+        // Add a custom API Endpoint which updates outdated articles
+        add_action('rest_api_init', function () {
+            register_rest_route('mgd/v1', '/update_outdated', [
+                'methods' => 'GET',
+                'callback' => function () {
+                    $outdated = $this->article_collection->get_outdated();
+
+                    foreach ($outdated as $key => $value) {
+                        $this->article_collection->update_post($value->remote->slug);
+                    }
+
+                    echo sizeof($outdated) . ' Articles Updated';
+                    foreach ($outdated as $key => $value) {
+                        echo '<br/>- ' . $value->remote->slug;
+                    }
+                },
+            ]);
+        });
+        // Where do i call this link
+        // https://maximmaeder.com/wp-json/mgd/v1/update_outdated
     }
 
     public function activate() {

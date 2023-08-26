@@ -228,7 +228,15 @@ class ArticleCollection {
         $outdated = [];
 
         foreach ($all_posts as $post) {
-            if ($post->local->last_commit != $post->remote->last_commit) {
+            // Check if the local post has the last_commit meta
+            
+            /* if (!$post->_is_published) continue; */
+            
+            if (isset($post->local->last_commit)) {
+                if ($post->local->last_commit != $post->remote->last_commit) {
+                    array_push($outdated, $post);
+                }
+            } else {
                 array_push($outdated, $post);
             }
         }

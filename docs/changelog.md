@@ -43,3 +43,6 @@
   
 ## 1.5.0
 - Heading Permalinks removed `content` before id
+
+## 1.6.0
+- Added API Endpoint for Automating Post Updating
