@@ -22,9 +22,9 @@ Once you activate Gitdown, it will take you to the documentation page, where you
 You can also consult the following documents for Help.
 
 - [FAQ](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/faq.md)
-- [Frontmatter Keys]([docs/keys.md](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/keys.md))
-- [Example File]([docs/example.md](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/example.md))
-- [API Endpoint]([docs/example.md](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/api-endpoint.md))
+- [Frontmatter Keys](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/keys.md)
+- [Example File](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/example.md)
+- [API Endpoint](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/api-endpoint.md)
 - ([Changelog](https://github.com/Maximinodotpy/Gitdown/blob/master/docs/changelog.md))
 
 You will also find helpful information in the *Reports* section of the article overview.
