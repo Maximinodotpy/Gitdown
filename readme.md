@@ -41,6 +41,7 @@ I'm building this Plugin by myself, and I made it for myself, but I think it cou
 - [My Profile on Wordpress.org](https://profiles.wordpress.org/maximmaeder/)
 - [Plugin Page](https://wordpress.org/plugins/gitdown)
 - [SVN repository](http://plugins.svn.wordpress.org/gitdown/)
+- [My other projects](https://demos.maximmaeder.com/)
 
 ## 🤙 Other Software that Gitdown uses.
 This plugin uses the following third Party Services and Programs.
