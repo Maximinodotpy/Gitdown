@@ -31,6 +31,6 @@ Yes it can, simply go to the Settings and activate automatic updating there. Jus
 Yes you can you will have to create an URL with the authentication. Consult the following links to set this up.
 
 - [Creating a URL to clone Private Github Repos](https://stackoverflow.com/questions/22755268/clone-a-private-repo-of-github-with-username-and-password)
-- [Creating a custom Personal Access Token](https://docs.github.com/de/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+- [Creating a custom Personal Access Token](https://docs.github.com/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 
 Generally the URL will have to look something like this: `https://<Username_or_Company>:<PAT_or_Password>@github.com/<Username_or_Company>/<Repository_name>.git`
